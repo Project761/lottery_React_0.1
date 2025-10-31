@@ -3,25 +3,22 @@ import OtpVerify from "../components/OtpVerify";
 import BankDetailsForm from "./BankDetailsForm";
 import { showSuccess, showError } from '../utils/toast';
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
+import axios from "axios";
+import { fetchPostData } from "../components/hooks/Api";
+import { Dropdown } from "bootstrap";
+import { onChangeDropdown } from "../utils/Comman.js";
 
-// Simulate sending OTP to mobile (replace with actual API call)
 const sendOtpToMobile = async (mobileNumber) => {
-    // In a real app, this would be an API call to your backend
     return new Promise((resolve) => {
-        // Generate a 6-digit OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        console.log(`OTP for ${mobileNumber}: ${otp}`); // For testing
+        console.log(`OTP for ${mobileNumber}: ${otp}`);
         setTimeout(() => resolve(otp), 1000);
     });
 };
 
-// Simulate verifying OTP (replace with actual API call)
 const verifyMobileOtp = async (mobileNumber, otp) => {
-    // In a real app, this would verify with your backend
     return new Promise((resolve) => {
-        // Simulate API call delay
         setTimeout(() => {
-            // In a real app, the backend would verify the OTP
             resolve(true);
         }, 1000);
     });
@@ -35,6 +32,12 @@ const PersonalDetailsForm = () => {
     const [otpSent, setOtpSent] = useState(false);
     const [otp, setOtp] = useState('');
     const [errors, setErrors] = useState({});
+
+    // New-State
+    const [data, setData] = useState([]);
+    const [states, setStates] = useState([]);
+    const [cityies, setCityies] = useState([]);
+    const [cast, setCast] = useState([]);
 
     const castOptions = [
         { value: 'General', label: 'General' },
@@ -64,6 +67,78 @@ const PersonalDetailsForm = () => {
         sameAsPermanent: false,
         postalAddress: ''
     });
+
+    //---------------------- Add-Data ----------------------
+    const AddSave = async () => {
+        try {
+            const response = await fetchPostData('User/Insert_User', formData)
+            if(response){
+                toastifySuccess("Product Details is saved successfully");
+                return true;
+            }
+        } catch (error) {
+            toastifyError('Error saving Product Details');
+        }
+    }
+
+    //---------------------- Dropdowns -----------------------
+    const fetchCast = async () => {
+        try {
+            const response = await fetchPostData('Cast/GetDataDropDown_Cast', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            });
+            // console.log(response);
+
+            if (response && Array.isArray(response)) {
+                setCast(response);
+            } else {
+                setCast([]);
+            }
+        } catch {
+            toastifyError('Error fetching States');
+        }
+    }
+
+    const fetchState = async () => {
+        try {
+            const response = await fetchPostData('State/GetDataDropDown_State', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            });
+            console.log(response);
+
+            if (response && Array.isArray(response)) {
+                setStates(response);
+            } else {
+                setStates([]);
+            }
+        } catch {
+            toastifyError('Error fetching States');
+        }
+    }
+
+    const fetchCity = async (stateID) => {
+        try {
+            const response = await fetchPostData('https://api.crushererp.com/api/City/GetDataDropDown_City', {
+                StateId: stateID,
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            })
+            console.log(response);
+            if (response && Array.isArray(response)) {
+                setCity(response);
+            } else {
+                setCity([]);
+            }
+        } catch {
+            toastifyError('Error fetching District');
+        }
+    }
+
+    useEffect(() => {
+        fetchState();
+    }, []);
 
     const validateForm = () => {
         const newErrors = {};
@@ -239,6 +314,7 @@ const PersonalDetailsForm = () => {
                     activeTab === "personal" && (
                         <form onSubmit={handleSubmit}>
                             <div className="row g-2 p-3 ">
+                                {/* Applicant-Name */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Applicant Name <span className="text-danger">*</span></label>
                                     <input
@@ -247,11 +323,12 @@ const PersonalDetailsForm = () => {
                                         name="applicantName"
                                         autoComplete="off"
                                         value={formData.applicantName}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => setFormData({...formData, applicantName: e.target.value})}
                                     />
                                     {errors.applicantName && <div className="invalid-feedback">{errors.applicantName}</div>}
                                 </div>
 
+                                {/* Gender */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Gender <span className="text-danger">*</span></label>
                                     <div className="d-flex align-items-center">
@@ -280,6 +357,7 @@ const PersonalDetailsForm = () => {
                                     </div>
                                 </div>
 
+                                {/* Date-Of-Birth */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Date of Birth <span className="text-danger">*</span></label>
                                     <input
@@ -294,6 +372,7 @@ const PersonalDetailsForm = () => {
                                     {errors.dateOfBirth && <div className="invalid-feedback">{errors.dateOfBirth}</div>}
                                 </div>
 
+                                {/* Email-Address */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Email Address <span className="text-danger">*</span></label>
                                     <input
@@ -302,11 +381,12 @@ const PersonalDetailsForm = () => {
                                         name="email"
                                         autoComplete="off"
                                         value={formData.email}
-                                        onChange={handleInputChange}
+                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                                     />
                                     {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                                 </div>
 
+                                {/* Select-One */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Select One <span className="text-danger">*</span></label>
                                     <div className="d-flex align-items-center">
@@ -335,11 +415,13 @@ const PersonalDetailsForm = () => {
                                     </div>
                                 </div>
 
+                                {/* Father/Husband-Name */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" />
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.relationName} onChange={(e) => setFormData({...formData, relationName: e.target.value})}/>
                                 </div>
 
+                                {/* ID-Type */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold mb-1">Select One <span className="text-danger">*</span></label>
                                     <div className="d-flex align-items-center">
@@ -391,28 +473,26 @@ const PersonalDetailsForm = () => {
                                     </div>
                                 </div>
 
+                                {/* ID-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">ID No <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
+                                {/* Aadhaar-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
+                                {/* Select-Cast */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
                                     <Select
                                         className={`${errors.cast ? 'is-invalid' : ''}`}
                                         name="cast"
                                         value={castOptions.find(option => option.value === formData.cast) || null}
-                                        onChange={(selectedOption) => handleInputChange({
-                                            target: {
-                                                name: 'cast',
-                                                value: selectedOption ? selectedOption.value : ''
-                                            }
-                                        })}
+                                        onChange={(event) => onChangeDropdown(event, setFormData, formData, 'cast')}
                                         options={castOptions}
                                         placeholder="--Select Cast--"
                                         isClearable
@@ -428,6 +508,7 @@ const PersonalDetailsForm = () => {
                                     {errors.cast && <div className="invalid-feedback">{errors.cast}</div>}
                                 </div>
 
+                                {/* Mobile-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
                                     <input
@@ -441,31 +522,76 @@ const PersonalDetailsForm = () => {
                                     {errors.mobileNumber && <div className="invalid-feedback">{errors.mobileNumber}</div>}
                                 </div>
 
+                                {/* ZIP-Code */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
-                                <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">City <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" />
-                                </div>
-
+                                {/* State */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
-                                    <input type="text" value="RAJASTHAN" autoComplete="off" className="form-control" readOnly />
+                                    <div className="col-xl-9 col-12">
+                                        <Select
+                                            value={formData.state ?
+                                                {
+                                                    value: formData.state,
+                                                    label: states.find((st) => st.StateID === formData.state)?.StateCode || '',
+                                                } : null
+                                            }
+                                            className="w-full"
+                                            placeholder="Select State"
+                                            options={states.map((st) => ({
+                                                value: st.StateID,
+                                                label: st.StateCode,
+                                            }))}
+                                            onChange={(event) => {
+                                                onChangeDropdown(event, setFormData, formData, 'state');
+                                                if (stateID) fetchCity(stateID);
+                                            }}
+                                            isClearable
+                                            isSearchable
+                                        />
+                                    </div>
                                 </div>
 
+                                {/* City */}
+                                <div className="col-md-3">
+                                    <label className="form-label fw-semibold mb-1">City <span className="text-danger">*</span></label>
+                                    <Select
+                                        className="w-full"
+                                        placeholder="Select City"
+                                        value={formData.city
+                                            ? {
+                                                value: formData.city,
+                                                label: cityies.find((d) => d.CityID === formData.city)?.Description || '',
+                                            } : null
+                                        }
+                                        options={cityies.map((d) => ({
+                                            value: d.CityID,
+                                            label: d.Description,
+                                        }))}
+                                        onChange={(selectedOption) => {
+                                            onChangeDropdown(selectedOption, setFormData, formData, 'city');
+                                        }}
+                                        isClearable
+                                        isSearchable
+                                    />
+                                </div>
+
+                                {/* Country */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Country <span className="text-danger">*</span></label>
                                     <input type="text" value="INDIA" autoComplete="off" className="form-control" readOnly />
                                 </div>
 
+                                {/* Permanent-Address */}
                                 <div className="col-md-12">
                                     <label className="form-label fw-semibold mb-1">Permanent Address <span className="text-danger">*</span></label>
                                     <textarea autoComplete="off" className="form-control" rows="1"></textarea>
                                 </div>
 
+                                {/* Same-Address */}
                                 <div className="col-md-12">
                                     <div className="form-check">
                                         <input
@@ -480,7 +606,7 @@ const PersonalDetailsForm = () => {
                                         </label>
                                     </div>
                                 </div>
-
+                                {/* Postal-Address */}
                                 <div className="col-md-12">
                                     <label className="form-label fw-semibold mb-1">Postal Address <span className="text-danger">*</span></label>
                                     <textarea autoComplete="off" className="form-control" rows="1"></textarea>

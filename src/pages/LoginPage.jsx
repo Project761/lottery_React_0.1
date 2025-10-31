@@ -18,12 +18,11 @@ const LoginPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Basic validation
         if (!mobile.trim() || !applicant.trim()) {
             setError("Please fill in all fields");
             return;
         }
-        console.log("Login attempt with:", { mobile, applicant });
+        // console.log("Login attempt with:", { mobile, applicant });
 
 
         // navigate('/payment');
@@ -52,7 +51,6 @@ const LoginPage = () => {
                                             value={mobile}
                                             autoComplete="off"
                                             onChange={(e) => setMobile(e.target.value)}
-                                            required
                                         />
                                     </div>
 
@@ -67,7 +65,6 @@ const LoginPage = () => {
                                             value={applicant}
                                             autoComplete="off"
                                             onChange={(e) => setApplicant(e.target.value)}
-                                            required
                                         />
                                     </div>
                                 </div>
