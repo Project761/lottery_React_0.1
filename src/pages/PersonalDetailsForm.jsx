@@ -240,7 +240,7 @@ const PersonalDetailsForm = () => {
                         <form onSubmit={handleSubmit}>
                             <div className="row g-2 p-3 ">
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Applicant Name *</label>
+                                    <label className="form-label fw-semibold mb-1">Applicant Name <span className="text-danger">*</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.applicantName ? 'is-invalid' : ''}`}
@@ -253,7 +253,7 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Gender *</label>
+                                    <label className="form-label fw-semibold mb-1">Gender <span className="text-danger">*</span></label>
                                     <div className="d-flex align-items-center">
                                         <div className="form-check me-3 mb-0">
                                             <input
@@ -281,7 +281,7 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Date of Birth *</label>
+                                    <label className="form-label fw-semibold mb-1">Date of Birth <span className="text-danger">*</span></label>
                                     <input
                                         type="date"
                                         className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`}
@@ -295,7 +295,7 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Email Address *</label>
+                                    <label className="form-label fw-semibold mb-1">Email Address <span className="text-danger">*</span></label>
                                     <input
                                         type="email"
                                         className={`form-control ${errors.email ? 'is-invalid' : ''}`}
@@ -308,7 +308,7 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Select One *</label>
+                                    <label className="form-label fw-semibold mb-1">Select One <span className="text-danger">*</span></label>
                                     <div className="d-flex align-items-center">
                                         <div className="form-check form-check-inline">
                                             <input
@@ -336,12 +336,12 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Father/Husband Name *</label>
+                                    <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
                                 <div className="col-md-6">
-                                    <label className="form-label fw-semibold mb-1">Select One *</label>
+                                    <label className="form-label fw-semibold mb-1">Select One <span className="text-danger">*</span></label>
                                     <div className="d-flex align-items-center">
                                         <div className="form-check form-check-inline">
                                             <input
@@ -392,17 +392,17 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">ID No *</label>
+                                    <label className="form-label fw-semibold mb-1">ID No <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Aadhaar Number *</label>
+                                    <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Select Cast *</label>
+                                    <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
                                     <Select
                                         className={`${errors.cast ? 'is-invalid' : ''}`}
                                         name="cast"
@@ -429,7 +429,7 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Mobile Number *</label>
+                                    <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
                                     <input
                                         type="text"
                                         className={`form-control ${errors.mobileNumber ? 'is-invalid' : ''}`}
@@ -442,27 +442,27 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">ZIP Code *</label>
+                                    <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">City *</label>
+                                    <label className="form-label fw-semibold mb-1">City <span className="text-danger">*</span></label>
                                     <input type="text" autoComplete="off" className="form-control" />
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">State *</label>
+                                    <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
                                     <input type="text" value="RAJASTHAN" autoComplete="off" className="form-control" readOnly />
                                 </div>
 
                                 <div className="col-md-3">
-                                    <label className="form-label fw-semibold mb-1">Country *</label>
+                                    <label className="form-label fw-semibold mb-1">Country <span className="text-danger">*</span></label>
                                     <input type="text" value="INDIA" autoComplete="off" className="form-control" readOnly />
                                 </div>
 
                                 <div className="col-md-12">
-                                    <label className="form-label fw-semibold mb-1">Permanent Address *</label>
+                                    <label className="form-label fw-semibold mb-1">Permanent Address <span className="text-danger">*</span></label>
                                     <textarea autoComplete="off" className="form-control" rows="1"></textarea>
                                 </div>
 
@@ -482,7 +482,7 @@ const PersonalDetailsForm = () => {
                                 </div>
 
                                 <div className="col-md-12">
-                                    <label className="form-label fw-semibold mb-1">Postal Address</label>
+                                    <label className="form-label fw-semibold mb-1">Postal Address <span className="text-danger">*</span></label>
                                     <textarea autoComplete="off" className="form-control" rows="1"></textarea>
                                 </div>
                             </div>
