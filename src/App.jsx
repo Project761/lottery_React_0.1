@@ -12,6 +12,7 @@ import PersonalDetailsForm from './pages/PersonalDetailsForm';
 import BankDetailsForm from './pages/BankDetailsForm';
 import DemandDraftDetails from './pages/DemandDraftDetails';
 import IncomeDetails from './pages/IncomeDetails';
+import LoginPage from './pages/LoginPage';
 import OtpVerify from './components/OtpVerify';
 import ThankYouPage from './components/ThankYouPage';
 
@@ -60,6 +61,11 @@ function App() {
     }
   }, [navigate]);
 
+  // Scroll to top when route changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // Initial load effect
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -93,7 +99,7 @@ function App() {
       <Header />
       
       {/* Main Content */}
-      <div className="container mt-4">
+      <div className="container mt-4 mb-4 flex-grow-1">
         {activeTab && (
           <TabHeader 
             activeTab={activeTab} 
@@ -104,6 +110,7 @@ function App() {
         <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/apply" element={<PersonalDetailsForm />} />
             <Route path="/bank-details" element={<BankDetailsForm />} />
             <Route 
