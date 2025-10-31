@@ -31,7 +31,7 @@ const ThankYouPage = () => {
                             className="btn btn-primary px-4"
                             style={{ backgroundColor: '#A992F7', border: 'none' }}
                         >
-                            Login for Payment
+                            Login 
                         </Link>
                     </div>
                 </div>

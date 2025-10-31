@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import './interceptors/Axios'; // Global Axios configuration // Components
+import './interceptors/Axios'; 
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TabHeader from './components/TabHeader';
@@ -82,9 +82,9 @@ function App() {
     return (
       <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
         <div className="text-center">
-          <div 
-            className="spinner-border text-primary" 
-            style={{ width: '4rem', height: '4rem' }} 
+          <div
+            className="spinner-border text-primary"
+            style={{ width: '4rem', height: '4rem' }}
             role="status"
           >
             <span className="visually-hidden">Loading...</span>
@@ -97,49 +97,37 @@ function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />
-      
+
       {/* Main Content */}
       <div className="container mt-4 mb-4 flex-grow-1">
         {activeTab && (
-          <TabHeader 
-            activeTab={activeTab} 
-            onTabChange={handleTabChange} 
+          <TabHeader
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
           />
         )}
-        
+
         <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/apply" element={<PersonalDetailsForm />} />
-            <Route path="/bank-details" element={<BankDetailsForm />} />
-            <Route 
-              path="/dd-details" 
-              element={
-                <DemandDraftDetails 
-                  onBack={() => handleTabChange('bank')} 
-                />
-              } 
-            />
-            <Route 
-              path="/income-details" 
-              element={
-                <IncomeDetails 
-                  onBack={() => handleTabChange('dd')} 
-                />
-              } 
-            />
+            <Route path="/bank-details" element={<BankDetailsForm onBack={() => handleTabChange('personal')} />} />
+            <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
+            <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
+            <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
+            <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
             <Route path="/verify-otp" element={<OtpVerify />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
       </div>
-      
+
       <Footer />
-      
+
       {/* Toast Notifications */}
-      <ToastContainer 
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}

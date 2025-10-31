@@ -35,7 +35,7 @@ const LoginPage = () => {
                 <div className="col-md-6">
                     <div className="card shadow">
                         <div className="card-header bg-white text-center py-3">
-                            <h4 className="mb-0 fw-bold" style={{ color: "#333" }}>EWS-LIG Login</h4>
+                            <h4 className="mb-0 fw-bold" style={{ color: "#333" }}>EWS-LIG</h4>
                         </div>
                         <div className="card-body p-4">
 
@@ -48,7 +48,7 @@ const LoginPage = () => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Enter Your Reg. Mobile Number"
+                                            placeholder="Enter Mobile Number"
                                             value={mobile}
                                             autoComplete="off"
                                             onChange={(e) => setMobile(e.target.value)}
