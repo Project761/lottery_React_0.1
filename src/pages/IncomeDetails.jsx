@@ -52,7 +52,7 @@ const IncomeDetails = ({ onBack }) => {
 
             {/* Form */}
             <form onSubmit={handleFormSubmit} className="border p-4 bg-white shadow-sm">
-                <div className="row mb-3">
+                <div className="row mb-2">
                     {/* Category */}
                     <div className="col-md-6">
                         <label className="form-label">
