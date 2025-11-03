@@ -1,9 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
+import { onChangeDropdown } from "../utils/Comman.js";
+import { fetchPostData } from "../components/hooks/Api.js";
+import { showError } from "../utils/toast.js";
 
 const DemandDraftDetails = ({ onBack }) => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
+    const [formData, setFormData] = useState({
+        ddNumber: '',
+        ddDate: '',
+        bankName: null,
+        amount: '',
+        attachment: null
+    });
+    const [bankDetails, setBankDetails] = useState([]);
+
+    const fetchBankDetails = async () => {
+        try {
+            const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            })
+            if (response && Array.isArray(response)) {
+                setBankDetails(response);
+            } else {
+                setBankDetails([]);
+            }
+        } catch {
+            showError('Error fetching Bank Details');
+        }
+    }
+
+    useEffect(() => {
+        fetchBankDetails();
+    }, []);
 
     const bankOptions = [
         { value: 'HDFC', label: 'HDFC Bank' },
@@ -60,19 +91,33 @@ const DemandDraftDetails = ({ onBack }) => {
 
                         {/* Select Bank */}
                         <div className="col-md-4">
-                            <label
-                                className="form-label fw-semibold"
-                                style={{ fontSize: "14px" }}
-                            >
+                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 SELECT BANK <span className="text-danger">*</span>
                             </label>
 
                             <Select
-                                options={bankOptions}
-                                value={selectedBank}
-                                onChange={setSelectedBank}
-                                placeholder="--SELECT BANK--"
-                                classNamePrefix="react-select"
+                                value={formData.bankName ?
+                                    {
+                                        value: formData.bankName,
+                                        label: bankDetails.find((b) => b.BankID === formData.bankName)?.Description || ''
+                                    } : null
+                                }
+                                className="w-full"
+                                placeholder="Select Bank"
+                                options={bankDetails.map((b) => ({
+                                    value: b.BankID,
+                                    label: b.Description
+                                }))}
+                                onChange={(event) => {
+                                    onChangeDropdown(event, setFormData, formData, 'bankName');
+                                }}
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        minHeight: '38px',
+                                        height: '38px',
+                                    })
+                                }}
                             />
                         </div>
 

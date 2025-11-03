@@ -16,7 +16,7 @@ export const onChangeDropdown = (event, setFormData, formData, fieldName) => {
     } else {
         setFormData({
             ...formData,
-            [fieldName]: Null
+            [fieldName]: null
         });
     }
 }

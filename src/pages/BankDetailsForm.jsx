@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
+import { fetchPostData } from "../components/hooks/Api.js";
+import toast, { showError } from "../utils/toast.js";
+import { onChangeDropdown } from "../utils/Comman.js";
 
 const BankDetailsForm = ({ onBack }) => {
-    const bankOptions = [
-        { value: 'SBI', label: 'State Bank of India' },
-        { value: 'HDFC', label: 'HDFC Bank' },
-        { value: 'ICICI', label: 'ICICI Bank' },
-        { value: 'PNB', label: 'Punjab National Bank' },
-        { value: 'BOB', label: 'Bank of Baroda' },
-        { value: 'AXIS', label: 'Axis Bank' },
-        { value: 'KOTAK', label: 'Kotak Mahindra Bank' },
-        { value: 'INDUSIND', label: 'IndusInd Bank' }
-    ];
 
     const [selectedBank, setSelectedBank] = useState(null);
     const [activeTab, setActiveTab] = useState("bank");
+    const [formData, setFormData] = useState({
+        applicantName: '',
+        accountNumber: '',
+        bankName: null,
+        ifscCode: '',
+        branchAddress: ''
+    });
+    const [bankDetails, setBankDetails] = useState([]);
 
     const handleTabChange = (tabId) => {
         if (tabId === 'personal') {
@@ -23,6 +24,27 @@ const BankDetailsForm = ({ onBack }) => {
             setActiveTab(tabId);
         }
     };
+
+    const fetchBankDetails = async () => {
+        try{
+            const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            })
+            if(response && Array.isArray(response)){
+                setBankDetails(response);
+            }else{
+                setBankDetails([]);
+            }
+        }catch{
+            showError('Error fetching Bank Details');
+        }
+    }
+
+    useEffect(() => {
+        fetchBankDetails();
+    }, []);
+
     return (
         <div className="container px-0 ">
 
@@ -52,17 +74,24 @@ const BankDetailsForm = ({ onBack }) => {
 
                     {/* Select Bank */}
                     <div className="col-md-4">
-                        <label className="form-label">
-                            Select Bank <span className="text-danger">*</span>
-                        </label>
+                        <label className="form-label"> Select Bank <span className="text-danger">*</span></label>
                         <Select
-                            className="basic-single"
-                            classNamePrefix="select"
-                            placeholder="--SELECT Bank--"
-                            name="bank"
-                            options={bankOptions}
-                            value={selectedBank}
-                            onChange={(selectedOption) => setSelectedBank(selectedOption)}
+                            value={
+                                formData.bankName ?
+                                {
+                                    value: formData.bankName,
+                                    label: bankDetails.find((b) => b.BankID === formData.bankName)?.Description || '',
+                                } : null
+                            }
+                            className="w-full"
+                            placeholder="Select Bank"
+                            options={bankDetails.map((b) => ({
+                                value: b.BankID,
+                                label: b.Description
+                            }))}
+                            onChange={(event) => {
+                                onChangeDropdown(event, setFormData, formData, 'bankName');
+                            }}
                             styles={{
                                 control: (base) => ({
                                     ...base,

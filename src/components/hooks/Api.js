@@ -1,5 +1,8 @@
 import axios from "../../interceptors/Axios";
 
+const encDecStatus = "false";
+var IsEncDec = encDecStatus == 'true' || encDecStatus == true
+
 //---------Get-Data
 export const fetch_Post_Data = async (url, postData) => {
     let Data
@@ -84,20 +87,22 @@ export const fetchPostData = async (url, postData) => {
         if (ipAddress) {
             postData.IPAddress = ipAddress;
         }
-
+        // console.log("%c🚀 ~ fetchPostData: " + `${url}-----${JSON.stringify(postData)}`, "padding: 6px; font-weight: bold; background-color: #2ecc71; color: black'");
         if (Object.keys(postData).length !== 0) {
             //--------------> New code with EncDec <------------ Don't Remove--------By AM
+
             if (IsEncDec) {
+                // console.log(IsEncDec);
                 const EncPostData = await Aes256Encrypt(JSON.stringify(postData));
-                // console.log(EncPostData)
+                console.log(EncPostData)
                 const DecPostData = { 'EDpostData': EncPostData }
-                // console.log(DecPostData)
+                console.log(DecPostData)
                 const res = await axios.post(url, DecPostData);
-                // console.log("Hurray "+ res);
+                console.log("Hurray "+ res);
                 const EncryptedData = res?.data?.data;
-                // console.log(EncryptedData)
+                console.log(EncryptedData)
                 const decryptedData = await Aes256Decrypt(EncryptedData);
-                // console.log(decryptedData)
+                console.log(decryptedData)
                 const TextData = JSON.parse(decryptedData)
                 return TextData?.Table
             } else {

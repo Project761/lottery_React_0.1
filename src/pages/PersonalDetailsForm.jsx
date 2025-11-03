@@ -8,15 +8,15 @@ import { fetchPostData } from "../components/hooks/Api";
 import { Dropdown } from "bootstrap";
 import { onChangeDropdown } from "../utils/Comman.js";
 
-const sendOtpToMobile = async (mobileNumber) => {
+const sendOtpToMobile = async (MobileNumber) => {
     return new Promise((resolve) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        console.log(`OTP for ${mobileNumber}: ${otp}`);
+        // console.log(`OTP for ${MobileNumber}: ${otp}`);
         setTimeout(() => resolve(otp), 1000);
     });
 };
 
-const verifyMobileOtp = async (mobileNumber, otp) => {
+const verifyMobileOtp = async (MobileNumber, otp) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(true);
@@ -37,34 +37,27 @@ const PersonalDetailsForm = () => {
     const [data, setData] = useState([]);
     const [states, setStates] = useState([]);
     const [cityies, setCityies] = useState([]);
-    const [cast, setCast] = useState([]);
-
-    const castOptions = [
-        { value: 'General', label: 'General' },
-        { value: 'OBC', label: 'OBC' },
-        { value: 'SC', label: 'SC' },
-        { value: 'ST', label: 'ST' }
-    ];
+    const [casts, setCasts] = useState([]);
 
     const [formData, setFormData] = useState({
-        applicantName: '',
-        gender: '',
-        dateOfBirth: '',
-        email: '',
-        relation: '',
-        relationName: '',
-        idType: '',
-        idNumber: '',
-        aadhaarNumber: '',
-        cast: '',
-        mobileNumber: '',
+        FullName: '',
+        Gender: '',
+        Dob: '',
+        Email: '',
+        NameSelect: '',
+        Fhname: '',
+        Idproof: '',
+        IdproofNo: '',
+        AadharNumber: '',
+        Caste: null,
+        MobileNumber: '',
         rashanCardNumber: '',
-        zipCode: '',
-        city: '',
-        state: 'RAJASTHAN',
+        ZipCode: '',
+        City: null,
+        State: null,
         country: 'INDIA',
-        permanentAddress: '',
-        sameAsPermanent: false,
+        Paraddress: '',
+        Posaddress: false,
         postalAddress: ''
     });
 
@@ -73,11 +66,11 @@ const PersonalDetailsForm = () => {
         try {
             const response = await fetchPostData('User/Insert_User', formData)
             if(response){
-                toastifySuccess("Product Details is saved successfully");
+                showSuccess("Product Details is saved successfully");
                 return true;
             }
         } catch (error) {
-            toastifyError('Error saving Product Details');
+            showError('Error saving Product Details');
         }
     }
 
@@ -91,12 +84,12 @@ const PersonalDetailsForm = () => {
             // console.log(response);
 
             if (response && Array.isArray(response)) {
-                setCast(response);
+                setCasts(response);
             } else {
-                setCast([]);
+                setCasts([]);
             }
         } catch {
-            toastifyError('Error fetching States');
+            showError('Error fetching States');
         }
     }
 
@@ -106,7 +99,6 @@ const PersonalDetailsForm = () => {
                 // CompanyId: Number(localStorage.getItem('companyID')),
                 CompanyID: 1,
             });
-            console.log(response);
 
             if (response && Array.isArray(response)) {
                 setStates(response);
@@ -114,38 +106,39 @@ const PersonalDetailsForm = () => {
                 setStates([]);
             }
         } catch {
-            toastifyError('Error fetching States');
+            showError('Error fetching States');
         }
     }
 
     const fetchCity = async (stateID) => {
         try {
-            const response = await fetchPostData('https://api.crushererp.com/api/City/GetDataDropDown_City', {
-                StateId: stateID,
+            const response = await fetchPostData('City/GetDataDropDown_City', {
+                StateID: stateID,
                 // CompanyId: Number(localStorage.getItem('companyID')),
                 CompanyID: 1,
             })
-            console.log(response);
-            if (response && Array.isArray(response)) {
-                setCity(response);
+            if (Array.isArray(response)) {
+                setCityies(response);
             } else {
-                setCity([]);
+                setCityies([]);
             }
         } catch {
-            toastifyError('Error fetching District');
+            showError('Error fetching District');
         }
     }
 
     useEffect(() => {
         fetchState();
+        fetchCast();
+        // AddSave();
     }, []);
 
     const validateForm = () => {
         const newErrors = {};
         const requiredFields = [
-            'applicantName', 'gender', 'dateOfBirth', 'email', 'relation', 'relationName',
-            'idType', 'idNumber', 'aadhaarNumber', 'cast', 'mobileNumber', 'zipCode',
-            'city', 'permanentAddress'
+            'FullName', 'Gender', 'Dob', 'Email', 'NameSelect', 'Fhname',
+            'Idproof', 'IdproofNo', 'AadharNumber', 'Caste', 'MobileNumber', 'ZipCode',
+            'City', 'Paraddress'
         ];
 
         requiredFields.forEach(field => {
@@ -155,18 +148,18 @@ const PersonalDetailsForm = () => {
         });
 
         // Email validation
-        if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
+        if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
+            newErrors.Email = 'Please enter a valid Email address';
         }
 
         // Mobile number validation
-        if (formData.mobileNumber && !/^[0-9]{10}$/.test(formData.mobileNumber)) {
-            newErrors.mobileNumber = 'Please enter a valid 10-digit mobile number';
+        if (formData.MobileNumber && !/^[0-9]{10}$/.test(formData.MobileNumber)) {
+            newErrors.MobileNumber = 'Please enter a valid 10-digit mobile number';
         }
 
         // Aadhaar validation
-        if (formData.aadhaarNumber && !/^[0-9]{12}$/.test(formData.aadhaarNumber)) {
-            newErrors.aadhaarNumber = 'Please enter a valid 12-digit Aadhaar number';
+        if (formData.AadharNumber && !/^[0-9]{12}$/.test(formData.AadharNumber)) {
+            newErrors.AadharNumber = 'Please enter a valid 12-digit Aadhaar number';
         }
 
         setErrors(newErrors);
@@ -193,8 +186,8 @@ const PersonalDetailsForm = () => {
         const isChecked = e.target.checked;
         setFormData({
             ...formData,
-            sameAsPermanent: isChecked,
-            postalAddress: isChecked ? formData.permanentAddress : ''
+            Posaddress: isChecked,
+            postalAddress: isChecked ? formData.Paraddress : ''
         });
     };
 
@@ -207,7 +200,7 @@ const PersonalDetailsForm = () => {
         }
 
         // Validate mobile number
-        if (!formData.mobileNumber || formData.mobileNumber.length !== 10) {
+        if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
             showError('Please enter a valid 10-digit mobile number');
             return;
         }
@@ -216,13 +209,13 @@ const PersonalDetailsForm = () => {
 
         try {
             // Send OTP to mobile
-            await sendOtpToMobile(formData.mobileNumber);
+            await sendOtpToMobile(formData.MobileNumber);
 
             // Show OTP verification screen
             setShowOtp(true);
-            showSuccess(`OTP sent to ${formData.mobileNumber}`);
+            showSuccess(`OTP sent to ${formData.MobileNumber}`);
         } catch (error) {
-            console.error('Error sending OTP:', error);
+            // console.error('Error sending OTP:', error);
             showError('Failed to send OTP. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -230,7 +223,7 @@ const PersonalDetailsForm = () => {
     };
 
     const handleSendOtp = async () => {
-        if (!formData.mobileNumber || formData.mobileNumber.length !== 10) {
+        if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
             showError('Please enter a valid 10-digit mobile number');
             return;
         }
@@ -238,11 +231,11 @@ const PersonalDetailsForm = () => {
         setIsSendingOtp(true);
         try {
             // In a real app, call your backend API to send OTP
-            const generatedOtp = await sendOtpToMobile(formData.mobileNumber);
+            const generatedOtp = await sendOtpToMobile(formData.MobileNumber);
             setOtpSent(true);
-            showSuccess(`OTP sent to ${formData.mobileNumber}`);
+            showSuccess(`OTP sent to ${formData.MobileNumber}`);
         } catch (error) {
-            console.error('Failed to send OTP:', error);
+            // console.error('Failed to send OTP:', error);
             showError('Failed to send OTP. Please try again.');
         } finally {
             setIsSendingOtp(false);
@@ -258,7 +251,7 @@ const PersonalDetailsForm = () => {
         setIsSubmitting(true);
         try {
             // In a real app, verify OTP with your backend
-            const isValid = await verifyMobileOtp(formData.mobileNumber, otp);
+            const isValid = await verifyMobileOtp(formData.MobileNumber, otp);
 
             if (isValid) {
                 showSuccess('Mobile number verified successfully');
@@ -266,12 +259,12 @@ const PersonalDetailsForm = () => {
                 setOtp('');
                 setOtpSent(false);
                 // You can also disable the mobile number field after verification
-                // or mark it as verified in your form state
+                // or mark it as verified in your form State
             } else {
                 throw new Error('Invalid OTP');
             }
         } catch (error) {
-            console.error('OTP verification failed:', error);
+            // console.error('OTP verification failed:', error);
             showError('Invalid OTP. Please try again.');
             setErrors({ ...errors, otp: 'Invalid OTP. Please try again.' });
         } finally {
@@ -284,7 +277,7 @@ const PersonalDetailsForm = () => {
             setIsSubmitting(true);
 
             // Verify OTP with your backend
-            const isValid = await verifyMobileOtp(formData.mobileNumber, otp);
+            const isValid = await verifyMobileOtp(formData.MobileNumber, otp);
 
             if (isValid) {
                 // On successful verification, move to bank details
@@ -295,7 +288,7 @@ const PersonalDetailsForm = () => {
                 throw new Error('Invalid OTP');
             }
         } catch (error) {
-            console.error('OTP verification failed:', error);
+            // console.error('OTP verification failed:', error);
             throw new Error('Invalid OTP. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -319,13 +312,13 @@ const PersonalDetailsForm = () => {
                                     <label className="form-label fw-semibold mb-1">Applicant Name <span className="text-danger">*</span></label>
                                     <input
                                         type="text"
-                                        className={`form-control ${errors.applicantName ? 'is-invalid' : ''}`}
-                                        name="applicantName"
+                                        className={`form-control ${errors.FullName ? 'is-invalid' : ''}`}
+                                        name="FullName"
                                         autoComplete="off"
-                                        value={formData.applicantName}
-                                        onChange={(e) => setFormData({...formData, applicantName: e.target.value})}
+                                        value={formData.FullName}
+                                        onChange={(e) => setFormData({...formData, FullName: e.target.value})}
                                     />
-                                    {errors.applicantName && <div className="invalid-feedback">{errors.applicantName}</div>}
+                                    {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
                                 </div>
 
                                 {/* Gender */}
@@ -336,9 +329,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="gender"
+                                                name="Gender"
                                                 value="male"
-                                                checked={formData.gender === 'male'}
+                                                checked={formData.Gender === 'male'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">Male</label>
@@ -347,9 +340,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="gender"
+                                                name="Gender"
                                                 value="female"
-                                                checked={formData.gender === 'female'}
+                                                checked={formData.Gender === 'female'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">Female</label>
@@ -362,28 +355,28 @@ const PersonalDetailsForm = () => {
                                     <label className="form-label fw-semibold mb-1">Date of Birth <span className="text-danger">*</span></label>
                                     <input
                                         type="date"
-                                        className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`}
-                                        name="dateOfBirth"
+                                        className={`form-control ${errors.Dob ? 'is-invalid' : ''}`}
+                                        name="Dob"
                                         autoComplete="off"
-                                        value={formData.dateOfBirth}
+                                        value={formData.Dob}
                                         onChange={handleInputChange}
                                         max={new Date().toISOString().split('T')[0]}
                                     />
-                                    {errors.dateOfBirth && <div className="invalid-feedback">{errors.dateOfBirth}</div>}
+                                    {errors.Dob && <div className="invalid-feedback">{errors.Dob}</div>}
                                 </div>
 
                                 {/* Email-Address */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Email Address <span className="text-danger">*</span></label>
                                     <input
-                                        type="email"
-                                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                        name="email"
+                                        type="Email"
+                                        className={`form-control ${errors.Email ? 'is-invalid' : ''}`}
+                                        name="Email"
                                         autoComplete="off"
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        value={formData.Email}
+                                        onChange={(e) => setFormData({...formData, Email: e.target.value})}
                                     />
-                                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                                    {errors.Email && <div className="invalid-feedback">{errors.Email}</div>}
                                 </div>
 
                                 {/* Select-One */}
@@ -394,9 +387,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="relation"
+                                                name="NameSelect"
                                                 value="father"
-                                                checked={formData.relation === 'father'}
+                                                checked={formData.NameSelect === 'father'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">Father</label>
@@ -405,9 +398,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="relation"
+                                                name="NameSelect"
                                                 value="husband"
-                                                checked={formData.relation === 'husband'}
+                                                checked={formData.NameSelect === 'husband'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">Husband</label>
@@ -418,7 +411,7 @@ const PersonalDetailsForm = () => {
                                 {/* Father/Husband-Name */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" value={formData.relationName} onChange={(e) => setFormData({...formData, relationName: e.target.value})}/>
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.Fhname} onChange={(e) => setFormData({...formData, Fhname: e.target.value})}/>
                                 </div>
 
                                 {/* ID-Type */}
@@ -429,9 +422,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="idType"
+                                                name="Idproof"
                                                 value="pan"
-                                                checked={formData.idType === 'pan'}
+                                                checked={formData.Idproof === 'pan'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">PAN</label>
@@ -440,9 +433,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="idType"
+                                                name="Idproof"
                                                 value="drivingLicense"
-                                                checked={formData.idType === 'drivingLicense'}
+                                                checked={formData.Idproof === 'drivingLicense'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">DRIVING LICENSE</label>
@@ -451,9 +444,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="idType"
+                                                name="Idproof"
                                                 value="voterId"
-                                                checked={formData.idType === 'voterId'}
+                                                checked={formData.Idproof === 'voterId'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">Voter ID</label>
@@ -462,9 +455,9 @@ const PersonalDetailsForm = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="radio"
-                                                name="idType"
+                                                name="Idproof"
                                                 value="rashanCard"
-                                                checked={formData.idType === 'rashanCard'}
+                                                checked={formData.Idproof === 'rashanCard'}
                                                 onChange={handleInputChange}
                                             />
                                             <label className="form-check-label">RASHAN CARD</label>
@@ -476,25 +469,34 @@ const PersonalDetailsForm = () => {
                                 {/* ID-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">ID No <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" />
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({...formData, IdproofNo: e.target.value})}/>
                                 </div>
 
                                 {/* Aadhaar-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" />
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.AadharNumber} onChange={(e) => setFormData({...formData, AadharNumber: e.target.value})}/>
                                 </div>
 
                                 {/* Select-Cast */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
                                     <Select
-                                        className={`${errors.cast ? 'is-invalid' : ''}`}
-                                        name="cast"
-                                        value={castOptions.find(option => option.value === formData.cast) || null}
-                                        onChange={(event) => onChangeDropdown(event, setFormData, formData, 'cast')}
-                                        options={castOptions}
-                                        placeholder="--Select Cast--"
+                                        className={`${errors.Caste ? 'is-invalid' : ''}`}
+                                        name="Caste"
+                                        value={
+                                            formData.Caste ?
+                                            {
+                                                Value: formData.Caste,
+                                                label: casts.find((c) => c.CastID === formData.Caste)?.Description || '',
+                                            } : null
+                                        }
+                                        onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
+                                        options={casts.map((c) => ({
+                                            value: c.CastID,
+                                            label: c.Description,
+                                        }))}
+                                        placeholder="Select Cast"
                                         isClearable
                                         classNamePrefix="select"
                                         styles={{
@@ -505,7 +507,7 @@ const PersonalDetailsForm = () => {
                                             })
                                         }}
                                     />
-                                    {errors.cast && <div className="invalid-feedback">{errors.cast}</div>}
+                                    {errors.Caste && <div className="invalid-feedback">{errors.Caste}</div>}
                                 </div>
 
                                 {/* Mobile-No */}
@@ -513,19 +515,19 @@ const PersonalDetailsForm = () => {
                                     <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
                                     <input
                                         type="text"
-                                        className={`form-control ${errors.mobileNumber ? 'is-invalid' : ''}`}
-                                        name="mobileNumber"
-                                        value={formData.mobileNumber}
-                                        onChange={handleInputChange}
+                                        className={`form-control ${errors.MobileNumber ? 'is-invalid' : ''}`}
+                                        name="MobileNumber"
+                                        value={formData.MobileNumber}
+                                        onChange={(e) => setFormData({...formData, MobileNumber: e.target.value})}
                                         maxLength="10"
                                     />
-                                    {errors.mobileNumber && <div className="invalid-feedback">{errors.mobileNumber}</div>}
+                                    {errors.MobileNumber && <div className="invalid-feedback">{errors.MobileNumber}</div>}
                                 </div>
 
                                 {/* ZIP-Code */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" />
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.ZipCode} onChange={(e) => setFormData({...formData, ZipCode: e.target.value})}/>
                                 </div>
 
                                 {/* State */}
@@ -533,21 +535,22 @@ const PersonalDetailsForm = () => {
                                     <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
                                     <div className="col-xl-9 col-12">
                                         <Select
-                                            value={formData.state ?
+                                            value={formData.State ?
                                                 {
-                                                    value: formData.state,
-                                                    label: states.find((st) => st.StateID === formData.state)?.StateCode || '',
+                                                    value: formData.State,
+                                                    label: states.find((st) => st.StateID === formData.State)?.Description|| '',
                                                 } : null
                                             }
                                             className="w-full"
                                             placeholder="Select State"
                                             options={states.map((st) => ({
                                                 value: st.StateID,
-                                                label: st.StateCode,
+                                                label: st.Description,
                                             }))}
                                             onChange={(event) => {
-                                                onChangeDropdown(event, setFormData, formData, 'state');
-                                                if (stateID) fetchCity(stateID);
+                                                onChangeDropdown(event, setFormData, formData, 'State');
+                                                if (event.value) fetchCity(event.value);
+                                                // console.log("State selected:", event);
                                             }}
                                             isClearable
                                             isSearchable
@@ -561,10 +564,10 @@ const PersonalDetailsForm = () => {
                                     <Select
                                         className="w-full"
                                         placeholder="Select City"
-                                        value={formData.city
+                                        value={formData.City
                                             ? {
-                                                value: formData.city,
-                                                label: cityies.find((d) => d.CityID === formData.city)?.Description || '',
+                                                value: formData.City,
+                                                label: cityies.find((d) => d.CityID === formData.City)?.Description || '',
                                             } : null
                                         }
                                         options={cityies.map((d) => ({
@@ -572,7 +575,7 @@ const PersonalDetailsForm = () => {
                                             label: d.Description,
                                         }))}
                                         onChange={(selectedOption) => {
-                                            onChangeDropdown(selectedOption, setFormData, formData, 'city');
+                                            onChangeDropdown(selectedOption, setFormData, formData, 'City');
                                         }}
                                         isClearable
                                         isSearchable
@@ -588,7 +591,7 @@ const PersonalDetailsForm = () => {
                                 {/* Permanent-Address */}
                                 <div className="col-md-12">
                                     <label className="form-label fw-semibold mb-1">Permanent Address <span className="text-danger">*</span></label>
-                                    <textarea autoComplete="off" className="form-control" rows="1"></textarea>
+                                    <textarea autoComplete="off" className="form-control" rows="1" value={formData.Paraddress} onChange={(e) => setFormData({...formData, Paraddress: e.target.value})}></textarea>
                                 </div>
 
                                 {/* Same-Address */}
@@ -598,14 +601,15 @@ const PersonalDetailsForm = () => {
                                             className="form-check-input"
                                             type="checkbox"
                                             id="sameAddress"
-                                            checked={formData.sameAsPermanent}
-                                            onChange={handleSameAddressChange}
+                                            checked={formData.Posaddress}
+                                            onChange={(e) => setFormData({...formData, Posaddress: e.target.checked, postalAddress: e.target.checked ? formData.Paraddress : ''})}
                                         />
                                         <label className="form-check-label" htmlFor="sameAddress">
                                             Same as above address
                                         </label>
                                     </div>
                                 </div>
+
                                 {/* Postal-Address */}
                                 <div className="col-md-12">
                                     <label className="form-label fw-semibold mb-1">Postal Address <span className="text-danger">*</span></label>
@@ -635,11 +639,11 @@ const PersonalDetailsForm = () => {
                     )
                 ) : (
                     <div className="text-center">
-                        <p className="mb-3">We've sent a 6-digit OTP to {formData.mobileNumber}</p>
+                        <p className="mb-3">We've sent a 6-digit OTP to {formData.MobileNumber}</p>
                         <OtpVerify
                             onBack={() => setShowOtp(false)}
                             onVerify={handleOtpVerify}
-                            mobileNumber={formData.mobileNumber}
+                            MobileNumber={formData.MobileNumber}
                             isSubmitting={isSubmitting}
                         />
                         <p className="mt-3">
