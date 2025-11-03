@@ -7,21 +7,45 @@ import axios from "axios";
 import { fetchPostData } from "../components/hooks/Api";
 import { Dropdown } from "bootstrap";
 import { onChangeDropdown } from "../utils/Comman.js";
+import { useFormData } from "../context/FormDataContext.jsx";
 
 const sendOtpToMobile = async (MobileNumber) => {
-    return new Promise((resolve) => {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        // console.log(`OTP for ${MobileNumber}: ${otp}`);
-        setTimeout(() => resolve(otp), 1000);
-    });
+    try {
+        const response = await fetchPostData('SMS/SendMessage', { MobileNo: MobileNumber });
+        if (response) {
+            showSuccess(`OTP sent to ${MobileNumber}`);
+            return true;
+        } else {
+            showError('Failed to send OTP. Please try again.');
+            return false;
+        }
+    } catch {
+        showError('Error sending OTP');
+        return false;
+        // console.error('Error sending OTP');
+    }
 };
 
 const verifyMobileOtp = async (MobileNumber, otp) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(true);
-        }, 1000);
-    });
+    try {
+        const response = await fetchPostData('SMS/Check_Otp', { MobileNo: MobileNumber, Otp: otp });
+        // console.log("OTP Verification Response:", response[0]);
+        if (response) {
+            const table = response[0];
+            if (table?.IsValid === 0) {
+                return true;
+            } else {
+                showError('Invalid OTP. Please try again.');
+                return false;
+            }
+        } else {
+            showError('Failed to verify OTP. Please try again.');
+            return false;
+        }
+    }
+    catch {
+        showError('Error verifying OTP');
+    }
 };
 
 const PersonalDetailsForm = () => {
@@ -39,33 +63,16 @@ const PersonalDetailsForm = () => {
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
 
-    const [formData, setFormData] = useState({
-        FullName: '',
-        Gender: '',
-        Dob: '',
-        Email: '',
-        NameSelect: '',
-        Fhname: '',
-        Idproof: '',
-        IdproofNo: '',
-        AadharNumber: '',
-        Caste: null,
-        MobileNumber: '',
-        rashanCardNumber: '',
-        ZipCode: '',
-        City: null,
-        State: null,
-        country: 'INDIA',
-        Paraddress: '',
-        Posaddress: false,
-        postalAddress: ''
-    });
+    const {formData, setFormData} = useFormData();
+    useEffect(() => {
+        localStorage.setItem("applicationFormData", JSON.stringify(formData));
+    }, [formData]);
 
     //---------------------- Add-Data ----------------------
     const AddSave = async () => {
         try {
             const response = await fetchPostData('User/Insert_User', formData)
-            if(response){
+            if (response) {
                 showSuccess("Product Details is saved successfully");
                 return true;
             }
@@ -133,38 +140,38 @@ const PersonalDetailsForm = () => {
         // AddSave();
     }, []);
 
-    const validateForm = () => {
-        const newErrors = {};
-        const requiredFields = [
-            'FullName', 'Gender', 'Dob', 'Email', 'NameSelect', 'Fhname',
-            'Idproof', 'IdproofNo', 'AadharNumber', 'Caste', 'MobileNumber', 'ZipCode',
-            'City', 'Paraddress'
-        ];
+    // const validateForm = () => {
+    //     const newErrors = {};
+    //     const requiredFields = [
+    //         'FullName', 'Gender', 'Dob', 'Email', 'NameSelect', 'Fhname',
+    //         'Idproof', 'IdproofNo', 'AadharNumber', 'Caste', 'MobileNumber', 'ZipCode',
+    //         'City', 'Paraddress'
+    //     ];
 
-        requiredFields.forEach(field => {
-            if (!formData[field]) {
-                newErrors[field] = 'This field is required';
-            }
-        });
+    //     requiredFields.forEach(field => {
+    //         if (!formData[field]) {
+    //             newErrors[field] = 'This field is required';
+    //         }
+    //     });
 
-        // Email validation
-        if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
-            newErrors.Email = 'Please enter a valid Email address';
-        }
+    //     // Email validation
+    //     if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
+    //         newErrors.Email = 'Please enter a valid Email address';
+    //     }
 
-        // Mobile number validation
-        if (formData.MobileNumber && !/^[0-9]{10}$/.test(formData.MobileNumber)) {
-            newErrors.MobileNumber = 'Please enter a valid 10-digit mobile number';
-        }
+    //     // Mobile number validation
+    //     if (formData.MobileNumber && !/^[0-9]{10}$/.test(formData.MobileNumber)) {
+    //         newErrors.MobileNumber = 'Please enter a valid 10-digit mobile number';
+    //     }
 
-        // Aadhaar validation
-        if (formData.AadharNumber && !/^[0-9]{12}$/.test(formData.AadharNumber)) {
-            newErrors.AadharNumber = 'Please enter a valid 12-digit Aadhaar number';
-        }
+    //     // Aadhaar validation
+    //     if (formData.AadharNumber && !/^[0-9]{12}$/.test(formData.AadharNumber)) {
+    //         newErrors.AadharNumber = 'Please enter a valid 12-digit Aadhaar number';
+    //     }
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+    //     setErrors(newErrors);
+    //     return Object.keys(newErrors).length === 0;
+    // };
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -194,12 +201,11 @@ const PersonalDetailsForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            showError('Please fill all required fields correctly');
-            return;
-        }
+        // if (!validateForm()) {
+        //     showError('Please fill all required fields correctly');
+        //     return;
+        // }
 
-        // Validate mobile number
         if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
             showError('Please enter a valid 10-digit mobile number');
             return;
@@ -208,14 +214,12 @@ const PersonalDetailsForm = () => {
         setIsSubmitting(true);
 
         try {
-            // Send OTP to mobile
-            await sendOtpToMobile(formData.MobileNumber);
-
-            // Show OTP verification screen
-            setShowOtp(true);
-            showSuccess(`OTP sent to ${formData.MobileNumber}`);
+            const otpSent = await sendOtpToMobile(formData.MobileNumber);
+            if (otpSent) {
+                setShowOtp(true);
+            }
+            // showSuccess(`OTP sent to ${formData.MobileNumber}`);
         } catch (error) {
-            // console.error('Error sending OTP:', error);
             showError('Failed to send OTP. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -316,7 +320,7 @@ const PersonalDetailsForm = () => {
                                         name="FullName"
                                         autoComplete="off"
                                         value={formData.FullName}
-                                        onChange={(e) => setFormData({...formData, FullName: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, FullName: e.target.value })}
                                     />
                                     {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
                                 </div>
@@ -374,7 +378,7 @@ const PersonalDetailsForm = () => {
                                         name="Email"
                                         autoComplete="off"
                                         value={formData.Email}
-                                        onChange={(e) => setFormData({...formData, Email: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, Email: e.target.value })}
                                     />
                                     {errors.Email && <div className="invalid-feedback">{errors.Email}</div>}
                                 </div>
@@ -411,7 +415,7 @@ const PersonalDetailsForm = () => {
                                 {/* Father/Husband-Name */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" value={formData.Fhname} onChange={(e) => setFormData({...formData, Fhname: e.target.value})}/>
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: e.target.value })} />
                                 </div>
 
                                 {/* ID-Type */}
@@ -469,13 +473,13 @@ const PersonalDetailsForm = () => {
                                 {/* ID-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">ID No <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({...formData, IdproofNo: e.target.value})}/>
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({ ...formData, IdproofNo: e.target.value })} />
                                 </div>
 
                                 {/* Aadhaar-No */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" value={formData.AadharNumber} onChange={(e) => setFormData({...formData, AadharNumber: e.target.value})}/>
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.AadharNumber} onChange={(e) => setFormData({ ...formData, AadharNumber: e.target.value })} />
                                 </div>
 
                                 {/* Select-Cast */}
@@ -486,10 +490,10 @@ const PersonalDetailsForm = () => {
                                         name="Caste"
                                         value={
                                             formData.Caste ?
-                                            {
-                                                Value: formData.Caste,
-                                                label: casts.find((c) => c.CastID === formData.Caste)?.Description || '',
-                                            } : null
+                                                {
+                                                    Value: formData.Caste,
+                                                    label: casts.find((c) => c.CastID === formData.Caste)?.Description || '',
+                                                } : null
                                         }
                                         onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
                                         options={casts.map((c) => ({
@@ -518,7 +522,7 @@ const PersonalDetailsForm = () => {
                                         className={`form-control ${errors.MobileNumber ? 'is-invalid' : ''}`}
                                         name="MobileNumber"
                                         value={formData.MobileNumber}
-                                        onChange={(e) => setFormData({...formData, MobileNumber: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, MobileNumber: e.target.value })}
                                         maxLength="10"
                                     />
                                     {errors.MobileNumber && <div className="invalid-feedback">{errors.MobileNumber}</div>}
@@ -527,7 +531,7 @@ const PersonalDetailsForm = () => {
                                 {/* ZIP-Code */}
                                 <div className="col-md-3">
                                     <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
-                                    <input type="text" autoComplete="off" className="form-control" value={formData.ZipCode} onChange={(e) => setFormData({...formData, ZipCode: e.target.value})}/>
+                                    <input type="text" autoComplete="off" className="form-control" value={formData.ZipCode} onChange={(e) => setFormData({ ...formData, ZipCode: e.target.value })} />
                                 </div>
 
                                 {/* State */}
@@ -538,7 +542,7 @@ const PersonalDetailsForm = () => {
                                             value={formData.State ?
                                                 {
                                                     value: formData.State,
-                                                    label: states.find((st) => st.StateID === formData.State)?.Description|| '',
+                                                    label: states.find((st) => st.StateID === formData.State)?.Description || '',
                                                 } : null
                                             }
                                             className="w-full"
@@ -591,7 +595,7 @@ const PersonalDetailsForm = () => {
                                 {/* Permanent-Address */}
                                 <div className="col-md-12">
                                     <label className="form-label fw-semibold mb-1">Permanent Address <span className="text-danger">*</span></label>
-                                    <textarea autoComplete="off" className="form-control" rows="1" value={formData.Paraddress} onChange={(e) => setFormData({...formData, Paraddress: e.target.value})}></textarea>
+                                    <textarea autoComplete="off" className="form-control" rows="1" value={formData.Paraddress} onChange={(e) => setFormData({ ...formData, Paraddress: e.target.value })}></textarea>
                                 </div>
 
                                 {/* Same-Address */}
@@ -602,7 +606,7 @@ const PersonalDetailsForm = () => {
                                             type="checkbox"
                                             id="sameAddress"
                                             checked={formData.Posaddress}
-                                            onChange={(e) => setFormData({...formData, Posaddress: e.target.checked, postalAddress: e.target.checked ? formData.Paraddress : ''})}
+                                            onChange={(e) => setFormData({ ...formData, Posaddress: e.target.checked, postalAddress: e.target.checked ? formData.Paraddress : '' })}
                                         />
                                         <label className="form-check-label" htmlFor="sameAddress">
                                             Same as above address
@@ -668,3 +672,4 @@ const PersonalDetailsForm = () => {
 };
 
 export default PersonalDetailsForm;
+

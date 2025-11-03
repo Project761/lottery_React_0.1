@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import './interceptors/Axios'; 
+import './interceptors/Axios';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TabHeader from './components/TabHeader';
@@ -15,22 +15,20 @@ import IncomeDetails from './pages/IncomeDetails';
 import LoginPage from './pages/LoginPage';
 import OtpVerify from './components/OtpVerify';
 import ThankYouPage from './components/ThankYouPage';
+import { FormDataProvider } from './context/FormDataContext';
 
-// Router Wrapper Component
 const AppWithRouter = () => (
   <Router>
     <App />
   </Router>
 );
 
-// Main App Component
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Update active tab based on route
   const updateActiveTab = useCallback(() => {
     const path = location.pathname;
     if (path === '/apply') setActiveTab('personal');
@@ -40,7 +38,6 @@ function App() {
     else setActiveTab('');
   }, [location]);
 
-  // Handle tab changes
   const handleTabChange = useCallback((tabId) => {
     setActiveTab(tabId);
     switch (tabId) {
@@ -61,12 +58,10 @@ function App() {
     }
   }, [navigate]);
 
-  // Scroll to top when route changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // Initial load effect
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -77,7 +72,6 @@ function App() {
     return () => clearTimeout(timer);
   }, [updateActiveTab]);
 
-  // Show loading spinner while loading
   if (isLoading) {
     return (
       <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
@@ -101,32 +95,31 @@ function App() {
       {/* Main Content */}
       <div className="container mt-4 mb-4 flex-grow-1">
         {activeTab && (
-          <TabHeader
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-          />
+          <TabHeader activeTab={activeTab} onTabChange={handleTabChange} />
         )}
 
         <main className="flex-grow-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/apply" element={<PersonalDetailsForm />} />
-            <Route path="/bank-details" element={<BankDetailsForm onBack={() => handleTabChange('personal')} />} />
-            <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
-            <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
-            <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
-            <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
-            <Route path="/verify-otp" element={<OtpVerify />} />
-            <Route path="/thank-you" element={<ThankYouPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+
+          <FormDataProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/apply" element={<PersonalDetailsForm />} />
+              <Route path="/bank-details" element={<BankDetailsForm onBack={() => handleTabChange('personal')} />} />
+              <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
+              <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
+              <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
+              <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
+              <Route path="/verify-otp" element={<OtpVerify />} />
+              <Route path="/thank-you" element={<ThankYouPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </FormDataProvider>
         </main>
       </div>
 
       <Footer />
 
-      {/* Toast Notifications */}
       <ToastContainer
         position="top-right"
         autoClose={5000}

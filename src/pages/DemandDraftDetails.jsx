@@ -3,18 +3,17 @@ import Select from '../../node_modules/react-select/dist/react-select.esm.js';
 import { onChangeDropdown } from "../utils/Comman.js";
 import { fetchPostData } from "../components/hooks/Api.js";
 import { showError } from "../utils/toast.js";
+import { useFormData } from "../context/FormDataContext.jsx";
 
 const DemandDraftDetails = ({ onBack }) => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
-    const [formData, setFormData] = useState({
-        ddNumber: '',
-        ddDate: '',
-        bankName: null,
-        amount: '',
-        attachment: null
-    });
+    const { formData, setFormData } = useFormData();
     const [bankDetails, setBankDetails] = useState([]);
+
+    useEffect(() => {
+        localStorage.setItem("applicationFormData", JSON.stringify(formData));
+    }, [formData]);
 
     const fetchBankDetails = async () => {
         try {
@@ -35,14 +34,6 @@ const DemandDraftDetails = ({ onBack }) => {
     useEffect(() => {
         fetchBankDetails();
     }, []);
-
-    const bankOptions = [
-        { value: 'HDFC', label: 'HDFC Bank' },
-        { value: 'SBI', label: 'State Bank of India' },
-        { value: 'ICICI', label: 'ICICI Bank' },
-        { value: 'PNB', label: 'Punjab National Bank' },
-        { value: 'AXIS', label: 'Axis Bank' }
-    ];
 
     const amountOptions = [
         { value: '1000', label: '₹ 1,000' },
@@ -78,7 +69,7 @@ const DemandDraftDetails = ({ onBack }) => {
                             <label className="form-label fw-semibold " style={{ fontSize: "14px" }}>
                                 DEMAND DRAFT / PAYMENT TRANSFER NUMBER <span className="text-danger">*</span>
                             </label>
-                            <input type="text" autoComplete="off" className="form-control" />
+                            <input type="text" autoComplete="off" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({...formData, PaymentTrasnum: e.target.value})}/>
                         </div>
 
                         {/* Demand Draft / Online Payment Date */}
@@ -86,7 +77,7 @@ const DemandDraftDetails = ({ onBack }) => {
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 DEMAND DRAFT / ONLINE PAYMENT DATE <span className="text-danger">*</span>
                             </label>
-                            <input type="date" autoComplete="off" className="form-control" />
+                            <input type="date" autoComplete="off" className="form-control" value={formData.PaymentDate} onChange={(e) => setFormData({...formData, PaymentDate: e.target.value})}/>
                         </div>
 
                         {/* Select Bank */}
@@ -96,10 +87,10 @@ const DemandDraftDetails = ({ onBack }) => {
                             </label>
 
                             <Select
-                                value={formData.bankName ?
+                                value={formData.BankName ?
                                     {
-                                        value: formData.bankName,
-                                        label: bankDetails.find((b) => b.BankID === formData.bankName)?.Description || ''
+                                        value: formData.BankName,
+                                        label: bankDetails.find((b) => b.BankID === formData.BankName)?.Description || ''
                                     } : null
                                 }
                                 className="w-full"
@@ -109,7 +100,7 @@ const DemandDraftDetails = ({ onBack }) => {
                                     label: b.Description
                                 }))}
                                 onChange={(event) => {
-                                    onChangeDropdown(event, setFormData, formData, 'bankName');
+                                    onChangeDropdown(event, setFormData, formData, 'BankName');
                                 }}
                                 styles={{
                                     control: (base) => ({
@@ -123,27 +114,21 @@ const DemandDraftDetails = ({ onBack }) => {
 
                         {/* Select Amount */}
                         <div className="col-md-4">
-                            <label
-                                className="form-label fw-semibold"
-                                style={{ fontSize: "14px" }}
-                            >
+                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 SELECT AMOUNT <span className="text-danger">*</span>
                             </label>
-
-                            <Select
-                                options={amountOptions}
-                                value={selectedAmount}
-                                onChange={setSelectedAmount}
-                                placeholder="--SELECT AMOUNT--"
-                                classNamePrefix="react-select"
-
-                            />
+                            <input type="text" autoComplete="off" className="form-control" value={formData.BankAmount} onChange={(e) => setFormData({...formData, BankAmount: e.target.value})}/>
                         </div>
 
                         {/* Attachment */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>ATTACHMENT</label>
-                            <input type="file" autoComplete="off" className="form-control" />
+                            <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf" onChange={(e) => {
+                                const file = e.target.files[0];
+                                if(file){
+                                    setFormData({...formData, PaymentAttachement: file.name})
+                                }
+                            }}/>
                         </div>
                     </div>
 

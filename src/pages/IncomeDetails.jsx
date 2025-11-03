@@ -13,12 +13,10 @@ const IncomeDetails = ({ onBack }) => {
     
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        // Show terms modal when the form is submitted
         setShowTermsModal(true);
     };
     
     const handleAgreeToTerms = () => {
-        // Here you would typically submit the form data to your backend
         const formData = {
             category: selectedCategory,
             income: selectedIncome
@@ -171,19 +169,11 @@ const IncomeDetails = ({ onBack }) => {
                 </div>
 
                 {/* Terms Modal */}
-                <TermsModal
-                    show={showTermsModal}
-                    onClose={() => setShowTermsModal(false)}
-                    onAgree={handleAgreeToTerms}
-                />
+                <TermsModal show={showTermsModal} onClose={() => setShowTermsModal(false)} onAgree={handleAgreeToTerms}/>
 
                 {/* Buttons */}
                 <div className="d-flex justify-content-center gap-3 mt-4">
-                    <button
-                        type="button"
-                        className="btn btn-secondary px-4"
-                        onClick={onBack}
-                    >
+                    <button type="button" className="btn btn-secondary px-4" onClick={onBack}>
                         Back
                     </button>
                 </div>
