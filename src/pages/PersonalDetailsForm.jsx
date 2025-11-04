@@ -183,6 +183,40 @@ const PersonalDetailsForm = () => {
         //     return;
         // }
 
+        // if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
+        //     showError('Please enter a valid 10-digit mobile number');
+        //     return;
+        // }
+
+        const requiredFields = [
+              "FullName",
+              "Gender",
+              "Dob",
+              "Email",
+              "NameSelect",
+              "Fhname",
+              "Idproof",
+              "IdproofNo",
+              "AadharNumber",
+              "Caste",
+              "MobileNumber",
+              "ZipCode",
+              "State",
+              "City",
+              "Paraddress",
+              "Posaddress",
+        ];
+    
+        const isAnyFieldMissing = requiredFields.some(
+            (field) =>
+                !formData[field] || formData[field].toString().trim() === ""
+        );
+    
+        if (isAnyFieldMissing) {
+            showError("Please fill all mandatory fields");
+            return;
+        }
+
         if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
             showError('Please enter a valid 10-digit mobile number');
             return;
@@ -223,34 +257,39 @@ const PersonalDetailsForm = () => {
     };
 
     const handleNext = () => {
-        const requiredFields = [
-              "FullName",
-              "Gender",
-              "Dob",
-              "Email",
-              "NameSelect",
-              "Fhname",
-              "Idproof",
-              "IdproofNo",
-              "AadharNumber",
-              "Caste",
-              "MobileNumber",
-              "ZipCode",
-              "State",
-              "City",
-              "Paraddress",
-              "Posaddress",
-        ];
+        // const requiredFields = [
+        //       "FullName",
+        //       "Gender",
+        //       "Dob",
+        //       "Email",
+        //       "NameSelect",
+        //       "Fhname",
+        //       "Idproof",
+        //       "IdproofNo",
+        //       "AadharNumber",
+        //       "Caste",
+        //       "MobileNumber",
+        //       "ZipCode",
+        //       "State",
+        //       "City",
+        //       "Paraddress",
+        //       "Posaddress",
+        // ];
     
-        const isAnyFieldMissing = requiredFields.some(
-            (field) =>
-                !formData[field] || formData[field].toString().trim() === ""
-        );
+        // const isAnyFieldMissing = requiredFields.some(
+        //     (field) =>
+        //         !formData[field] || formData[field].toString().trim() === ""
+        // );
     
-        if (isAnyFieldMissing) {
-            showError("Please fill all mandatory fields");
-            return;
-        }
+        // if (isAnyFieldMissing) {
+        //     showError("Please fill all mandatory fields");
+        //     return;
+        // }
+
+        // if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
+        //     showError('Please enter a valid 10-digit mobile number');
+        //     return;
+        // }
     
         // navigate("/dd-details");
     };
@@ -604,6 +643,7 @@ const PersonalDetailsForm = () => {
                         <div className="text-center mt-3 mb-4">
                             <button
                                 type="submit"
+                                onClick={handleNext}
                                 style={{
                                     backgroundColor: "#A992F7",
                                     border: "none",

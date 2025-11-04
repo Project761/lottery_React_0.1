@@ -5,7 +5,8 @@ import HomeSvg from "../components/HomeSvg";
 const Home = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
-
+  localStorage.removeItem("applicationFormData");
+  localStorage.removeItem("UserID");
   return (
     <div className="container my-5 text-center">
       {/* Images Section */}
