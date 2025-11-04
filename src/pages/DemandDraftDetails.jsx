@@ -4,12 +4,14 @@ import { onChangeDropdown } from "../utils/Comman.js";
 import { fetchPostData } from "../components/hooks/Api.js";
 import { showError } from "../utils/toast.js";
 import { useFormData } from "../context/FormDataContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const DemandDraftDetails = ({ onBack }) => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
     const { formData, setFormData } = useFormData();
     const [bankDetails, setBankDetails] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         localStorage.setItem("applicationFormData", JSON.stringify(formData));
@@ -34,6 +36,27 @@ const DemandDraftDetails = ({ onBack }) => {
     useEffect(() => {
         fetchBankDetails();
     }, []);
+
+    const handleNext = (e) => {
+        e.preventDefault();
+
+        const requiredFields = [
+            "PaymentTrasnum",
+            "PaymentDate",
+            "PaymentBank",
+            "BankAmount",
+            "PaymentAttachement"
+        ];
+
+        const emptyFields = requiredFields.filter(field => !formData[field] || formData[field] === "");
+
+        if (emptyFields.length > 0) {
+            showError("Please fill all required fields before proceeding.");
+            return;
+        }
+
+        navigate("/income-details");
+    };
 
     const amountOptions = [
         { value: '1000', label: '₹ 1,000' },
@@ -87,10 +110,10 @@ const DemandDraftDetails = ({ onBack }) => {
                             </label>
 
                             <Select
-                                value={formData.BankName ?
+                                value={formData.PaymentBank ?
                                     {
-                                        value: formData.BankName,
-                                        label: bankDetails.find((b) => b.BankID === formData.BankName)?.Description || ''
+                                        value: formData.PaymentBank,
+                                        label: bankDetails.find((b) => b.BankID === formData.PaymentBank)?.Description || ''
                                     } : null
                                 }
                                 className="w-full"
@@ -100,7 +123,7 @@ const DemandDraftDetails = ({ onBack }) => {
                                     label: b.Description
                                 }))}
                                 onChange={(event) => {
-                                    onChangeDropdown(event, setFormData, formData, 'BankName');
+                                    onChangeDropdown(event, setFormData, formData, 'PaymentBank');
                                 }}
                                 styles={{
                                     control: (base) => ({
@@ -137,11 +160,7 @@ const DemandDraftDetails = ({ onBack }) => {
                         <button type="button" className="btn btn-secondary px-4" onClick={onBack}>
                             Back
                         </button>
-                        <button
-                            type="submit"
-                            className="btn text-white px-4"
-                            style={{ backgroundColor: "#A992F7" }}
-                        >
+                        <button type="submit" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}>
                             Next
                         </button>
                     </div>

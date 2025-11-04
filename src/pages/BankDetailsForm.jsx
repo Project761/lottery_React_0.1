@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
 import { fetchPostData } from "../components/hooks/Api.js";
-import toast, { showError } from "../utils/toast.js";
+import { showError } from "../utils/toast.js";
 import { onChangeDropdown } from "../utils/Comman.js";
 import { useFormData } from "../context/FormDataContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const BankDetailsForm = ({ onBack }) => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [activeTab, setActiveTab] = useState("bank");
     const { formData, setFormData } = useFormData();
     const [bankDetails, setBankDetails] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         localStorage.setItem("applicationFormData", JSON.stringify(formData));
     }, [formData]);
-
-    const handleTabChange = (tabId) => {
-        if (tabId === 'personal') {
-            onBack();
-        } else {
-            setActiveTab(tabId);
-        }
-    };
 
     const fetchBankDetails = async () => {
         try {
@@ -38,7 +32,28 @@ const BankDetailsForm = ({ onBack }) => {
             showError('Error fetching Bank Details');
         }
     }
-    const applicantName = localStorage.getItem("FullName") || '';
+
+    const handleNext = () => {
+    const requiredFields = [
+        "BankUserName",
+        "AccountNumber",
+        "BankName",
+        "IfscCode",
+        "BranchAddress",
+    ];
+
+    const isAnyFieldMissing = requiredFields.some(
+        (field) =>
+            !formData[field] || formData[field].toString().trim() === ""
+    );
+
+    if (isAnyFieldMissing) {
+        showError("Please fill all mandatory fields");
+        return;
+    }
+
+    navigate("/dd-details");
+    };
 
     useEffect(() => {
         fetchBankDetails();
@@ -60,7 +75,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Applicant Name <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter applicant name" value={applicantName}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter applicant name" value={formData.BankUserName} onChange={(e) => setFormData({...formData, BankUserName: e.target.value})}/>
                     </div>
 
                     {/* Account Number */}
@@ -120,20 +135,8 @@ const BankDetailsForm = ({ onBack }) => {
 
                 {/* Buttons */}
                 <div className="d-flex justify-content-center gap-3 mt-4">
-                    <button
-                        type="button"
-                        className="btn btn-secondary px-4"
-                        onClick={onBack}
-                    >
-                        Back
-                    </button>
-                    <button
-                        type="button"
-                        className="btn text-white px-4"
-                        style={{ backgroundColor: "#A992F7" }}
-                    >
-                        Next
-                    </button>
+                    <button type="button" className="btn btn-secondary px-4" onClick={onBack}> Back </button>
+                    <button type="button" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}> Next </button>
                 </div>
             </form>
         </div>

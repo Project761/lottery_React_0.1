@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://api.crushererp.com/api/";
+const BASE_URL = "https://lotteryapi.arustu.com/api/";
 
 const api = axios.create({
   baseURL: BASE_URL,

@@ -17,26 +17,10 @@ const Home = () => {
 
       {/* Buttons Section */}
       <div className="d-flex justify-content-center flex-wrap gap-3 mb-4">
-        <button
-          className="btn"
-          style={{
-            backgroundColor: "#A992F7",
-            color: "white",
-            padding: "10px 20px",
-            fontWeight: "500",
-          }}
-        >
+        <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500",}}>
           Scheme Term & Conditions Booklet
         </button>
-        <button
-          className="btn"
-          style={{
-            backgroundColor: "#A992F7",
-            color: "white",
-            padding: "10px 20px",
-            fontWeight: "500",
-          }}
-        >
+        <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500" }}>
           Payment Scanner
         </button>
       </div>
@@ -44,31 +28,15 @@ const Home = () => {
       {/* Checkbox Section */}
       <div className="text-center mt-4">
         <div className="d-flex justify-content-center align-items-center">
-          <input
-            type="checkbox"
-            id="agree"
-            className="me-2"
-            checked={isChecked}
-            onChange={(e) => setIsChecked(e.target.checked)}
-          />
+          <input type="checkbox" id="agree" className="me-2" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
           <label htmlFor="agree" className="text-muted small">
             I HAVE ACKNOWLEDGED AND AGREE THAT I HAVE READ AND UNDERSTOOD THE TERM
             AND CONDITION.
           </label>
         </div>
 
-        {/* ✅ जब checkbox select होगा, तभी button दिखेगा */}
         {isChecked && (
-          <button
-            className="btn mt-3"
-            style={{
-              backgroundColor: "#A992F7",
-              color: "white",
-              padding: "10px 20px",
-              fontWeight: "500",
-            }}
-            onClick={() => navigate('/apply')}
-          >
+          <button className="btn mt-3" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500",}} onClick={() => navigate('/apply')}>
             Click Here To Apply
           </button>
         )}

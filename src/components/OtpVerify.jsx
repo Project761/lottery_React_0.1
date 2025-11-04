@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
+import { showError } from "../utils/toast";
 
 const OtpVerify = ({ onBack, onVerify, MobileNumber, isSubmitting }) => {
+    const navigate = useNavigate();
     const [otp, setOtp] = useState("");
 
     const handleVerify = async (e) => {
         e.preventDefault();
         if (otp.length !== 6) {
-            alert("Please enter a valid 6-digit OTP");
+            showError("Please enter a valid 6-digit OTP");
             return;
         }
+        navigate("/bank-details");
         await onVerify(otp);
     };
 
@@ -25,12 +29,13 @@ const OtpVerify = ({ onBack, onVerify, MobileNumber, isSubmitting }) => {
                     Enter the OTP sent to your mobile number ({MobileNumber})
                 </p>
 
-                <form onSubmit={handleVerify}>
+                <form>
                     <input type="text" className="form-control mb-3" placeholder="Enter 6-digit OTP" value={otp} onChange={(e) => setOtp(e.target.value)} maxLength={6} required autoComplete="off"/>
                     <button
                         type="submit"
                         disabled={isSubmitting}
                         className="btn w-100"
+                        onClick={handleVerify}
                         style={{
                             backgroundColor: "#A992F7",
                             color: "white",
