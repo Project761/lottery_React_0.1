@@ -11,6 +11,7 @@ const DemandDraftDetails = ({ onBack }) => {
     const [selectedAmount, setSelectedAmount] = useState(null);
     const { formData, setFormData } = useFormData();
     const [bankDetails, setBankDetails] = useState([]);
+    const [fileObject, setFileObject] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -58,6 +59,22 @@ const DemandDraftDetails = ({ onBack }) => {
         navigate("/income-details");
     };
 
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === "checkbox" ? checked : value,
+        });
+
+        // Clear error when user starts typing
+        if (errors[name]) {
+            setErrors({
+                ...errors,
+                [name]: "",
+            });
+        }
+    };
+
     const amountOptions = [
         { value: '1000', label: '₹ 1,000' },
         { value: '5000', label: '₹ 5,000' },
@@ -100,7 +117,14 @@ const DemandDraftDetails = ({ onBack }) => {
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 DEMAND DRAFT / ONLINE PAYMENT DATE <span className="text-danger">*</span>
                             </label>
-                            <input type="date" autoComplete="off" className="form-control" value={formData.PaymentDate} onChange={(e) => setFormData({...formData, PaymentDate: e.target.value})}/>
+                            <input 
+                              type="date" 
+                              autoComplete="off"
+                              className="form-control" 
+                              value={formData.PaymentDate ? new Date(formData.PaymentDate).toISOString().split('T')[0] : ''} 
+                              onChange={(e) => setFormData({...formData, PaymentDate: e.target.value})}
+                              max={new Date().toISOString().split('T')[0]}
+                            />
                         </div>
 
                         {/* Select Bank */}
@@ -110,10 +134,10 @@ const DemandDraftDetails = ({ onBack }) => {
                             </label>
 
                             <Select
-                                value={formData.PaymentBank ?
+                                value={bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank)) ?
                                     {
                                         value: formData.PaymentBank,
-                                        label: bankDetails.find((b) => b.BankID === formData.PaymentBank)?.Description || ''
+                                        label: bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank))?.Description || ''
                                     } : null
                                 }
                                 className="w-full"
@@ -150,8 +174,16 @@ const DemandDraftDetails = ({ onBack }) => {
                                 const file = e.target.files[0];
                                 if(file){
                                     setFormData({...formData, PaymentAttachement: file.name})
-                                }
+                                    setFileObject(file);
+                                } 
                             }}/>
+                            {
+                                formData.PaymentAttachement && (
+                                    <span>
+                                       Uploaded file: <span>{formData.PaymentAttachement}</span>
+                                    </span>
+                                )
+                            }
                         </div>
                     </div>
 

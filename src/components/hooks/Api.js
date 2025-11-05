@@ -98,7 +98,7 @@ export const fetchPostData = async (url, postData) => {
                 const DecPostData = { 'EDpostData': EncPostData }
                 console.log(DecPostData)
                 const res = await axios.post(url, DecPostData);
-                console.log("Hurray "+ res);
+                console.log("Hurray " + res);
                 const EncryptedData = res?.data?.data;
                 console.log(EncryptedData)
                 const decryptedData = await Aes256Decrypt(EncryptedData);
@@ -154,3 +154,11 @@ export const fetchPostData = async (url, postData) => {
         return []
     }
 };
+
+//---------fetch-Direct-Data
+export const fetchDirectData = async (url, postData) => {
+    const cleanUrl = url.replace(/^\//, "");
+    const res = await axios.post(cleanUrl, postData);
+
+    return await res.data;
+}

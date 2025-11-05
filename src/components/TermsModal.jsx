@@ -6,7 +6,7 @@ import { showSuccess, showError } from "../utils/toast";
 const TermsModal = ({ show, onClose, onAgree }) => {
     const [agree, setAgree] = useState(false);
     const [showModal, setShowModal] = useState(show);
-    const userID = localStorage.getItem("UserId");
+    const userID = localStorage.getItem("UserID");
 
     useEffect(() => {
         setShowModal(show);

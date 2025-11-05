@@ -73,8 +73,14 @@ export const FormDataProvider = ({ children }) => {
     }
   }, [formData]);
 
+  const resetFormData = () => {
+    setFormData(defaultFormStructure);
+    localStorage.removeItem("applicationFormData");
+    localStorage.removeItem("UserID");
+  }
+
   return (
-    <FormDataContext.Provider value={{ formData, setFormData }}>
+    <FormDataContext.Provider value={{ formData, setFormData, resetFormData }}>
       {children}
     </FormDataContext.Provider>
   );

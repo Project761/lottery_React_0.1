@@ -7,7 +7,7 @@ import { fetchPostData } from "../components/hooks/Api";
 import { Dropdown } from "bootstrap";
 import { onChangeDropdown } from "../utils/Comman.js";
 import { useFormData } from "../context/FormDataContext.jsx";
-import { defaultFormStructure } from "../context/FormDataContext"; 
+import { defaultFormStructure } from "../context/FormDataContext";
 
 const sendOtpToMobile = async (MobileNumber) => {
     try {
@@ -62,6 +62,9 @@ const PersonalDetailsForm = () => {
     const [states, setStates] = useState([]);
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
+    const [sameAddress, setSameAddress] = useState(false);
+    const [originalMobile, setOriginalMobile] = useState("");
+    const [isExistingUser, setIsExistingUser] = useState(false);
 
     const { formData, setFormData } = useFormData();
     useEffect(() => {
@@ -175,65 +178,122 @@ const PersonalDetailsForm = () => {
         }
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     // if (!validateForm()) {
+    //     //     showError('Please fill all required fields correctly');
+    //     //     return;
+    //     // }
+
+    //     // if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
+    //     //     showError('Please enter a valid 10-digit mobile number');
+    //     //     return;
+    //     // }
+
+    //     const requiredFields = [
+    //           "FullName",
+    //           "Gender",
+    //           "Dob",
+    //           "Email",
+    //           "NameSelect",
+    //           "Fhname",
+    //           "Idproof",
+    //           "IdproofNo",
+    //           "AadharNumber",
+    //           "Caste",
+    //           "MobileNumber",
+    //           "ZipCode",
+    //           "State",
+    //           "City",
+    //           "Paraddress",
+    //           "Posaddress",
+    //     ];
+
+    //     const isAnyFieldMissing = requiredFields.some(
+    //         (field) =>
+    //             !formData[field] || formData[field].toString().trim() === ""
+    //     );
+
+    //     if (isAnyFieldMissing) {
+    //         showError("Please fill all mandatory fields");
+    //         return;
+    //     }
+
+    //     if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
+    //         showError('Please enter a valid 10-digit mobile number');
+    //         return;
+    //     }
+
+    //     if(formData.MobileNumber === originalMobile){
+    //         setIsSubmitting(false);
+    //     }
+
+    //     setIsSubmitting(true);
+
+    //     try {
+    //         const otpSent = await sendOtpToMobile(formData.MobileNumber);
+    //         if (otpSent) {
+    //             setShowOtp(true);
+    //         }
+    //         // showSuccess(`OTP sent to ${formData.MobileNumber}`);
+    //     } catch (error) {
+    //         showError('Failed to send OTP. Please try again.');
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // if (!validateForm()) {
-        //     showError('Please fill all required fields correctly');
-        //     return;
-        // }
-
-        // if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
-        //     showError('Please enter a valid 10-digit mobile number');
-        //     return;
-        // }
-
         const requiredFields = [
-              "FullName",
-              "Gender",
-              "Dob",
-              "Email",
-              "NameSelect",
-              "Fhname",
-              "Idproof",
-              "IdproofNo",
-              "AadharNumber",
-              "Caste",
-              "MobileNumber",
-              "ZipCode",
-              "State",
-              "City",
-              "Paraddress",
-              "Posaddress",
+            "FullName", "Gender", "Dob", "Email", "NameSelect", "Fhname", "Idproof", "IdproofNo",
+            "AadharNumber", "Caste", "MobileNumber", "ZipCode", "State", "City", "Paraddress", "Posaddress"
         ];
-    
+
         const isAnyFieldMissing = requiredFields.some(
-            (field) =>
-                !formData[field] || formData[field].toString().trim() === ""
+            (field) => !formData[field] || formData[field].toString().trim() === ""
         );
-    
+
         if (isAnyFieldMissing) {
             showError("Please fill all mandatory fields");
             return;
         }
 
         if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
-            showError('Please enter a valid 10-digit mobile number');
+            showError("Please enter a valid 10-digit mobile number");
             return;
         }
 
-        setIsSubmitting(true);
-
-        try {
-            const otpSent = await sendOtpToMobile(formData.MobileNumber);
-            if (otpSent) {
-                setShowOtp(true);
+        //New user (Insert)
+        if (!isExistingUser) {
+            try {
+                setIsSubmitting(true);
+                const otpSent = await sendOtpToMobile(formData.MobileNumber);
+                if (otpSent) setShowOtp(true);
+            } catch {
+                showError("Failed to send OTP. Please try again.");
+            } finally {
+                setIsSubmitting(false);
             }
-            // showSuccess(`OTP sent to ${formData.MobileNumber}`);
-        } catch (error) {
-            showError('Failed to send OTP. Please try again.');
-        } finally {
-            setIsSubmitting(false);
+            return;
+        }
+
+        //Existing user (Update)
+        if (formData.MobileNumber !== originalMobile) {
+            try {
+                setIsSubmitting(true);
+                const otpSent = await sendOtpToMobile(formData.MobileNumber);
+                if (otpSent) setShowOtp(true);
+            } catch {
+                showError("Failed to send OTP. Please try again.");
+            } finally {
+                setIsSubmitting(false);
+            }
+        } else {
+            // No change → skip OTP → go to next tab
+            setActiveTab("bank");
         }
     };
 
@@ -275,12 +335,12 @@ const PersonalDetailsForm = () => {
         //       "Paraddress",
         //       "Posaddress",
         // ];
-    
+
         // const isAnyFieldMissing = requiredFields.some(
         //     (field) =>
         //         !formData[field] || formData[field].toString().trim() === ""
         // );
-    
+
         // if (isAnyFieldMissing) {
         //     showError("Please fill all mandatory fields");
         //     return;
@@ -290,31 +350,53 @@ const PersonalDetailsForm = () => {
         //     showError('Please enter a valid 10-digit mobile number');
         //     return;
         // }
-    
+
         // navigate("/dd-details");
     };
 
     useEffect(() => {
-        const userID = localStorage.getItem("UserId");
-        if(userID){
+        const userID = localStorage.getItem("UserID");
+        // alert("Hello" + userID);
+        if (userID) {
             fetchSingleData();
         }
     }, []);
 
     // getSingleData_API
     const fetchSingleData = async () => {
-        try{
-          const userID = localStorage.getItem("UserId");
-          const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
-          if(response){
-            const normalizedData = { ...defaultFormStructure, ...response[0] };
-            setFormData(normalizedData);
-            localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
-          }
+        try {
+            const userID = localStorage.getItem("UserID");
+            const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
+            if (response) {
+                const normalizedData = { ...defaultFormStructure, ...response[0] };
+                setFormData(normalizedData);
+                localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
+                setOriginalMobile(response[0].MobileNumber || "");
+                setIsExistingUser(true);
+            } else {
+                setIsExistingUser(false);
+            }
+
         } catch (error) {
             showError("Failed to fetch user data.");
         }
     }
+
+    //Update-address when typing
+    useEffect(() => {
+        if (sameAddress) {
+            setFormData((prev) => ({
+                ...prev,
+                Posaddress: prev.Paraddress
+            }))
+        }
+    }, [formData.Paraddress, sameAddress])
+
+    useEffect(() => {
+        if (formData.State) {
+            fetchCity(formData.State)
+        }
+    }, [formData.State]);
 
     return (
         <div className="container mb-4 px-0">
@@ -506,11 +588,10 @@ const PersonalDetailsForm = () => {
                                     className={`${errors.Caste ? 'is-invalid' : ''}`}
                                     name="Caste"
                                     value={
-                                        formData.Caste ?
-                                            {
-                                                Value: formData.Caste,
-                                                label: casts.find((c) => c.CastID === formData.Caste)?.Description || '',
-                                            } : null
+                                        casts.find((c) => String(c.CastID) === String(formData.Category)) ? {
+                                            value: String(formData.Category),
+                                            label: casts.find((c) => String(c.CastID) === String(formData.Category))?.Description,
+                                        } : null
                                     }
                                     onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
                                     options={casts.map((c) => ({
@@ -554,29 +635,27 @@ const PersonalDetailsForm = () => {
                             {/* State */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
-                                <div className="col-xl-9 col-12">
-                                    <Select
-                                        value={formData.State ?
-                                            {
-                                                value: formData.State,
-                                                label: states.find((st) => st.StateID === formData.State)?.Description || '',
-                                            } : null
-                                        }
-                                        className="w-full"
-                                        placeholder="Select State"
-                                        options={states.map((st) => ({
-                                            value: st.StateID,
-                                            label: st.Description,
-                                        }))}
-                                        onChange={(event) => {
-                                            onChangeDropdown(event, setFormData, formData, 'State');
-                                            if (event.value) fetchCity(event.value);
-                                            // console.log("State selected:", event);
-                                        }}
-                                        isClearable
-                                        isSearchable
-                                    />
-                                </div>
+                                <Select
+                                    value={states.find((s) => String(s.StateID) === String(formData.State)) ?
+                                        {
+                                            value: String(formData.State),
+                                            label: states.find((st) => String(st.StateID) === String(formData.State))?.Description || '',
+                                        } : null
+                                    }
+                                    className="w-full"
+                                    placeholder="Select State"
+                                    options={states.map((st) => ({
+                                        value: st.StateID,
+                                        label: st.Description,
+                                    }))}
+                                    onChange={(event) => {
+                                        onChangeDropdown(event, setFormData, formData, 'State');
+                                        if (event.value) fetchCity(event.value);
+                                        // console.log("State selected:", event);
+                                    }}
+                                    isClearable
+                                    isSearchable
+                                />
                             </div>
 
                             {/* City */}
@@ -585,10 +664,10 @@ const PersonalDetailsForm = () => {
                                 <Select
                                     className="w-full"
                                     placeholder="Select City"
-                                    value={formData.City
+                                    value={cityies.find((c) => String(c.CityID) === String(formData.City))
                                         ? {
-                                            value: formData.City,
-                                            label: cityies.find((d) => d.CityID === formData.City)?.Description || '',
+                                            value: String(formData.City),
+                                            label: cityies.find((d) => String(d.CityID) === String(formData.City))?.Description || '',
                                         } : null
                                     }
                                     options={cityies.map((d) => ({
@@ -620,12 +699,13 @@ const PersonalDetailsForm = () => {
                             {/* Same-Address */}
                             <div className="col-md-12">
                                 <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        id="sameAddress"
-                                    // checked={formData.Posaddress}
-                                    // onChange={(e) => setFormData((e) => ({ ...formData, e.target.checked ? Posaddress: formData.Paraddress : ''  }))}
+                                    <input className="form-check-input" type="checkbox" id="sameAddress"
+                                        checked={sameAddress}
+                                        onChange={(e) => {
+                                            const checked = e.target.checked;
+                                            setSameAddress(checked);
+                                            setFormData({ ...formData, Posaddress: checked ? formData.Paraddress : "" })
+                                        }}
                                     />
                                     <label className="form-check-label" htmlFor="sameAddress">
                                         Same as above address
@@ -661,16 +741,16 @@ const PersonalDetailsForm = () => {
                         </div>
 
                         {formData.MobileNumber && showOtp && (
-                        < div className="text-center">
-                            <p className="mb-3">We've sent a 6-digit OTP to {formData.MobileNumber}</p>
-                            <OtpVerify onBack={() => setShowOtp(false)} onVerify={handleOtpVerify} MobileNumber={formData.MobileNumber} isSubmitting={isSubmitting}/>
-                            <p className="mt-3">
-                                Didn't receive the OTP?
-                                <button className="btn btn-link p-0 ms-1" onClick={handleSubmit} disabled={isSubmitting}>
-                                    Resend OTP
-                                </button>
-                            </p>
-                        </div>
+                            <div className="text-center">
+                                <p className="mb-3">We've sent a 6-digit OTP to {formData.MobileNumber}</p>
+                                <OtpVerify onBack={() => setShowOtp(false)} onVerify={handleOtpVerify} MobileNumber={formData.MobileNumber} isSubmitting={isSubmitting} />
+                                <p className="mt-3">
+                                    Didn't receive the OTP?
+                                    <button className="btn btn-link p-0 ms-1" onClick={handleSubmit} disabled={isSubmitting}>
+                                        Resend OTP
+                                    </button>
+                                </p>
+                            </div>
                         )}
                     </form>
                 )

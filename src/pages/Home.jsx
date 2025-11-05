@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HomeSvg from "../components/HomeSvg";
+import { useFormData } from "../context/FormDataContext.jsx";
 
 const Home = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
-  localStorage.removeItem("applicationFormData");
-  localStorage.removeItem("UserID");
+  const { resetFormData } = useFormData();
+  
+  useEffect(() => {
+    resetFormData();
+  }, []);
+
   return (
     <div className="container my-5 text-center">
       {/* Images Section */}

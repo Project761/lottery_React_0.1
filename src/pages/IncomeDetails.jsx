@@ -11,9 +11,6 @@ const IncomeDetails = ({ onBack }) => {
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
-  const [termsModalData, setTermsModalData] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedIncome, setSelectedIncome] = useState(null);
   const [casts, setCasts] = useState([]);
 
   const handleFormSubmit = (e) => {
@@ -50,8 +47,8 @@ const IncomeDetails = ({ onBack }) => {
     fetchCast();
   }, []);
 
-  const userID = localStorage.getItem("UserId");
- const insertFormData = async () => {
+  const userID = localStorage.getItem("UserID");
+  const insertFormData = async () => {
   try {
     const response = await fetchPostData('User/Insert_User', formData);
     // console.log(response[0].ApplicantNumber);
@@ -71,9 +68,9 @@ const IncomeDetails = ({ onBack }) => {
     showError("Error submitting form. Please try again!");
     console.error("Submit Error:", error);
   }
- };
+  };
 
-const updateFormData = async (key, value) => {
+  const updateFormData = async () => {
     try {
     const response = await fetchPostData('User/Update_User', formData);
     // console.log(response[0].ApplicantNumber);
@@ -94,7 +91,7 @@ const updateFormData = async (key, value) => {
     showError("Error submitting form. Please try again!");
     console.error("Submit Error:", error);
   }
-}
+  }
 
   const incomeOptions = [
     { value: "below3", label: "Below ₹3 Lakh" },
@@ -117,11 +114,11 @@ const updateFormData = async (key, value) => {
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1">Select Category <span className="text-danger">*</span></label>
             <Select name="Category"
-                value={ formData.Category ?
-                    {
-                        Value: formData.Category,
-                        label: casts.find((c) => c.CastID === formData.Category)?.Description || '',
-                    } : null
+                value={
+                  casts.find((c) => String(c.CastID) === String(formData.Category))? {
+                    value: String(formData.Category),
+                    label: casts.find((c) => String(c.CastID) === String(formData.Category))?.Description,
+                 }: null
                 }
                 onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Category')}
                 options={casts.map((c) => ({
@@ -176,6 +173,13 @@ const updateFormData = async (key, value) => {
                 id="termsCheck"
                 checked={isTermsAgreed}
                 onChange={(e) => {
+                  const requiredFields = ["Category","AnnualIncome","ProjectName",];
+                  const isAnyFieldMissing = requiredFields.some(
+                    (field) => !formData[field] || formData[field].toString().trim() === "" );
+                  if (isAnyFieldMissing) {
+                    showError("Please fill all mandatory fields");
+                    return;
+                  }
                   const isChecked = e.target.checked;
                   setIsTermsAgreed(isChecked);
                   if (isChecked) {

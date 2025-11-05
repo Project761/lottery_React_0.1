@@ -90,11 +90,10 @@ const BankDetailsForm = ({ onBack }) => {
                     <div className="col-md-4">
                         <label className="form-label"> Select Bank <span className="text-danger">*</span></label>
                         <Select
-                            value={
-                                formData.BankName ?
+                            value={bankDetails.find((b) => String(b.BankID) === String(formData.BankName)) ?
                                     {
                                         value: formData.BankName,
-                                        label: bankDetails.find((b) => b.BankID === formData.BankName)?.Description || '',
+                                        label: bankDetails.find((b) => String(b.BankID) === String(formData.BankName))?.Description || '',
                                     } : null
                             }
                             className="w-full"
