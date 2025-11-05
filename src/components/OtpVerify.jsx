@@ -20,9 +20,9 @@ const OtpVerify = ({ onBack, onVerify, MobileNumber, isSubmitting }) => {
     return (
         <div className="d-flex justify-content-center align-items-center">
             <div className="p-4 rounded shadow-sm bg-white w-100" style={{ maxWidth: "500px" }}>
-                <button onClick={onBack} className="btn btn-link mb-3 p-0 text-decoration-none d-flex align-items-center">
+                {/* <button onClick={onBack} className="btn btn-link mb-3 p-0 text-decoration-none d-flex align-items-center">
                     <i className="bi bi-arrow-left me-1"></i> Back
-                </button>
+                </button> */}
 
                 <h5 className="fw-bold mb-1">Verify Your OTP</h5>
                 <p className="text-muted small mb-4">

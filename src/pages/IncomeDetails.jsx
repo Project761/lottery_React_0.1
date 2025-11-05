@@ -11,7 +11,7 @@ const IncomeDetails = ({ onBack }) => {
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
-  const [casts, setCasts] = useState([]);
+  const [category, setcategory] = useState([]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -22,21 +22,21 @@ const IncomeDetails = ({ onBack }) => {
   useEffect(() => {
     localStorage.setItem("applicationFormData", JSON.stringify(formData));
   }, [formData]);
-    // setFormData({...formData, Country: 'INDIA', CompanyID: 1});
+  // setFormData({...formData, Country: 'INDIA', CompanyID: 1});
 
   //---------------------- Dropdowns -----------------------
-  const fetchCast = async () => {
+  const fetchCategory = async () => {
     try {
-      const response = await fetchPostData("Cast/GetDataDropDown_Cast", {
+      const response = await fetchPostData("Category/GetDataDropDown_Category", {
         // CompanyId: Number(localStorage.getItem('companyID')),
         CompanyID: 1,
       });
-      // console.log(response);
+      console.log(response);
 
       if (response && Array.isArray(response)) {
-        setCasts(response);
+        setcategory(response);
       } else {
-        setCasts([]);
+        setcategory([]);
       }
     } catch {
       showError("Error fetching States");
@@ -44,7 +44,7 @@ const IncomeDetails = ({ onBack }) => {
   };
 
   useEffect(() => {
-    fetchCast();
+    fetchCategory();
   }, []);
 
   const userID = localStorage.getItem("UserID");
@@ -115,14 +115,14 @@ const IncomeDetails = ({ onBack }) => {
             <label className="form-label fw-semibold mb-1">Select Category <span className="text-danger">*</span></label>
             <Select name="Category"
                 value={
-                  casts.find((c) => String(c.CastID) === String(formData.Category))? {
+                  category.find((c) => String(c.CategoryID) === String(formData.Category))? {
                     value: String(formData.Category),
-                    label: casts.find((c) => String(c.CastID) === String(formData.Category))?.Description,
+                    label: category.find((c) => String(c.CategoryID) === String(formData.Category))?.Description,
                  }: null
                 }
                 onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Category')}
-                options={casts.map((c) => ({
-                  value: c.CastID,
+                options={category.map((c) => ({
+                  value: c.CategoryID,
                   label: c.Description,
                 }))}
                 placeholder="Select Category"
@@ -163,6 +163,25 @@ const IncomeDetails = ({ onBack }) => {
           </div>
         </div>
 
+        {/* Project Name */}
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">
+              PROJECT NAME <span className="text-danger">*</span>
+            </label>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" id="project1" name="project" value="SERENITY RESIDENCY"   checked={formData.ProjectName === "SERENITY RESIDENCY"}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  ProjectName: e.target.value
+                })} defaultChecked/>
+              <label className="form-check-label" htmlFor="project1">
+                SERENITY RESIDENCY
+              </label>
+            </div>
+          </div>
+        </div>
+
         {/* Terms Checkbox */}
         <div className="row mb-3">
           <div className="col-12">
@@ -195,26 +214,7 @@ const IncomeDetails = ({ onBack }) => {
           </div>
         </div>
 
-        {/* Project Name */}
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">
-              PROJECT NAME <span className="text-danger">*</span>
-            </label>
-            <div className="form-check">
-              <input className="form-check-input" type="radio" id="project1" name="project" value="SERENITY RESIDENCY"   checked={formData.ProjectName === "SERENITY RESIDENCY"}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  ProjectName: e.target.value
-                })} defaultChecked/>
-              <label className="form-check-label" htmlFor="project1">
-                SERENITY RESIDENCY
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center mb-4">
+        {/* <div className="text-center mb-4">
           <div className="d-flex justify-content-center align-items-center">
             <div className="form-check">
               <input type="checkbox" id="agree" className="form-check-input me-2" checked={formData.PolicyName === "Yes"}
@@ -233,7 +233,7 @@ const IncomeDetails = ({ onBack }) => {
               </label>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Terms-Modal */}
         <TermsModal show={showTermsModal} onClose={() => setShowTermsModal(false)} onAgree={userID ? updateFormData : insertFormData} />

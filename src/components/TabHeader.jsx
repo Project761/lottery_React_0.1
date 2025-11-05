@@ -11,6 +11,7 @@ const TabHeader = ({ activeTab, onTabChange }) => {
           <div
             key={tab.id}
             className={`tab-item ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => onTabChange(tab.id)}
           >
             {tab.label}
           </div>

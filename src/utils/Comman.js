@@ -26,3 +26,9 @@ export const onChangeDropdown = (selectedOption, setFormData, formData, field) =
   const value = selectedOption ? (selectedOption.value ?? selectedOption.Value ?? selectedOption) : null;
   setFormData(prev => ({ ...prev, [field]: value }));
 };
+
+export const upperCaseValue = (value) => {
+  if(typeof value == 'string'){
+    return value.toUpperCase();
+  }
+}

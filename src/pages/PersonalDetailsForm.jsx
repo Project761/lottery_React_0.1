@@ -246,6 +246,7 @@ const PersonalDetailsForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // alert("Hello");
 
         const requiredFields = [
             "FullName", "Gender", "Dob", "Email", "NameSelect", "Fhname", "Idproof", "IdproofNo",
@@ -259,6 +260,10 @@ const PersonalDetailsForm = () => {
         if (isAnyFieldMissing) {
             showError("Please fill all mandatory fields");
             return;
+        }
+
+        if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
+            showError('Please enter a valid Email address');
         }
 
         if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
@@ -408,7 +413,7 @@ const PersonalDetailsForm = () => {
                 </div>
                 {/* {!showOtp ? ( */}
                 {activeTab === "personal" && (
-                    <form onSubmit={handleSubmit}>
+                    <form>
                         <div className="row g-2 p-3 ">
                             {/* Applicant-Name */}
                             <div className="col-md-3">
@@ -418,6 +423,7 @@ const PersonalDetailsForm = () => {
                                     className={`form-control ${errors.FullName ? 'is-invalid' : ''}`}
                                     name="FullName"
                                     autoComplete="off"
+                                    placeholder="Enter Full Name"
                                     value={formData.FullName}
                                     onChange={(e) => setFormData({ ...formData, FullName: e.target.value })}
                                 />
@@ -476,6 +482,7 @@ const PersonalDetailsForm = () => {
                                     className={`form-control ${errors.Email ? 'is-invalid' : ''}`}
                                     name="Email"
                                     autoComplete="off"
+                                    placeholder="Enter Email address"
                                     value={formData.Email}
                                     onChange={(e) => setFormData({ ...formData, Email: e.target.value })}
                                 />
@@ -514,7 +521,7 @@ const PersonalDetailsForm = () => {
                             {/* Father/Husband-Name */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
-                                <input type="text" autoComplete="off" className="form-control" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: e.target.value })} />
+                                <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: e.target.value })} />
                             </div>
 
                             {/* ID-Type */}
@@ -572,13 +579,13 @@ const PersonalDetailsForm = () => {
                             {/* ID-No */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ID No <span className="text-danger">*</span></label>
-                                <input type="text" autoComplete="off" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({ ...formData, IdproofNo: e.target.value })} />
+                                <input type="number" autoComplete="off" placeholder="Enter ID No" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({ ...formData, IdproofNo: e.target.value })} />
                             </div>
 
                             {/* Aadhaar-No */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
-                                <input type="text" autoComplete="off" className="form-control" value={formData.AadharNumber} onChange={(e) => setFormData({ ...formData, AadharNumber: e.target.value })} />
+                                <input type="number" autoComplete="off" placeholder="Enter Aadhaar No" className="form-control" value={formData.AadharNumber} onChange={(e) => setFormData({ ...formData, AadharNumber: e.target.value })} />
                             </div>
 
                             {/* Select-Cast */}
@@ -588,9 +595,9 @@ const PersonalDetailsForm = () => {
                                     className={`${errors.Caste ? 'is-invalid' : ''}`}
                                     name="Caste"
                                     value={
-                                        casts.find((c) => String(c.CastID) === String(formData.Category)) ? {
-                                            value: String(formData.Category),
-                                            label: casts.find((c) => String(c.CastID) === String(formData.Category))?.Description,
+                                        casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
+                                            value: String(formData.Caste),
+                                            label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
                                         } : null
                                     }
                                     onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
@@ -616,9 +623,10 @@ const PersonalDetailsForm = () => {
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className={`form-control ${errors.MobileNumber ? 'is-invalid' : ''}`}
                                     name="MobileNumber"
+                                    placeholder="Enter Mobile No"
                                     value={formData.MobileNumber}
                                     onChange={(e) => setFormData({ ...formData, MobileNumber: e.target.value })}
                                     maxLength="10"
@@ -629,7 +637,7 @@ const PersonalDetailsForm = () => {
                             {/* ZIP-Code */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
-                                <input type="text" autoComplete="off" className="form-control" value={formData.ZipCode} onChange={(e) => setFormData({ ...formData, ZipCode: e.target.value })} />
+                                <input type="number" autoComplete="off" placeholder="Enter ZIP Code" className="form-control" value={formData.ZipCode} onChange={(e) => setFormData({ ...formData, ZipCode: e.target.value })} />
                             </div>
 
                             {/* State */}
@@ -648,6 +656,7 @@ const PersonalDetailsForm = () => {
                                         value: st.StateID,
                                         label: st.Description,
                                     }))}
+                                    default={formData.State}
                                     onChange={(event) => {
                                         onChangeDropdown(event, setFormData, formData, 'State');
                                         if (event.value) fetchCity(event.value);
@@ -693,7 +702,7 @@ const PersonalDetailsForm = () => {
                             {/* Permanent-Address */}
                             <div className="col-md-12">
                                 <label className="form-label fw-semibold mb-1">Permanent Address <span className="text-danger">*</span></label>
-                                <textarea autoComplete="off" className="form-control" rows="1" value={formData.Paraddress} onChange={(e) => setFormData({ ...formData, Paraddress: e.target.value })}></textarea>
+                                <textarea autoComplete="off" className="form-control" placeholder="Enter Permanent Address" rows="1" value={formData.Paraddress} onChange={(e) => setFormData({ ...formData, Paraddress: e.target.value })}></textarea>
                             </div>
 
                             {/* Same-Address */}
@@ -716,14 +725,14 @@ const PersonalDetailsForm = () => {
                             {/* Postal-Address */}
                             <div className="col-md-12">
                                 <label className="form-label fw-semibold mb-1">Postal Address <span className="text-danger">*</span></label>
-                                <textarea autoComplete="off" className="form-control" rows="1" value={formData.Posaddress} onChange={(e) => setFormData({ ...formData, Posaddress: e.target.value })}></textarea>
+                                <textarea autoComplete="off" className="form-control" placeholder="Enter Postal Address" rows="1" value={formData.Posaddress} onChange={(e) => setFormData({ ...formData, Posaddress: e.target.value })}></textarea>
                             </div>
                         </div>
 
                         <div className="text-center mt-3 mb-4">
                             <button
                                 type="submit"
-                                onClick={handleNext}
+                                onClick={handleSubmit}
                                 style={{
                                     backgroundColor: "#A992F7",
                                     border: "none",
@@ -756,7 +765,6 @@ const PersonalDetailsForm = () => {
                 )
                 }
             </div>
-
             {
                 activeTab === "bank" && (
                     <BankDetailsForm onBack={() => setActiveTab("personal")} />

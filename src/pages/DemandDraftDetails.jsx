@@ -107,15 +107,15 @@ const DemandDraftDetails = ({ onBack }) => {
                         {/* Demand Draft / Payment Transfer Number */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold " style={{ fontSize: "14px" }}>
-                                DEMAND DRAFT / PAYMENT TRANSFER NUMBER <span className="text-danger">*</span>
+                                Demand Draft / Payment Transfer Number <span className="text-danger">*</span>
                             </label>
-                            <input type="text" autoComplete="off" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({...formData, PaymentTrasnum: e.target.value})}/>
+                            <input type="number" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({...formData, PaymentTrasnum: e.target.value})}/>
                         </div>
 
                         {/* Demand Draft / Online Payment Date */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
-                                DEMAND DRAFT / ONLINE PAYMENT DATE <span className="text-danger">*</span>
+                                Demand Draft / Online Payment Date <span className="text-danger">*</span>
                             </label>
                             <input 
                               type="date" 
@@ -130,7 +130,7 @@ const DemandDraftDetails = ({ onBack }) => {
                         {/* Select Bank */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
-                                SELECT BANK <span className="text-danger">*</span>
+                                Select Bank <span className="text-danger">*</span>
                             </label>
 
                             <Select
@@ -162,9 +162,9 @@ const DemandDraftDetails = ({ onBack }) => {
                         {/* Select Amount */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
-                                SELECT AMOUNT <span className="text-danger">*</span>
+                                Select Amount <span className="text-danger">*</span>
                             </label>
-                            <input type="text" autoComplete="off" className="form-control" value={formData.BankAmount} onChange={(e) => setFormData({...formData, BankAmount: e.target.value})}/>
+                            <input type="number" autoComplete="off" placeholder="Enter Amount" className="form-control" value={formData.BankAmount} onChange={(e) => setFormData({...formData, BankAmount: e.target.value})}/>
                         </div>
 
                         {/* Attachment */}
