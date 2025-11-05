@@ -1,60 +1,61 @@
-// Ensure Axios is loaded
-import axios from 'axios';
-console.log(window.axios);
-if (typeof window.axios === 'undefined') {
-    throw new Error('Axios is not loaded. Make sure the Axios CDN is included in index.html');
-}
+import axios from "axios";
 
-// Create Axios instance with default config
-const api = window.axios.create({
-    baseURL: 'http://localhost:5000/api',
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+const BASE_URL = "https://lotteryapi.arustu.com/api/";
+
+const api = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Request interceptor
+let isRefreshing = false;
+
 api.interceptors.request.use(
-    config => {
-        // Add auth token if needed
-        // const token = localStorage.getItem('token');
-        // if (token) {
-        //     config.headers.Authorization = `Bearer ${token}`;
-        // }
-        return config;
-    },
-    error => Promise.reject(error)
-);
-
-// Response interceptor
-api.interceptors.response.use(
-    response => response.data,
-    error => {
-        if (error.response) {
-            console.error('API Error:', {
-                status: error.response.status,
-                data: error.response.data,
-                headers: error.response.headers
-            });
-            
-            if (error.response.status === 401) {
-                // Handle unauthorized
-                // localStorage.removeItem('token');
-                // window.location.href = '/login';
-            }
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Request setup error:', error.message);
-        }
-        return Promise.reject(error);
+  (request) => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      request.headers["Authorization"] = `Bearer ${accessToken}`;
     }
+    return request;
+  },
+  (error) => Promise.reject(error)
 );
 
-// Make it globally available
-window.api = api;
+api.interceptors.response.use(
+  (resp) => resp,
+  async (error) => {
+    if (error.response?.status === 401 && !isRefreshing) {
+      isRefreshing = true;
+      try {
+        const refreshToken = localStorage.getItem("refresh_token");
+        const response = await axios.post(`${BASE_URL}/Account/RefreshToken`,
+          {
+            refresh_token: refreshToken,
+            grant_type: "refresh_token",
+          }
+        );
 
-// Export the configured instance
+        // Save new tokens
+        sessionStorage.setItem("accessToken", response.data.access_token);
+        localStorage.setItem("refreshToken", response.data.refresh_token);
+
+        // Update default headers
+        api.defaults.headers.common["Authorization"] = `Bearer ${response.data.access_token}`;
+
+        // Retry failed request
+        return api(error.config);
+      } catch (refreshError) {
+        // Clear tokens and redirect to login
+        sessionStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "/";
+      } finally {
+        isRefreshing = false;
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

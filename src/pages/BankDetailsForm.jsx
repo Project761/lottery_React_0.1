@@ -1,28 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
+import { fetchPostData } from "../components/hooks/Api.js";
+import { showError } from "../utils/toast.js";
+import { onChangeDropdown } from "../utils/Comman.js";
+import { useFormData } from "../context/FormDataContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const BankDetailsForm = ({ onBack }) => {
-    const bankOptions = [
-        { value: 'SBI', label: 'State Bank of India' },
-        { value: 'HDFC', label: 'HDFC Bank' },
-        { value: 'ICICI', label: 'ICICI Bank' },
-        { value: 'PNB', label: 'Punjab National Bank' },
-        { value: 'BOB', label: 'Bank of Baroda' },
-        { value: 'AXIS', label: 'Axis Bank' },
-        { value: 'KOTAK', label: 'Kotak Mahindra Bank' },
-        { value: 'INDUSIND', label: 'IndusInd Bank' }
-    ];
-
     const [selectedBank, setSelectedBank] = useState(null);
     const [activeTab, setActiveTab] = useState("bank");
+    const { formData, setFormData } = useFormData();
+    const [bankDetails, setBankDetails] = useState([]);
+    const navigate = useNavigate();
 
-    const handleTabChange = (tabId) => {
-        if (tabId === 'personal') {
-            onBack();
-        } else {
-            setActiveTab(tabId);
+    useEffect(() => {
+        localStorage.setItem("applicationFormData", JSON.stringify(formData));
+    }, [formData]);
+
+    const fetchBankDetails = async () => {
+        try {
+            const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            })
+            if (response && Array.isArray(response)) {
+                setBankDetails(response);
+            } else {
+                setBankDetails([]);
+            }
+        } catch {
+            showError('Error fetching Bank Details');
         }
+    }
+
+    const handleNext = () => {
+    const requiredFields = [
+        "BankUserName",
+        "AccountNumber",
+        "BankName",
+        "IfscCode",
+        "BranchAddress",
+    ];
+
+    const isAnyFieldMissing = requiredFields.some(
+        (field) =>
+            !formData[field] || formData[field].toString().trim() === ""
+    );
+
+    if (isAnyFieldMissing) {
+        showError("Please fill all mandatory fields");
+        return;
+    }
+
+    navigate("/dd-details");
     };
+
+    useEffect(() => {
+        fetchBankDetails();
+    }, []);
+
     return (
         <div className="container px-0 ">
 
@@ -39,7 +75,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Applicant Name <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter applicant name" />
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter applicant name" value={formData.BankUserName} onChange={(e) => setFormData({...formData, BankUserName: e.target.value})}/>
                     </div>
 
                     {/* Account Number */}
@@ -47,22 +83,28 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Bank Account Number <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter account number" />
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter account number" value={formData.AccountNumber} onChange={(e) => setFormData({...formData, AccountNumber: Number(e.target.value)})}/>
                     </div>
 
                     {/* Select Bank */}
                     <div className="col-md-4">
-                        <label className="form-label">
-                            Select Bank <span className="text-danger">*</span>
-                        </label>
+                        <label className="form-label"> Select Bank <span className="text-danger">*</span></label>
                         <Select
-                            className="basic-single"
-                            classNamePrefix="select"
-                            placeholder="--SELECT Bank--"
-                            name="bank"
-                            options={bankOptions}
-                            value={selectedBank}
-                            onChange={(selectedOption) => setSelectedBank(selectedOption)}
+                            value={bankDetails.find((b) => String(b.BankID) === String(formData.BankName)) ?
+                                    {
+                                        value: formData.BankName,
+                                        label: bankDetails.find((b) => String(b.BankID) === String(formData.BankName))?.Description || '',
+                                    } : null
+                            }
+                            className="w-full"
+                            placeholder="Select Bank"
+                            options={bankDetails.map((b) => ({
+                                value: b.BankID,
+                                label: b.Description
+                            }))}
+                            onChange={(event) => {
+                                onChangeDropdown(event, setFormData, formData, 'BankName');
+                            }}
                             styles={{
                                 control: (base) => ({
                                     ...base,
@@ -78,7 +120,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             IFSC Code <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC code" />
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC code" value={formData.IfscCode} onChange={(e) => setFormData({...formData, IfscCode: e.target.value})}/>
                     </div>
 
                     {/* Bank Branch Address */}
@@ -86,26 +128,14 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Bank Branch Address <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter branch address" />
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter branch address" value={formData.BranchAddress} onChange={(e) => setFormData({...formData, BranchAddress: e.target.value})}/>
                     </div>
                 </div>
 
                 {/* Buttons */}
                 <div className="d-flex justify-content-center gap-3 mt-4">
-                    <button
-                        type="button"
-                        className="btn btn-secondary px-4"
-                        onClick={onBack}
-                    >
-                        Back
-                    </button>
-                    <button
-                        type="button"
-                        className="btn text-white px-4"
-                        style={{ backgroundColor: "#A992F7" }}
-                    >
-                        Next
-                    </button>
+                    <button type="button" className="btn btn-secondary px-4" onClick={onBack}> Back </button>
+                    <button type="button" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}> Next </button>
                 </div>
             </form>
         </div>

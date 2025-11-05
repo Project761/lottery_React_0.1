@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ThankYouPage = () => {
-    const applicantNumber = "12844";
+    const applicantNumber = localStorage.getItem('ApplicantNumber');
 
     return (
         <div

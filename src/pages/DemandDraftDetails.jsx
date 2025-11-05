@@ -1,17 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
+import { onChangeDropdown } from "../utils/Comman.js";
+import { fetchPostData } from "../components/hooks/Api.js";
+import { showError } from "../utils/toast.js";
+import { useFormData } from "../context/FormDataContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const DemandDraftDetails = ({ onBack }) => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
+    const { formData, setFormData } = useFormData();
+    const [bankDetails, setBankDetails] = useState([]);
+    const [fileObject, setFileObject] = useState(null);
+    const navigate = useNavigate();
 
-    const bankOptions = [
-        { value: 'HDFC', label: 'HDFC Bank' },
-        { value: 'SBI', label: 'State Bank of India' },
-        { value: 'ICICI', label: 'ICICI Bank' },
-        { value: 'PNB', label: 'Punjab National Bank' },
-        { value: 'AXIS', label: 'Axis Bank' }
-    ];
+    useEffect(() => {
+        localStorage.setItem("applicationFormData", JSON.stringify(formData));
+    }, [formData]);
+
+    const fetchBankDetails = async () => {
+        try {
+            const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            })
+            if (response && Array.isArray(response)) {
+                setBankDetails(response);
+            } else {
+                setBankDetails([]);
+            }
+        } catch {
+            showError('Error fetching Bank Details');
+        }
+    }
+
+    useEffect(() => {
+        fetchBankDetails();
+    }, []);
+
+    const handleNext = (e) => {
+        e.preventDefault();
+
+        const requiredFields = [
+            "PaymentTrasnum",
+            "PaymentDate",
+            "PaymentBank",
+            "BankAmount",
+            "PaymentAttachement"
+        ];
+
+        const emptyFields = requiredFields.filter(field => !formData[field] || formData[field] === "");
+
+        if (emptyFields.length > 0) {
+            showError("Please fill all required fields before proceeding.");
+            return;
+        }
+
+        navigate("/income-details");
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === "checkbox" ? checked : value,
+        });
+
+        // Clear error when user starts typing
+        if (errors[name]) {
+            setErrors({
+                ...errors,
+                [name]: "",
+            });
+        }
+    };
 
     const amountOptions = [
         { value: '1000', label: '₹ 1,000' },
@@ -47,7 +109,7 @@ const DemandDraftDetails = ({ onBack }) => {
                             <label className="form-label fw-semibold " style={{ fontSize: "14px" }}>
                                 DEMAND DRAFT / PAYMENT TRANSFER NUMBER <span className="text-danger">*</span>
                             </label>
-                            <input type="text" autoComplete="off" className="form-control" />
+                            <input type="text" autoComplete="off" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({...formData, PaymentTrasnum: e.target.value})}/>
                         </div>
 
                         {/* Demand Draft / Online Payment Date */}
@@ -55,50 +117,73 @@ const DemandDraftDetails = ({ onBack }) => {
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 DEMAND DRAFT / ONLINE PAYMENT DATE <span className="text-danger">*</span>
                             </label>
-                            <input type="date" autoComplete="off" className="form-control" />
+                            <input 
+                              type="date" 
+                              autoComplete="off"
+                              className="form-control" 
+                              value={formData.PaymentDate ? new Date(formData.PaymentDate).toISOString().split('T')[0] : ''} 
+                              onChange={(e) => setFormData({...formData, PaymentDate: e.target.value})}
+                              max={new Date().toISOString().split('T')[0]}
+                            />
                         </div>
 
                         {/* Select Bank */}
                         <div className="col-md-4">
-                            <label
-                                className="form-label fw-semibold"
-                                style={{ fontSize: "14px" }}
-                            >
+                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 SELECT BANK <span className="text-danger">*</span>
                             </label>
 
                             <Select
-                                options={bankOptions}
-                                value={selectedBank}
-                                onChange={setSelectedBank}
-                                placeholder="--SELECT BANK--"
-                                classNamePrefix="react-select"
+                                value={bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank)) ?
+                                    {
+                                        value: formData.PaymentBank,
+                                        label: bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank))?.Description || ''
+                                    } : null
+                                }
+                                className="w-full"
+                                placeholder="Select Bank"
+                                options={bankDetails.map((b) => ({
+                                    value: b.BankID,
+                                    label: b.Description
+                                }))}
+                                onChange={(event) => {
+                                    onChangeDropdown(event, setFormData, formData, 'PaymentBank');
+                                }}
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        minHeight: '38px',
+                                        height: '38px',
+                                    })
+                                }}
                             />
                         </div>
 
                         {/* Select Amount */}
                         <div className="col-md-4">
-                            <label
-                                className="form-label fw-semibold"
-                                style={{ fontSize: "14px" }}
-                            >
+                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 SELECT AMOUNT <span className="text-danger">*</span>
                             </label>
-
-                            <Select
-                                options={amountOptions}
-                                value={selectedAmount}
-                                onChange={setSelectedAmount}
-                                placeholder="--SELECT AMOUNT--"
-                                classNamePrefix="react-select"
-
-                            />
+                            <input type="text" autoComplete="off" className="form-control" value={formData.BankAmount} onChange={(e) => setFormData({...formData, BankAmount: e.target.value})}/>
                         </div>
 
                         {/* Attachment */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>ATTACHMENT</label>
-                            <input type="file" autoComplete="off" className="form-control" />
+                            <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf" onChange={(e) => {
+                                const file = e.target.files[0];
+                                if(file){
+                                    setFormData({...formData, PaymentAttachement: file.name})
+                                    setFileObject(file);
+                                } 
+                            }}/>
+                            {
+                                formData.PaymentAttachement && (
+                                    <span>
+                                       Uploaded file: <span>{formData.PaymentAttachement}</span>
+                                    </span>
+                                )
+                            }
                         </div>
                     </div>
 
@@ -107,11 +192,7 @@ const DemandDraftDetails = ({ onBack }) => {
                         <button type="button" className="btn btn-secondary px-4" onClick={onBack}>
                             Back
                         </button>
-                        <button
-                            type="submit"
-                            className="btn text-white px-4"
-                            style={{ backgroundColor: "#A992F7" }}
-                        >
+                        <button type="submit" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}>
                             Next
                         </button>
                     </div>
