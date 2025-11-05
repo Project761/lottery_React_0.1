@@ -43,6 +43,12 @@ const IncomeDetails = ({ onBack }) => {
     }
   };
 
+  const fetchAnnualIncome = async () => {
+    try{
+      const response = await fetchPostData("AnnualIncome/GetDataDropDown_AnnualIncome",{});
+    }
+  };
+
   useEffect(() => {
     fetchCategory();
   }, []);
