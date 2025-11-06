@@ -25,7 +25,7 @@ const LoginPage = () => {
 
       const response = await fetchDirectData("User/Login", payload);
       localStorage.setItem("UserID", response.UserID);
-      console.log(response);
+      // console.log(response);
 
       if ( response.error_description === "User Not Found") {
         showError("User not found. Please check your details.");
@@ -57,7 +57,7 @@ const LoginPage = () => {
       }
     } catch (err) {
       showError("Network error, please try again later.");
-      console.error("Login error:", err);
+      // console.error("Login error:", err);
     }
   };
 

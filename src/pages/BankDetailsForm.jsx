@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
 import { fetchPostData } from "../components/hooks/Api.js";
 import { showError } from "../utils/toast.js";
-import { onChangeDropdown } from "../utils/Comman.js";
+import { onChangeDropdown, upperCaseValue } from "../utils/Comman.js";
 import { useFormData } from "../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -75,7 +75,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Applicant Name <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter applicant name" value={formData.BankUserName} onChange={(e) => setFormData({...formData, BankUserName: e.target.value})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Applicant Name" value={formData.BankUserName} onChange={(e) => setFormData({...formData, BankUserName: e.target.value})}/>
                     </div>
 
                     {/* Account Number */}
@@ -83,7 +83,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Bank Account Number <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter account number" value={formData.AccountNumber} onChange={(e) => setFormData({...formData, AccountNumber: Number(e.target.value)})}/>
+                        <input type="number" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} onChange={(e) => setFormData({...formData, AccountNumber: Number(e.target.value)})}/>
                     </div>
 
                     {/* Select Bank */}
@@ -120,7 +120,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             IFSC Code <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC code" value={formData.IfscCode} onChange={(e) => setFormData({...formData, IfscCode: e.target.value})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} onChange={(e) => setFormData({...formData, IfscCode: upperCaseValue(e.target.value)})}/>
                     </div>
 
                     {/* Bank Branch Address */}
@@ -128,7 +128,7 @@ const BankDetailsForm = ({ onBack }) => {
                         <label className="form-label">
                             Bank Branch Address <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter branch address" value={formData.BranchAddress} onChange={(e) => setFormData({...formData, BranchAddress: e.target.value})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Branch Address" value={formData.BranchAddress} onChange={(e) => setFormData({...formData, BranchAddress: e.target.value})}/>
                     </div>
                 </div>
 
