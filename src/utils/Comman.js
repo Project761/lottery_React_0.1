@@ -37,7 +37,6 @@ export const selectValue = (states, itemID, field, text) => {
   }
 }
 
-
 // Valiation-Functions
 export const upperCaseValue = (value) => {
   if (typeof value == 'string') {
