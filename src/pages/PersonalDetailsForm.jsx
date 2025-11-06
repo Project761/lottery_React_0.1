@@ -5,9 +5,10 @@ import { showSuccess, showError } from "../utils/toast";
 import Select from "../../node_modules/react-select/dist/react-select.esm.js";
 import { fetchPostData } from "../components/hooks/Api";
 import { Dropdown } from "bootstrap";
-import { onChangeDropdown } from "../utils/Comman.js";
+import { onChangeDropdown, formatTextwithSpace } from "../utils/Comman.js";
 import { useFormData } from "../context/FormDataContext.jsx";
 import { defaultFormStructure } from "../context/FormDataContext";
+import { useNavigate } from "react-router-dom";
 
 const sendOtpToMobile = async (MobileNumber) => {
     try {
@@ -52,19 +53,30 @@ const PersonalDetailsForm = () => {
     const [activeTab, setActiveTab] = useState("personal");
     const [showOtp, setShowOtp] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSendingOtp, setIsSendingOtp] = useState(false);
-    const [otpSent, setOtpSent] = useState(false);
-    const [otp, setOtp] = useState("");
+    // const [isSendingOtp, setIsSendingOtp] = useState(false);
+    // const [otpSent, setOtpSent] = useState(false);
+    // const [otp, setOtp] = useState("");
     const [errors, setErrors] = useState({});
+    const Navigate = useNavigate();
 
     // New-State
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const [states, setStates] = useState([]);
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
-    const [sameAddress, setSameAddress] = useState(false);
+    const [sameAddress, setSameAddress] = useState(() => {
+        try{
+            const saved = localStorage.getItem("sameAddress");
+            if(saved === null || saved == "undefined") return false;
+            return JSON.parse(saved);
+        }catch{
+            return false;
+        }}
+    );
     const [originalMobile, setOriginalMobile] = useState("");
     const [isExistingUser, setIsExistingUser] = useState(false);
+    const [isMobileVerified, setIsMobileVerified] = useState(false);
+
 
     const { formData, setFormData } = useFormData();
     useEffect(() => {
@@ -178,72 +190,6 @@ const PersonalDetailsForm = () => {
         }
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     // if (!validateForm()) {
-    //     //     showError('Please fill all required fields correctly');
-    //     //     return;
-    //     // }
-
-    //     // if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
-    //     //     showError('Please enter a valid 10-digit mobile number');
-    //     //     return;
-    //     // }
-
-    //     const requiredFields = [
-    //           "FullName",
-    //           "Gender",
-    //           "Dob",
-    //           "Email",
-    //           "NameSelect",
-    //           "Fhname",
-    //           "Idproof",
-    //           "IdproofNo",
-    //           "AadharNumber",
-    //           "Caste",
-    //           "MobileNumber",
-    //           "ZipCode",
-    //           "State",
-    //           "City",
-    //           "Paraddress",
-    //           "Posaddress",
-    //     ];
-
-    //     const isAnyFieldMissing = requiredFields.some(
-    //         (field) =>
-    //             !formData[field] || formData[field].toString().trim() === ""
-    //     );
-
-    //     if (isAnyFieldMissing) {
-    //         showError("Please fill all mandatory fields");
-    //         return;
-    //     }
-
-    //     if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
-    //         showError('Please enter a valid 10-digit mobile number');
-    //         return;
-    //     }
-
-    //     if(formData.MobileNumber === originalMobile){
-    //         setIsSubmitting(false);
-    //     }
-
-    //     setIsSubmitting(true);
-
-    //     try {
-    //         const otpSent = await sendOtpToMobile(formData.MobileNumber);
-    //         if (otpSent) {
-    //             setShowOtp(true);
-    //         }
-    //         // showSuccess(`OTP sent to ${formData.MobileNumber}`);
-    //     } catch (error) {
-    //         showError('Failed to send OTP. Please try again.');
-    //     } finally {
-    //         setIsSubmitting(false);
-    //     }
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         // alert("Hello");
@@ -262,13 +208,25 @@ const PersonalDetailsForm = () => {
             return;
         }
 
-        if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
+        if (formData.Email && formData.Email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) === null) {
             showError('Please enter a valid Email address');
+            return;
         }
 
         if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
             showError("Please enter a valid 10-digit mobile number");
             return;
+        }
+
+        // if (formData.AadharNumber && !/^[0-9]{15}$/.test(formData.AadharNumber)) {
+        //     showError('Please enter a valid 12-digit Aadhaar number');
+        //     return;
+        // }
+
+        if (isMobileVerified && formData.MobileNumber === originalMobile) {
+        //   setActiveTab("bank");
+          Navigate('/bank-details');
+          return;
         }
 
         //New user (Insert)
@@ -298,7 +256,8 @@ const PersonalDetailsForm = () => {
             }
         } else {
             // No change → skip OTP → go to next tab
-            setActiveTab("bank");
+            // setActiveTab("bank");
+            Navigate('/bank-details');
         }
     };
 
@@ -308,8 +267,12 @@ const PersonalDetailsForm = () => {
 
             const isValid = await verifyMobileOtp(formData.MobileNumber, otp);
             if (isValid) {
-                setActiveTab('bank');
+                // setActiveTab('bank');
+                Navigate('/bank-details')
                 setShowOtp(false);
+                setIsMobileVerified(true); 
+                setOriginalMobile(formData.MobileNumber);
+                localStorage.setItem("verifiedMobile", formData.MobileNumber);
                 showSuccess('Mobile number verified successfully');
             } else {
                 throw new Error('Invalid OTP');
@@ -319,44 +282,6 @@ const PersonalDetailsForm = () => {
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    const handleNext = () => {
-        // const requiredFields = [
-        //       "FullName",
-        //       "Gender",
-        //       "Dob",
-        //       "Email",
-        //       "NameSelect",
-        //       "Fhname",
-        //       "Idproof",
-        //       "IdproofNo",
-        //       "AadharNumber",
-        //       "Caste",
-        //       "MobileNumber",
-        //       "ZipCode",
-        //       "State",
-        //       "City",
-        //       "Paraddress",
-        //       "Posaddress",
-        // ];
-
-        // const isAnyFieldMissing = requiredFields.some(
-        //     (field) =>
-        //         !formData[field] || formData[field].toString().trim() === ""
-        // );
-
-        // if (isAnyFieldMissing) {
-        //     showError("Please fill all mandatory fields");
-        //     return;
-        // }
-
-        // if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
-        //     showError('Please enter a valid 10-digit mobile number');
-        //     return;
-        // }
-
-        // navigate("/dd-details");
     };
 
     useEffect(() => {
@@ -398,10 +323,22 @@ const PersonalDetailsForm = () => {
     }, [formData.Paraddress, sameAddress])
 
     useEffect(() => {
+        localStorage.setItem("sameAddress", JSON.stringify(sameAddress))
+    }, [sameAddress])
+
+    useEffect(() => {
         if (formData.State) {
             fetchCity(formData.State)
         }
     }, [formData.State]);
+
+    useEffect(() => {
+      const verifiedMobile = localStorage.getItem("verifiedMobile");
+      if (verifiedMobile) {
+        setIsMobileVerified(true);
+        setOriginalMobile(verifiedMobile);
+      }
+    }, []);
 
     return (
         <div className="container mb-4 px-0">
@@ -585,7 +522,12 @@ const PersonalDetailsForm = () => {
                             {/* Aadhaar-No */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
-                                <input type="number" autoComplete="off" placeholder="Enter Aadhaar No" className="form-control" value={formData.AadharNumber} onChange={(e) => setFormData({ ...formData, AadharNumber: e.target.value })} />
+                                <input type="text" autoComplete="off" placeholder="Enter Aadhaar No" className="form-control" value={formData.AadharNumber} 
+                                onChange={(e) => {
+                                    const formatted = formatTextwithSpace(e.target.value);
+                                    console.log(formatted.length);
+                                    setFormData({ ...formData, AadharNumber: formatted })
+                                }} maxLength="14"/>
                             </div>
 
                             {/* Select-Cast */}
@@ -660,7 +602,10 @@ const PersonalDetailsForm = () => {
                                     onChange={(event) => {
                                         onChangeDropdown(event, setFormData, formData, 'State');
                                         if (event.value) fetchCity(event.value);
-                                        // console.log("State selected:", event);
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            City: ''
+                                        }))
                                     }}
                                     isClearable
                                     isSearchable
@@ -713,7 +658,10 @@ const PersonalDetailsForm = () => {
                                         onChange={(e) => {
                                             const checked = e.target.checked;
                                             setSameAddress(checked);
-                                            setFormData({ ...formData, Posaddress: checked ? formData.Paraddress : "" })
+                                            if(checked) setFormData((prev) => ({
+                                                ...prev,
+                                                Posaddress: prev.Paraddress
+                                            }))
                                         }}
                                     />
                                     <label className="form-check-label" htmlFor="sameAddress">
@@ -752,13 +700,7 @@ const PersonalDetailsForm = () => {
                         {formData.MobileNumber && showOtp && (
                             <div className="text-center">
                                 <p className="mb-3">We've sent a 6-digit OTP to {formData.MobileNumber}</p>
-                                <OtpVerify onBack={() => setShowOtp(false)} onVerify={handleOtpVerify} MobileNumber={formData.MobileNumber} isSubmitting={isSubmitting} />
-                                <p className="mt-3">
-                                    Didn't receive the OTP?
-                                    <button className="btn btn-link p-0 ms-1" onClick={handleSubmit} disabled={isSubmitting}>
-                                        Resend OTP
-                                    </button>
-                                </p>
+                                <OtpVerify  onBack={() => setShowOtp(false)} onVerify={handleOtpVerify}  MobileNumber={formData.MobileNumber}  isSubmitting={isSubmitting} onResendOtp={() => sendOtpToMobile(formData.MobileNumber)} />
                             </div>
                         )}
                     </form>
@@ -775,4 +717,3 @@ const PersonalDetailsForm = () => {
 };
 
 export default PersonalDetailsForm;
-

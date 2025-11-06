@@ -12,12 +12,14 @@ const DemandDraftDetails = ({ onBack }) => {
     const { formData, setFormData } = useFormData();
     const [bankDetails, setBankDetails] = useState([]);
     const [fileObject, setFileObject] = useState(null);
+    const [amount, setAmount] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         localStorage.setItem("applicationFormData", JSON.stringify(formData));
     }, [formData]);
 
+    //---------------------- Dropdowns -----------------------
     const fetchBankDetails = async () => {
         try {
             const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
@@ -34,8 +36,27 @@ const DemandDraftDetails = ({ onBack }) => {
         }
     }
 
+    const fetchAmount = async () => {
+        try {
+            const response = await fetchPostData('Amount/GetDataDropDown_Amount', {
+                // CompanyId: Number(localStorage.getItem('companyID')),
+                CompanyID: 1,
+            });
+            // console.log(response);
+
+            if (response && Array.isArray(response)) {
+                setAmount(response);
+            }else {
+                setAmount([]);
+            }
+        }catch {
+            showError('Error fetching Amount Details');
+        }
+    }
+
     useEffect(() => {
         fetchBankDetails();
+        fetchAmount();
     }, []);
 
     const handleNext = (e) => {
@@ -164,7 +185,30 @@ const DemandDraftDetails = ({ onBack }) => {
                             <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
                                 Select Amount <span className="text-danger">*</span>
                             </label>
-                            <input type="number" autoComplete="off" placeholder="Enter Amount" className="form-control" value={formData.BankAmount} onChange={(e) => setFormData({...formData, BankAmount: e.target.value})}/>
+                            <Select 
+                              value = {amount.find((a) => String(a.AmountID) === String(formData.BankAmount)) ?
+                                {
+                                    value: String(formData.BankAmount),
+                                    label: amount.find((a) => String(a.AmountID) === String(formData.BankAmount))?.Description || ''
+                                } : null
+                              }
+                              className="w-full"
+                              placeholder="Select Amount"
+                              options={amount.map((a) => ({
+                                value: a.AmountID,
+                                label: a.Description
+                              }))}
+                              onChange = {(event) => {
+                                onChangeDropdown(event, setFormData, formData, 'BankAmount');
+                              }}
+                              styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        minHeight: '38px',
+                                        height: '38px',
+                                    })
+                                }}
+                            />
                         </div>
 
                         {/* Attachment */}

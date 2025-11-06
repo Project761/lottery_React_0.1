@@ -59,7 +59,7 @@ export const FormDataProvider = ({ children }) => {
         return { ...defaultFormStructure, ...JSON.parse(saved) };
       }
     } catch (err) {
-      console.error("Error parsing saved form data:", err);
+      // console.error("Error parsing saved form data:", err);
     }
     return defaultFormStructure;
   });
@@ -69,7 +69,7 @@ export const FormDataProvider = ({ children }) => {
       const normalized = { ...defaultFormStructure, ...formData };
       localStorage.setItem("applicationFormData", JSON.stringify(normalized));
     } catch (err) {
-      console.error("Error saving formData to localStorage:", err);
+      // console.error("Error saving formData to localStorage:", err);
     }
   }, [formData]);
 
@@ -77,6 +77,9 @@ export const FormDataProvider = ({ children }) => {
     setFormData(defaultFormStructure);
     localStorage.removeItem("applicationFormData");
     localStorage.removeItem("UserID");
+    localStorage.removeItem("isMobileVerified");
+    localStorage.removeItem("sameAddress");
+    localStorage.removeItem("ApplicantNumber");
   }
 
   return (
