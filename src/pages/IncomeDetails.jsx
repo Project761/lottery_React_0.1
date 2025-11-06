@@ -5,7 +5,7 @@ import Select from "../../node_modules/react-select/dist/react-select.esm.js";
 import { fetchPostData } from "../components/hooks/Api.js";
 import { showError, showSuccess } from "../utils/toast.js";
 import { useFormData } from "../context/FormDataContext.jsx";
-import { onChangeDropdown } from "../utils/Comman.js";
+import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../utils/Comman.js";
 
 const IncomeDetails = ({ onBack }) => {
   const navigate = useNavigate();
@@ -132,32 +132,14 @@ const IncomeDetails = ({ onBack }) => {
       {/* Form */}
       <form onSubmit={handleFormSubmit} className="border p-4 bg-white shadow-sm">
         <div className="row mb-2">
+
           {/* Category */}
           <div className="col-md-6">
-            <label className="form-label fw-semibold mb-1">
-              Select Category <span className="text-danger">*</span>
-            </label>
+            <label className="form-label fw-semibold mb-1"> Select Category <span className="text-danger">*</span></label>
             <Select name="Category"
-              value={
-                category.find(
-                  (c) => String(c.CategoryID) === String(formData.Category)
-                )
-                  ? {
-                      value: String(formData.Category),
-                      label: category.find(
-                        (c) =>
-                          String(c.CategoryID) === String(formData.Category)
-                      )?.Description,
-                    }
-                  : null
-              }
-              onChange={(event) =>
-                onChangeDropdown(event, setFormData, formData, "Category")
-              }
-              options={category.map((c) => ({
-                value: c.CategoryID,
-                label: c.Description,
-              }))}
+              value={ selectValue(category, 'CategoryID', formData.Category, 'Description') }
+              onChange={(event) => onChangeDropdown(event, setFormData, formData, "Category")}
+              options={ChangeArrayFormat(category, 'CategoryID', 'Description')}
               placeholder="Select Category"
               isClearable
               classNamePrefix="select"
@@ -167,25 +149,22 @@ const IncomeDetails = ({ onBack }) => {
                   minHeight: "38px",
                   height: "38px",
                 }),
-              }}
-            />
+            }}/>
           </div>
 
           {/* Annual Income */}
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1">Annual Income<span className="text-danger">*</span></label>
             <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
-              value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ? 
-                {
-                  value: String(formData.AnnualIncome),
-                  label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description 
-                } : null
-              }
+              // value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ? 
+              //   {
+              //     value: String(formData.AnnualIncome),
+              //     label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description 
+              //   } : null
+              // }
+              value={selectValue(income, 'AnnualIncomeID', formData.AnnualIncome, 'Description')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "AnnualIncome")}
-              options={income.map((i) => ({
-                value: i.AnnualIncomeID,
-                label: i.Description
-              }))}
+              options={ChangeArrayFormat(income, 'AnnualIncomeID', 'Description')}
               isSearchable={false}
               styles={{
                 control: (base) => ({
@@ -199,10 +178,10 @@ const IncomeDetails = ({ onBack }) => {
         </div>
 
         {/* Project Name */}
-        <div className="row mb-3">
+        <div className="row my-3">
           <div className="col-md-6">
-            <label className="form-label">
-              PROJECT NAME <span className="text-danger">*</span>
+            <label className="form-label fw-semibold mb-1">
+              Project Name <span className="text-danger">*</span>
             </label>
             <div className="form-check">
               <input className="form-check-input" type="radio" id="project1" name="project" value="SERENITY RESIDENCY"
@@ -235,7 +214,7 @@ const IncomeDetails = ({ onBack }) => {
                       formData[field].toString().trim() === ""
                   );
                   if (isAnyFieldMissing) {
-                    showError("Please fill all mandatory fields");
+                    showError("Please fill all mandatory Fields");
                     return;
                   }
                   const isChecked = e.target.checked;
@@ -266,5 +245,27 @@ const IncomeDetails = ({ onBack }) => {
     </div>
   );
 };
+
+{/* <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
+              value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ? 
+                {
+                  value: String(formData.AnnualIncome),
+                  label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description 
+                } : null
+              }
+              onChange={(event) => onChangeDropdown(event, setFormData, formData, "AnnualIncome")}
+              options={income.map((i) => ({
+                value: i.AnnualIncomeID,
+                label: i.Description
+              }))}
+              isSearchable={false}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  minHeight: "38px",
+                  height: "38px",
+                }),
+              }}
+/> */}
 
 export default IncomeDetails;

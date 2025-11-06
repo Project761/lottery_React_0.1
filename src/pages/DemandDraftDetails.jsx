@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from '../../node_modules/react-select/dist/react-select.esm.js';
-import { onChangeDropdown } from "../utils/Comman.js";
+import { ChangeArrayFormat, onChangeDropdown,selectValue } from "../utils/Comman.js";
 import { fetchPostData } from "../components/hooks/Api.js";
 import { showError } from "../utils/toast.js";
 import { useFormData } from "../context/FormDataContext.jsx";
@@ -73,7 +73,7 @@ const DemandDraftDetails = ({ onBack }) => {
         const emptyFields = requiredFields.filter(field => !formData[field] || formData[field] === "");
 
         if (emptyFields.length > 0) {
-            showError("Please fill all required fields before proceeding.");
+            showError("Please fill all mandatory Fields");
             return;
         }
 
@@ -95,12 +95,6 @@ const DemandDraftDetails = ({ onBack }) => {
             });
         }
     };
-
-    const amountOptions = [
-        { value: '1000', label: '₹ 1,000' },
-        { value: '5000', label: '₹ 5,000' },
-        { value: '10000', label: '₹ 10,000' }
-    ];
 
     return (
         <div className="container px-0 ">
@@ -127,7 +121,7 @@ const DemandDraftDetails = ({ onBack }) => {
                     <div className="row g-3">
                         {/* Demand Draft / Payment Transfer Number */}
                         <div className="col-md-4">
-                            <label className="form-label fw-semibold " style={{ fontSize: "14px" }}>
+                            <label className="form-label fw-semibold mb-1">
                                 Demand Draft / Payment Transfer Number <span className="text-danger">*</span>
                             </label>
                             <input type="number" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({...formData, PaymentTrasnum: e.target.value})}/>
@@ -135,7 +129,7 @@ const DemandDraftDetails = ({ onBack }) => {
 
                         {/* Demand Draft / Online Payment Date */}
                         <div className="col-md-4">
-                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
+                            <label className="form-label fw-semibold mb-1">
                                 Demand Draft / Online Payment Date <span className="text-danger">*</span>
                             </label>
                             <input 
@@ -150,26 +144,26 @@ const DemandDraftDetails = ({ onBack }) => {
 
                         {/* Select Bank */}
                         <div className="col-md-4">
-                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
+                            <label className="form-label fw-semibold">
                                 Select Bank <span className="text-danger">*</span>
                             </label>
 
                             <Select
-                                value={bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank)) ?
-                                    {
-                                        value: formData.PaymentBank,
-                                        label: bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank))?.Description || ''
-                                    } : null
-                                }
+                                // value={bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank)) ?
+                                //     {
+                                //         value: formData.PaymentBank,
+                                //         label: bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank))?.Description || ''
+                                //     } : null
+                                // }
+                                value = { selectValue(bankDetails, 'BankID', formData.PaymentBank, 'Description')}
                                 className="w-full"
                                 placeholder="Select Bank"
-                                options={bankDetails.map((b) => ({
-                                    value: b.BankID,
-                                    label: b.Description
-                                }))}
-                                onChange={(event) => {
-                                    onChangeDropdown(event, setFormData, formData, 'PaymentBank');
-                                }}
+                                // options={bankDetails.map((b) => ({
+                                //     value: b.BankID,
+                                //     label: b.Description
+                                // }))}
+                                options={ChangeArrayFormat(bankDetails, 'BankID', 'Description')}
+                                onChange={(event) => { onChangeDropdown(event, setFormData, formData, 'PaymentBank'); }}
                                 styles={{
                                     control: (base) => ({
                                         ...base,
@@ -182,22 +176,24 @@ const DemandDraftDetails = ({ onBack }) => {
 
                         {/* Select Amount */}
                         <div className="col-md-4">
-                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>
+                            <label className="form-label fw-semibold">
                                 Select Amount <span className="text-danger">*</span>
                             </label>
                             <Select 
-                              value = {amount.find((a) => String(a.AmountID) === String(formData.BankAmount)) ?
-                                {
-                                    value: String(formData.BankAmount),
-                                    label: amount.find((a) => String(a.AmountID) === String(formData.BankAmount))?.Description || ''
-                                } : null
-                              }
+                            //   value = {amount.find((a) => String(a.AmountID) === String(formData.BankAmount)) ?
+                            //     {
+                            //         value: String(formData.BankAmount),
+                            //         label: amount.find((a) => String(a.AmountID) === String(formData.BankAmount))?.Description || ''
+                            //     } : null
+                            //   }
+                              value={ selectValue(amount, 'AmountID', formData.BankAmount, 'Description')}
                               className="w-full"
                               placeholder="Select Amount"
-                              options={amount.map((a) => ({
-                                value: a.AmountID,
-                                label: a.Description
-                              }))}
+                            //   options={amount.map((a) => ({
+                            //     value: a.AmountID,
+                            //     label: a.Description
+                            //   }))}
+                              options = {ChangeArrayFormat(amount, 'AmountID', 'Description')}
                               onChange = {(event) => {
                                 onChangeDropdown(event, setFormData, formData, 'BankAmount');
                               }}
@@ -213,7 +209,7 @@ const DemandDraftDetails = ({ onBack }) => {
 
                         {/* Attachment */}
                         <div className="col-md-4">
-                            <label className="form-label fw-semibold" style={{ fontSize: "14px" }}>ATTACHMENT</label>
+                            <label className="form-label fw-semibold">Attachment</label>
                             <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf" onChange={(e) => {
                                 const file = e.target.files[0];
                                 if(file){

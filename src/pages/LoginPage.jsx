@@ -37,7 +37,7 @@ const LoginPage = () => {
         localStorage.setItem("refresh_token", response.refresh_token);
         localStorage.setItem("token_expiry", response.expires);
 
-        showSuccess("Login successful!");
+        showSuccess("Login Successful!");
 
         // Schedule auto token refresh 1 minute before expiry
         const expiryTime = new Date(response.expires).getTime();

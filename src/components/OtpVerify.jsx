@@ -29,14 +29,14 @@ const OtpVerify = ({ onVerify, MobileNumber, isSubmitting }) => {
       setIsSendingOtp(true);
       const response = await fetchPostData("SMS/SendMessage", { MobileNo: MobileNumber });
       if (response) {
-        showSuccess(`OTP resent successfully to ${MobileNumber}`);
+        showSuccess(`OTP Eesent successfully to ${MobileNumber}`);
         setTimer(60); // 30 seconds countdown
         setIsTimerRunning(true);
       } else {
         showError("Failed to resend OTP. Please try again.");
       }
     } catch {
-      showError("Error while resending OTP");
+      showError("Error while resending OTP. Please try again.");
     } finally {
       setIsSendingOtp(false);
     }
