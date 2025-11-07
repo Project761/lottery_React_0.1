@@ -28,6 +28,7 @@ const LoginPage = () => {
 
       const response = await fetchDirectData("User/Login", payload);
       localStorage.setItem("UserID", response.UserID);
+      console.log(response.UserID);
       // console.log(response);
 
       if (response.error_description === "User Not Found") {

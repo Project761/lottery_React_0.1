@@ -27,7 +27,7 @@ const AcknowledgementReceipt = () => {
   };
 
   return (
-    <div className="receipt-container container mt-4 mb-5">
+    <div className="receipt-container container mt-4 mb-5 position-relative">
       {/* Header */}
       <div className="text-center">
         <h5 className="fw-bold text-danger mb-1">JAIPUR DEVELOPMENT AUTHORITY</h5>
@@ -39,7 +39,7 @@ const AcknowledgementReceipt = () => {
         </p>
       </div>
 
-      <div className="d-flex justify-content-end mb-3 no-print">
+      <div className="d-flex justify-content-end mb-3 no-print" style={{position:"absolute", right:"0px", top:"45px"}}>
         <button 
           onClick={() => window.print()}
           className="btn  d-flex align-items-center gap-2"

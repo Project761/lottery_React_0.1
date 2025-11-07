@@ -4,7 +4,7 @@ import { FaSearch, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import AddEditModal from '../../components/admin/AddEditModal';
 import DataTable from 'react-data-table-component';
 import { AddDeleteUpdateData, fetchPostData } from '../../components/hooks/Api';
-import toast from '../../utils/toast';
+import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
 
 const DataTablePage = (props) => {
 
@@ -32,12 +32,15 @@ const DataTablePage = (props) => {
 
   const columns = [
     {
-      name: listCode ? `${listCode}` : 'Code',
+      name: listCode ? `${listCode.replace(/([a-z])([A-Z])/g, "$1 $2")}` : "Code",
       selector: row => row[listCode],
+      sortable: true,
     },
+
     {
       name: 'Description',
       selector: row => row.Description,
+      sortable: true,
     },
     {
       name: 'Action',
@@ -92,9 +95,11 @@ const DataTablePage = (props) => {
       const response = await AddDeleteUpdateData(addApiUrl, formData);
       console.log(response);
       // setData(response.data);
+      showSuccess("Item added successfully!");
       getData(companyID);
     } catch (error) {
       console.error('Error fetching data:', error);
+      showError("Failed to add item. Please try again.");
     }
   };
 
@@ -104,6 +109,7 @@ const DataTablePage = (props) => {
       const response = await AddDeleteUpdateData(updateApiUrl, formData);
       console.log(response);
       // setData(response.data);
+      showSuccess("Item updated successfully!");
       getData(companyID);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -113,6 +119,7 @@ const DataTablePage = (props) => {
 
   const handleEdit = (row) => {
     console.log("🚀 ~ handleEdit ~ row:", row)
+    showWarning("Editing item... please wait");
     setFormData({
       [listCode]: row[listCode],
       [listId]: row[listId],
@@ -129,19 +136,19 @@ const DataTablePage = (props) => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      setLoading(true);
-      try {
-        await AddDeleteUpdateData(deleteApiUrl, { [listId]: id });
-        getData(companyID);
-      } catch (error) {
-        console.error('Error deleting item:', error);
-      } finally {
-        setLoading(false);
-      }
+    showWarning("Deleting item... please wait");
+    setLoading(true);
+    try {
+      await AddDeleteUpdateData(deleteApiUrl, { [listId]: id });
+      await getData(companyID);
+      showSuccess("Item deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      showError("Failed to delete item. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
