@@ -4,6 +4,8 @@ import { showError, showSuccess } from "../../utils/toast";
 import { fetchDirectData } from "../../components/hooks/Api";
 
 const LoginPage = () => {
+
+
   const [mobile, setMobile] = useState("");
   const [applicant, setApplicant] = useState("");
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const LoginPage = () => {
       localStorage.setItem("UserID", response.UserID);
       // console.log(response);
 
-      if ( response.error_description === "User Not Found") {
+      if (response.error_description === "User Not Found") {
         showError("User not found. Please check your details.");
         return;
       }
@@ -42,7 +44,7 @@ const LoginPage = () => {
         // Schedule auto token refresh 1 minute before expiry
         const expiryTime = new Date(response.expires).getTime();
         const now = new Date().getTime();
-        const timeUntilExpiry = expiryTime - now - 60 * 1000; 
+        const timeUntilExpiry = expiryTime - now - 60 * 1000;
 
         if (timeUntilExpiry > 0) {
           setTimeout(async () => {

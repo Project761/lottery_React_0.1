@@ -17,6 +17,7 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
     const menuItems = [
         { path: "/admin/dashboard", icon: <BiHome />, label: "Dashboard" },
         { path: "/admin/bank", icon: <BiBuildingHouse />, label: "Banks" },
+        { path: "/admin/DemandDraftAmount", icon: <BiBuildingHouse />, label: "Demand Draft Amount" },
         { path: "/admin/caste", icon: <BiUser />, label: "Castes" },
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },

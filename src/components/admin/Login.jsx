@@ -43,7 +43,7 @@ const Login = (props) => {
                 // Save important info in localStorage
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('FullName', response.data.FullName);
-                localStorage.setItem('UserID', response.data.UserID);
+                localStorage.setItem('CompanyID', response.data.CompanyID);
                 showSuccess('Login successful!');
                 
                 // Call the onLogin prop if it exists

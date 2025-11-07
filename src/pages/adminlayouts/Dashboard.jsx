@@ -11,7 +11,7 @@ const Dashboard = () => {
           value="318"
           icon="user"
           color="#e91e63"
-        />
+        />  
         <StatCard
           title="Success Application"
           value="318"
