@@ -88,18 +88,9 @@ const LoginPage = () => {
                     <input type="text" className="form-control" placeholder="Enter Applicant Number" value={applicant} autoComplete="off" onChange={(e) => setApplicant(e.target.value)} />
                   </div>
                 </div>
-
+  
                 <div className="mt-4 text-center">
-                  <button
-                    type="submit"
-                    className="btn text-white fw-semibold py-2 px-4"
-                    style={{
-                      backgroundColor: "#A992F7",
-                      fontSize: "16px",
-                      width: "auto",
-                      minWidth: "100px",
-                    }}
-                  >
+                  <button type="submit" className="btn text-white fw-semibold py-2 px-4" style={{ backgroundColor: "#A992F7", fontSize: "16px", width: "auto", minWidth: "100px",}}>
                     Login
                   </button>
                 </div>

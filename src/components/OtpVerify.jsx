@@ -29,8 +29,8 @@ const OtpVerify = ({ onVerify, MobileNumber, isSubmitting }) => {
       setIsSendingOtp(true);
       const response = await fetchPostData("SMS/SendMessage", { MobileNo: MobileNumber });
       if (response) {
-        showSuccess(`OTP Eesent successfully to ${MobileNumber}`);
-        setTimer(60); // 30 seconds countdown
+        showSuccess(`OTP Resent successfully to ${MobileNumber}`);
+        setTimer(60); 
         setIsTimerRunning(true);
       } else {
         showError("Failed to resend OTP. Please try again.");
@@ -45,7 +45,7 @@ const OtpVerify = ({ onVerify, MobileNumber, isSubmitting }) => {
   //OTP Verify
   const handleVerify = async (e) => {
     e.preventDefault();
-    if (otp.length !== 6) {
+    if (otp.length !== 4) {
       showError("Please enter a valid 6-digit OTP");
       return;
     }
@@ -67,7 +67,7 @@ const OtpVerify = ({ onVerify, MobileNumber, isSubmitting }) => {
             placeholder="Enter 6-digit OTP"
             value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-            maxLength={6}
+            maxLength={4}
             required
             autoComplete="off"
           />

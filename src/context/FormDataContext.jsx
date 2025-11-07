@@ -80,6 +80,9 @@ export const FormDataProvider = ({ children }) => {
     localStorage.removeItem("isMobileVerified");
     localStorage.removeItem("sameAddress");
     localStorage.removeItem("ApplicantNumber");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("token_expiry");
   }
 
   return (

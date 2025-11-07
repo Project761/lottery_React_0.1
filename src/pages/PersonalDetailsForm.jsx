@@ -32,9 +32,13 @@ const verifyMobileOtp = async (MobileNumber, otp) => {
         // console.log("OTP Verification Response:", response[0]);
         if (response) {
             const table = response[0];
-            if (table?.IsValid === 0) {
+            if (table?.IsValid === 1) {
                 return true;
-            } else {
+            }else if(table?.Message === "OTP expired"){
+                showError("Your OTP Expired. Please try again.");
+                return false;
+            }
+             else {
                 showError('Invalid OTP. Please try again.');
                 return false;
             }
