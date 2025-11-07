@@ -20,6 +20,15 @@ const PersonalDetailsPage = () => {
         },
     };
 
+    const accountInfo = {
+        accountHolderName: "Hahsh",
+        accountNumber: "1251",
+        bankName: "State Bank of India",
+        branchName: "Jaipur Main",
+        ifscCode: "SBIN0001234",
+        accountType: "Savings",
+    };
+
     return (
         <div className="container mt-4 mb-5">
             <div className="card shadow-sm border-0">
@@ -43,13 +52,13 @@ const PersonalDetailsPage = () => {
                     <p className="mb-3">
                         <strong>Date:</strong> {applicantData.date}
                     </p>
-                    <Link 
+                    <Link
                         to="/acknowledgement-receipt"
-                        className="btn px-4" 
-                        style={{ 
-                            backgroundColor: "#A992F7", 
-                            color: "white", 
-                            padding: "10px 20px", 
+                        className="btn px-4"
+                        style={{
+                            backgroundColor: "#A992F7",
+                            color: "white",
+                            padding: "10px 20px",
                             fontWeight: "500",
                             textDecoration: 'none',
                             display: 'inline-block'
@@ -105,7 +114,47 @@ const PersonalDetailsPage = () => {
                             </tbody>
                         </table>
                     ) : (
-                        <p className="text-muted">Account details will appear here.</p>
+                        <table className="table table-bordered align-middle">
+                            <div className="tab-content p-4">
+                                {/* Basic Info */}
+                                <div className={`tab-pane fade ${activeTab === "basic" ? "show active" : ""}`} id="basicInfo">
+                                    {/* your basic info table */}
+                                </div>
+
+                                {/* Account Details */}
+                                <div className={`tab-pane fade ${activeTab === "account" ? "show active" : ""}`} id="accountDetails">
+                                    <table className="table table-bordered align-middle">
+                                        <tbody>
+                                            <tr>
+                                                <th width="30%">Account Holder Name</th>
+                                                <td>{accountInfo.accountHolderName}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Account Number</th>
+                                                <td>{accountInfo.accountNumber}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Bank Name</th>
+                                                <td>{accountInfo.bankName}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Branch Name</th>
+                                                <td>{accountInfo.branchName}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>IFSC Code</th>
+                                                <td>{accountInfo.ifscCode}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Account Type</th>
+                                                <td>{accountInfo.accountType}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </table>
                     )}
                 </div>
 
