@@ -101,7 +101,7 @@ function AppContent() {
     setTimeout(() => {
       window.location.href = '/admin/login';
       window.location.reload();
-    }, 800); 
+    }, 800);
   }, []);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -134,14 +134,14 @@ function AppContent() {
       <Routes>
         {/* Public Routes */}
         <Route path="/admin/login" element={
-          isAuthenticated ? 
-          <Navigate to="/admin/dashboard" replace /> : 
-          <AdminLogin onLogin={handleLogin} />
+          isAuthenticated ?
+            <Navigate to="/admin/dashboard" replace /> :
+            <AdminLogin onLogin={handleLogin} />
         } />
 
         {/* Protected Admin Routes */}
-        <Route 
-          path="/admin" 
+        <Route
+          path="/admin"
           element={
             <ProtectedRoute>
               <AdminLayout onLogout={handleLogout} />
@@ -150,7 +150,7 @@ function AppContent() {
         >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          {["bank", "project", "caste", "plot", "application", "bank-details"].map((pageName) => (
+          {["project", "plot", "application", "bank-details", "bank", "caste", "DemandDraftAmount", "City"].map((pageName) => (
             <Route key={pageName} path={pageName} element={<AdminPage page={pageName} />} />
           ))}
         </Route>
@@ -170,7 +170,7 @@ function AppContent() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
-      
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

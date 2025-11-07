@@ -13,7 +13,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
       zIndex: 1030,
     }}>
       {/* Sidebar toggle (for mobile) */}
-      <Button
+      <Button  
         variant="link"
         className="text-dark d-lg-none me-2"
         onClick={toggleSidebar}
@@ -28,7 +28,8 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
         </span>
 
         {/* Show total entries only on specific pages */}
-        {totalEntries !== undefined &&
+        
+        {/* {totalEntries !== undefined &&
           currentPage.toLowerCase() !== 'dashboard' &&
           currentPage.toLowerCase() !== 'application' &&
           currentPage.toLowerCase() !== 'bankdetails' && (
@@ -36,7 +37,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
               – Total {currentPage.charAt(0).toUpperCase() + currentPage.slice(1)}:{" "}
               <strong>{totalEntries}</strong>
             </span>
-          )}
+          )} */}
       </div>
 
       {/* Right-side user dropdown */}

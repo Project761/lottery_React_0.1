@@ -27,7 +27,7 @@ const AdminLayout = ({ onLogout }) => {
     // Handle both /admin/... and /... paths
     const pathParts = path.split('/').filter(Boolean);
     const basePath = pathParts[1] || pathParts[0] || 'dashboard';
-    
+
     // Convert kebab-case to Title Case (e.g., 'bank-details' -> 'Bank Details')
     return basePath
       .split('-')

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
-import { onChangeDropdown, upperCaseValue } from "../../utils/Comman.js";
+import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue } from "../../utils/Comman.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -48,7 +48,7 @@ const BankDetailsForm = ({ onBack }) => {
     );
 
     if (isAnyFieldMissing) {
-        showError("Please fill all mandatory fields");
+        showError("Please fill all mandatory Fields");
         return;
     }
 
@@ -72,7 +72,7 @@ const BankDetailsForm = ({ onBack }) => {
                 <div className="row g-3">
                     {/* Applicant Name */}
                     <div className="col-md-4">
-                        <label className="form-label">
+                        <label className="form-label fw-semibold mb-1">
                             Applicant Name <span className="text-danger">*</span>
                         </label>
                         <input type="text" className="form-control" autoComplete="off" placeholder="Enter Applicant Name" value={formData.BankUserName} onChange={(e) => setFormData({...formData, BankUserName: e.target.value})}/>
@@ -80,7 +80,7 @@ const BankDetailsForm = ({ onBack }) => {
 
                     {/* Account Number */}
                     <div className="col-md-4">
-                        <label className="form-label">
+                        <label className="form-label fw-semibold mb-1">
                             Bank Account Number <span className="text-danger">*</span>
                         </label>
                         <input type="number" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} onChange={(e) => setFormData({...formData, AccountNumber: Number(e.target.value)})}/>
@@ -88,20 +88,22 @@ const BankDetailsForm = ({ onBack }) => {
 
                     {/* Select Bank */}
                     <div className="col-md-4">
-                        <label className="form-label"> Select Bank <span className="text-danger">*</span></label>
+                        <label className="form-label fw-semibold mb-1"> Select Bank <span className="text-danger">*</span></label>
                         <Select
-                            value={bankDetails.find((b) => String(b.BankID) === String(formData.BankName)) ?
-                                    {
-                                        value: formData.BankName,
-                                        label: bankDetails.find((b) => String(b.BankID) === String(formData.BankName))?.Description || '',
-                                    } : null
-                            }
+                            // value={bankDetails.find((b) => String(b.BankID) === String(formData.BankName)) ?
+                            //     {
+                            //         value: formData.BankName,
+                            //         label: bankDetails.find((b) => String(b.BankID) === String(formData.BankName))?.Description || '',
+                            //     } : null
+                            // }
+                            value={selectValue(bankDetails, 'BankID', formData.BankName, 'Description')}
                             className="w-full"
                             placeholder="Select Bank"
-                            options={bankDetails.map((b) => ({
-                                value: b.BankID,
-                                label: b.Description
-                            }))}
+                            // options={bankDetails.map((b) => ({
+                            //     value: b.BankID,
+                            //     label: b.Description
+                            // }))}
+                            options={ChangeArrayFormat(bankDetails, 'BankID', 'Description')}
                             onChange={(event) => {
                                 onChangeDropdown(event, setFormData, formData, 'BankName');
                             }}
@@ -117,7 +119,7 @@ const BankDetailsForm = ({ onBack }) => {
 
                     {/* IFSC Code */}
                     <div className="col-md-4">
-                        <label className="form-label">
+                        <label className="form-label fw-semibold mb-1">
                             IFSC Code <span className="text-danger">*</span>
                         </label>
                         <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} onChange={(e) => setFormData({...formData, IfscCode: upperCaseValue(e.target.value)})}/>
@@ -125,7 +127,7 @@ const BankDetailsForm = ({ onBack }) => {
 
                     {/* Bank Branch Address */}
                     <div className="col-md-4">
-                        <label className="form-label">
+                        <label className="form-label fw-semibold mb-1">
                             Bank Branch Address <span className="text-danger">*</span>
                         </label>
                         <input type="text" className="form-control" autoComplete="off" placeholder="Enter Branch Address" value={formData.BranchAddress} onChange={(e) => setFormData({...formData, BranchAddress: e.target.value})}/>

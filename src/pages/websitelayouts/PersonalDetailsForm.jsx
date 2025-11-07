@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-// import OtpVerify from "../components/website/OtpVerify";
-// import BankDetailsForm from "./BankDetailsForm";
-import { showSuccess, showError } from "../../utils/toast.js";
+import { showSuccess, showError } from "../../utils/toast";
 import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
-import { fetchPostData } from "../../components/hooks/Api.js";
-import { Dropdown } from "bootstrap";
-import { onChangeDropdown, formatTextwithSpace } from "../../utils/Comman.js";
+import { fetchPostData } from "../../components/hooks/Api";
+import { onChangeDropdown, formatTextwithSpace, mobileNoValidation, ChangeArrayFormat, selectValue } from "../../utils/Comman.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
-import { defaultFormStructure } from "../../context/FormDataContext.jsx";
+import { defaultFormStructure } from "../../context/FormDataContext";
 import { useNavigate } from "react-router-dom";
 import OtpVerify from "../../components/website/OtpVerify.jsx";
 import BankDetailsForm from "./BankDetailsForm.jsx";
@@ -35,9 +32,13 @@ const verifyMobileOtp = async (MobileNumber, otp) => {
         // console.log("OTP Verification Response:", response[0]);
         if (response) {
             const table = response[0];
-            if (table?.IsValid === 0) {
+            if (table?.IsValid === 1) {
                 return true;
-            } else {
+            }else if(table?.Message === "OTP expired"){
+                showError("Your OTP Expired. Please try again.");
+                return false;
+            }
+             else {
                 showError('Invalid OTP. Please try again.');
                 return false;
             }
@@ -55,14 +56,10 @@ const PersonalDetailsForm = () => {
     const [activeTab, setActiveTab] = useState("personal");
     const [showOtp, setShowOtp] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // const [isSendingOtp, setIsSendingOtp] = useState(false);
-    // const [otpSent, setOtpSent] = useState(false);
-    // const [otp, setOtp] = useState("");
     const [errors, setErrors] = useState({});
     const Navigate = useNavigate();
 
     // New-State
-    // const [data, setData] = useState([]);
     const [states, setStates] = useState([]);
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
@@ -92,7 +89,6 @@ const PersonalDetailsForm = () => {
                 // CompanyId: Number(localStorage.getItem('companyID')),
                 CompanyID: 1,
             });
-            // console.log(response);
 
             if (response && Array.isArray(response)) {
                 setCasts(response);
@@ -194,7 +190,6 @@ const PersonalDetailsForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // alert("Hello");
 
         const requiredFields = [
             "FullName", "Gender", "Dob", "Email", "NameSelect", "Fhname", "Idproof", "IdproofNo",
@@ -211,16 +206,16 @@ const PersonalDetailsForm = () => {
         }
 
         if (formData.Email && formData.Email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) === null) {
-            showError('Please enter a valid Email address');
+            showError('Please enter a valid Email Address');
             return;
         }
 
         if (!formData.MobileNumber || formData.MobileNumber.length !== 10) {
-            showError("Please enter a valid 10-digit mobile number");
+            showError("Please enter a valid 10-digit Mobile Number");
             return;
         }
 
-        // if (formData.AadharNumber && !/^[0-9]{15}$/.test(formData.AadharNumber)) {
+        // if (formData.AadharNumber && !/^[0-9]{12}$/.test(formData.AadharNumber)) {
         //     showError('Please enter a valid 12-digit Aadhaar number');
         //     return;
         // }
@@ -527,7 +522,6 @@ const PersonalDetailsForm = () => {
                                 <input type="text" autoComplete="off" placeholder="Enter Aadhaar No" className="form-control" value={formData.AadharNumber} 
                                 onChange={(e) => {
                                     const formatted = formatTextwithSpace(e.target.value);
-                                    console.log(formatted.length);
                                     setFormData({ ...formData, AadharNumber: formatted })
                                 }} maxLength="14"/>
                             </div>
@@ -538,17 +532,15 @@ const PersonalDetailsForm = () => {
                                 <Select
                                     className={`${errors.Caste ? 'is-invalid' : ''}`}
                                     name="Caste"
-                                    value={
-                                        casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
-                                            value: String(formData.Caste),
-                                            label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
-                                        } : null
-                                    }
+                                    // value={
+                                    //     casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
+                                    //         value: String(formData.Caste),
+                                    //         label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
+                                    //     } : null
+                                    // }
+                                    value={selectValue(casts, 'CastID', formData.Caste, 'Description')}
                                     onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
-                                    options={casts.map((c) => ({
-                                        value: c.CastID,
-                                        label: c.Description,
-                                    }))}
+                                    options={ChangeArrayFormat(casts, 'CastID', 'Description')}
                                     placeholder="Select Cast"
                                     isClearable
                                     classNamePrefix="select"
@@ -572,7 +564,9 @@ const PersonalDetailsForm = () => {
                                     name="MobileNumber"
                                     placeholder="Enter Mobile No"
                                     value={formData.MobileNumber}
-                                    onChange={(e) => setFormData({ ...formData, MobileNumber: e.target.value })}
+                                    onChange={(e) => {
+                                         const formattedMobile = mobileNoValidation(e.target.value);
+                                         setFormData({ ...formData, MobileNumber: formattedMobile })}}
                                     maxLength="10"
                                 />
                                 {errors.MobileNumber && <div className="invalid-feedback">{errors.MobileNumber}</div>}
@@ -588,18 +582,20 @@ const PersonalDetailsForm = () => {
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
                                 <Select
-                                    value={states.find((s) => String(s.StateID) === String(formData.State)) ?
-                                        {
-                                            value: String(formData.State),
-                                            label: states.find((st) => String(st.StateID) === String(formData.State))?.Description || '',
-                                        } : null
-                                    }
+                                    // value={states.find((s) => String(s.StateID) === String(formData.State)) ?
+                                    //     {
+                                    //         value: String(formData.State),
+                                    //         label: states.find((st) => String(st.StateID) === String(formData.State))?.Description || '',
+                                    //     } : null
+                                    // }
+                                    value={selectValue(states, 'StateID', formData.State, 'Description')}
                                     className="w-full"
                                     placeholder="Select State"
-                                    options={states.map((st) => ({
-                                        value: st.StateID,
-                                        label: st.Description,
-                                    }))}
+                                    // options={states.map((st) => ({
+                                    //     value: st.StateID,
+                                    //     label: st.Description,
+                                    // }))}
+                                    options={ChangeArrayFormat(states, 'StateID', 'Description')}
                                     default={formData.State}
                                     onChange={(event) => {
                                         onChangeDropdown(event, setFormData, formData, 'State');
@@ -620,16 +616,18 @@ const PersonalDetailsForm = () => {
                                 <Select
                                     className="w-full"
                                     placeholder="Select City"
-                                    value={cityies.find((c) => String(c.CityID) === String(formData.City))
-                                        ? {
-                                            value: String(formData.City),
-                                            label: cityies.find((d) => String(d.CityID) === String(formData.City))?.Description || '',
-                                        } : null
-                                    }
-                                    options={cityies.map((d) => ({
-                                        value: d.CityID,
-                                        label: d.Description,
-                                    }))}
+                                    // value={cityies.find((c) => String(c.CityID) === String(formData.City))
+                                    //     ? {
+                                    //         value: String(formData.City),
+                                    //         label: cityies.find((d) => String(d.CityID) === String(formData.City))?.Description || '',
+                                    //     } : null
+                                    // }
+                                    value={selectValue(cityies, 'CityID', formData.City, 'Description')}
+                                    // options={cityies.map((d) => ({
+                                    //     value: d.CityID,
+                                    //     label: d.Description,
+                                    // }))}
+                                    options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
                                     onChange={(selectedOption) => {
                                         onChangeDropdown(selectedOption, setFormData, formData, 'City');
                                     }}

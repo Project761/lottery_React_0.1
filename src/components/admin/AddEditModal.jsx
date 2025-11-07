@@ -5,13 +5,16 @@ const AddEditModal = ({
     show,
     onHide,
     title,
-    formFields = [],
     formData = {},
+    listCode,
     onInputChange,
     onSubmit,
     submitButtonText = 'Save Changes',
     size = 'md'
 }) => {
+ 
+
+
     return (
         <Modal show={show} onHide={onHide} size={size} centered>
             <Modal.Header closeButton>
@@ -19,8 +22,28 @@ const AddEditModal = ({
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={onSubmit}>
-                    {formFields.map((field) => (
-                        <Form.Group key={field.name} className="mb-3">
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>{listCode}</Form.Label>
+                        <Form.Control
+                            type={"text"}
+                            name={listCode}
+                            value={formData[listCode] || ''}
+                            onChange={onInputChange}
+                            placeholder={listCode || `Enter ${listCode?.toLowerCase()}`}
+                        />
+                        <Form.Label>{"Description"}</Form.Label>
+                        <Form.Control
+                            type={"text"}
+                            name={"Description"}
+                            value={formData["Description"] || ''}
+                            onChange={onInputChange}
+                            placeholder={"Description" || `Enter ${"Description"?.toLowerCase()}`}
+                        />
+                    </Form.Group>
+
+
+                    {/* <Form.Group key={field.name} className="mb-3">
                             <Form.Label>{field.label}</Form.Label>
                             <Form.Control
                                 type={field.type || 'text'}
@@ -33,8 +56,8 @@ const AddEditModal = ({
                                 as={field.as}
                                 rows={field.rows}
                             />
-                        </Form.Group>
-                    ))}
+                        </Form.Group> */}
+
                     <div className="text-end">
                         <Button variant="secondary" onClick={onHide} className="me-2">
                             Close

@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/toast";
 import { fetchDirectData } from "../../components/hooks/Api";
+import { mobileNoValidation } from "../../utils/Comman";
 
 const LoginPage = () => {
+
+
   const [mobile, setMobile] = useState("");
   const [applicant, setApplicant] = useState("");
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (!mobile.trim() || !applicant.trim()) {
-      showError("Please fill in all required fields.");
+      showError("Please fill all required fields.");
       return;
     }
 
@@ -27,7 +30,7 @@ const LoginPage = () => {
       localStorage.setItem("UserID", response.UserID);
       // console.log(response);
 
-      if ( response.error_description === "User Not Found") {
+      if (response.error_description === "User Not Found") {
         showError("User not found. Please check your details.");
         return;
       }
@@ -37,12 +40,12 @@ const LoginPage = () => {
         localStorage.setItem("refresh_token", response.refresh_token);
         localStorage.setItem("token_expiry", response.expires);
 
-        showSuccess("Login successful!");
+        showSuccess("Login Successful!");
 
         // Schedule auto token refresh 1 minute before expiry
         const expiryTime = new Date(response.expires).getTime();
         const now = new Date().getTime();
-        const timeUntilExpiry = expiryTime - now - 60 * 1000; 
+        const timeUntilExpiry = expiryTime - now - 60 * 1000;
 
         if (timeUntilExpiry > 0) {
           setTimeout(async () => {
@@ -77,7 +80,9 @@ const LoginPage = () => {
                     <label className="form-label fw-semibold">
                       Mobile Number <span className="text-danger">*</span>
                     </label>
-                    <input type="text" className="form-control" placeholder="Enter Mobile Number" value={mobile} autoComplete="off" onChange={(e) => setMobile(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Enter Mobile Number" value={mobile} autoComplete="off" onChange={(e) =>{ 
+                      const formattedMobile = mobileNoValidation(e.target.value);
+                      setMobile(formattedMobile)}} />
                   </div>
 
                   {/* Applicant-No */}
@@ -88,18 +93,9 @@ const LoginPage = () => {
                     <input type="text" className="form-control" placeholder="Enter Applicant Number" value={applicant} autoComplete="off" onChange={(e) => setApplicant(e.target.value)} />
                   </div>
                 </div>
-
+  
                 <div className="mt-4 text-center">
-                  <button
-                    type="submit"
-                    className="btn text-white fw-semibold py-2 px-4"
-                    style={{
-                      backgroundColor: "#A992F7",
-                      fontSize: "16px",
-                      width: "auto",
-                      minWidth: "100px",
-                    }}
-                  >
+                  <button type="submit" className="btn text-white fw-semibold py-2 px-4" style={{ backgroundColor: "#A992F7", fontSize: "16px", width: "auto", minWidth: "100px",}}>
                     Login
                   </button>
                 </div>
