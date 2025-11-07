@@ -38,16 +38,44 @@ const AdminPage = ({ page: propPage }) => {
             />
           )
             :
-            (
+            propPage === "caste" ? (
               <DataTablePage
                 page={propPage}
-                getDataApiUrl={""}
-                updateApiUrl={""}
-                deleteApiUrl={""}
-                addApiUrl={""}
-                getSingleDataApiUrl={""}
+                getDataApiUrl={"Cast/GetData_Cast"}
+                addApiUrl={"Cast/Insert_Cast"}
+                updateApiUrl={"Cast/Update_Cast"}
+                deleteApiUrl={"Cast/Delete_Cast"}
+                getSingleDataApiUrl={"Cast/GetSingleData_Cast"}
+
+                listCode={"CastCode"}
+                listId={"CastID"}
               />
             )
+            :
+            propPage === "City" ? (
+              <DataTablePage
+                page={propPage}
+                getDataApiUrl={"City/GetData_City"}
+                addApiUrl={"City/Insert_City"}
+                updateApiUrl={"City/Update_City"}
+                deleteApiUrl={"City/Delete_City"}
+                getSingleDataApiUrl={"City/GetSingleData_City"}
+
+                listCode={"CityCode"}
+                listId={"CityID"}
+              />
+            )
+              :
+              (
+                <DataTablePage
+                  page={propPage}
+                  getDataApiUrl={""}
+                  updateApiUrl={""}
+                  deleteApiUrl={""}
+                  addApiUrl={""}
+                  getSingleDataApiUrl={""}
+                />
+              )
       }
     </div>
   );
