@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import OtpVerify from "../components/OtpVerify";
-import BankDetailsForm from "./BankDetailsForm";
-import { showSuccess, showError } from "../utils/toast";
-import Select from "../../node_modules/react-select/dist/react-select.esm.js";
-import { fetchPostData } from "../components/hooks/Api";
-import { onChangeDropdown, formatTextwithSpace, mobileNoValidation, ChangeArrayFormat, selectValue } from "../utils/Comman.js";
-import { useFormData } from "../context/FormDataContext.jsx";
-import { defaultFormStructure } from "../context/FormDataContext";
+import { showSuccess, showError } from "../../utils/toast";
+import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
+import { fetchPostData } from "../../components/hooks/Api";
+import { onChangeDropdown, formatTextwithSpace, mobileNoValidation, ChangeArrayFormat, selectValue } from "../../utils/Comman.js";
+import { useFormData } from "../../context/FormDataContext.jsx";
+import { defaultFormStructure } from "../../context/FormDataContext";
 import { useNavigate } from "react-router-dom";
 import OtpVerify from "../../components/website/OtpVerify.jsx";
 import BankDetailsForm from "./BankDetailsForm.jsx";

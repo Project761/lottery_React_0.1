@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { showError, showSuccess } from "../utils/toast";
-import { fetchDirectData } from "../components/hooks/Api";
-import { mobileNoValidation } from "../utils/Comman";
+import { showError, showSuccess } from "../../utils/toast";
+import { fetchDirectData } from "../../components/hooks/Api";
+import { mobileNoValidation } from "../../utils/Comman";
 
 const LoginPage = () => {
   const [mobile, setMobile] = useState("");
