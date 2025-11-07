@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate, Link } from "react-router-dom";
+
 
 const PersonalDetailsPage = () => {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("basic");
     const applicantData = {
         name: "HAHSH",
@@ -41,7 +43,20 @@ const PersonalDetailsPage = () => {
                     <p className="mb-3">
                         <strong>Date:</strong> {applicantData.date}
                     </p>
-                    <button className="btn px-4" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", }}>Download Receipt</button>
+                    <Link 
+                        to="/acknowledgement-receipt"
+                        className="btn px-4" 
+                        style={{ 
+                            backgroundColor: "#A992F7", 
+                            color: "white", 
+                            padding: "10px 20px", 
+                            fontWeight: "500",
+                            textDecoration: 'none',
+                            display: 'inline-block'
+                        }}
+                    >
+                        Download Receipt
+                    </Link>
                 </div>
 
                 {/* ✅ Custom Tab Header */}

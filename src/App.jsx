@@ -8,8 +8,9 @@ import Header from './components/website/Header';
 import Footer from './components/website/Footer';
 import TabHeader from './components/website/TabHeader';
 import Home from './pages/websitelayouts/Home';
-import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
+// import PersonalDetailsPage from './pages/websitelayouts/PersonalDetailsPage';
 import BankDetailsForm from './pages/websitelayouts/BankDetailsForm';
+import AcknowledgementReceipt from './pages/websitelayouts/AcknowledgementReceipt';
 import DemandDraftDetails from './pages/websitelayouts/DemandDraftDetails';
 import IncomeDetails from './pages/websitelayouts/IncomeDetails';
 import LoginPage from './pages/websitelayouts/LoginPage';
@@ -21,6 +22,10 @@ import AdminPage from "./pages/adminlayouts/AdminPage";
 import Dashboard from './pages/adminlayouts/Dashboard';
 import AdminLogin from './components/admin/Login';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import PersonalDetailsPage from './pages/websitelayouts/PersonalDetailsPage';
+import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
+
+
 
 // Admin Layout Wrapper
 // const AdminLayout = () => {
@@ -160,6 +165,8 @@ function AppContent() {
           <Route path="/income-details" element={<IncomeDetails />} />
           <Route path="/verify-otp" element={<OtpVerify />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
+          <Route path="/personal-details" element={<PersonalDetailsPage />} />
+          <Route path="/acknowledgement-receipt" element={<AcknowledgementReceipt />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

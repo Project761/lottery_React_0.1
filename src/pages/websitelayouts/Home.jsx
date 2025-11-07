@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import HomeSvg from "../components/website/HomeSvg";
 import { useFormData } from "../../context/FormDataContext.jsx";
-import PersonalDetailsPage from "./PersonalDetailsPage.jsx";
-// import HomeSvg from "../../components/website/HomeSvg.jsx";
+import HomeSvg from "../../components/website/HomeSvg.jsx";
 
 const Home = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -19,8 +17,7 @@ const Home = () => {
       {/* Images Section */}
       <div className="row justify-content-center">
         <div className="col-lg-8">
-          {/* <HomeSvg /> */}
-          <PersonalDetailsPage />
+          <HomeSvg />
         </div>
       </div>
 
