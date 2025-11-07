@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import TermsModal from "../components/TermsModal";
-import Select from "../../node_modules/react-select/dist/react-select.esm.js";
-import { fetchPostData } from "../components/hooks/Api.js";
-import { showError, showSuccess } from "../utils/toast.js";
-import { useFormData } from "../context/FormDataContext.jsx";
-import { onChangeDropdown } from "../utils/Comman.js";
+import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
+import { fetchPostData } from "../../components/hooks/Api.js";
+import { showError, showSuccess } from "../../utils/toast.js";
+import { useFormData } from "../../context/FormDataContext.jsx";
+import { onChangeDropdown } from "../../utils/Comman.js";
+import TermsModal from "../../components/website/TermsModal.jsx";
 
 const IncomeDetails = ({ onBack }) => {
   const navigate = useNavigate();

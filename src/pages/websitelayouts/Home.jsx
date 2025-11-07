@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import HomeSvg from "../components/HomeSvg";
-import { useFormData } from "../context/FormDataContext.jsx";
+// import HomeSvg from "../components/website/HomeSvg";
+import { useFormData } from "../../context/FormDataContext.jsx";
+import PersonalDetailsPage from "./PersonalDetailsPage.jsx";
+// import HomeSvg from "../../components/website/HomeSvg.jsx";
 
 const Home = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const { resetFormData } = useFormData();
-  
+
   useEffect(() => {
     resetFormData();
   }, []);
@@ -17,13 +19,14 @@ const Home = () => {
       {/* Images Section */}
       <div className="row justify-content-center">
         <div className="col-lg-8">
-          <HomeSvg />
+          {/* <HomeSvg /> */}
+          <PersonalDetailsPage />
         </div>
       </div>
 
       {/* Buttons Section */}
       <div className="d-flex justify-content-center flex-wrap gap-3 mb-4">
-        <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500",}}>
+        <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", }}>
           Scheme Term & Conditions Booklet
         </button>
         <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500" }}>
@@ -34,7 +37,7 @@ const Home = () => {
       {/* Checkbox Section */}
       <div className="text-center mt-4">
         <div className="d-flex justify-content-center align-items-center">
-          <input type="checkbox" id="agree" className="me-2" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
+          <input type="checkbox" id="agree" className="me-2" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
           <label htmlFor="agree" className="text-muted small">
             I HAVE ACKNOWLEDGED AND AGREE THAT I HAVE READ AND UNDERSTOOD THE TERM
             AND CONDITION.
@@ -42,7 +45,7 @@ const Home = () => {
         </div>
 
         {isChecked && (
-          <button className="btn mt-3" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500",}} onClick={() => navigate('/apply')}>
+          <button className="btn mt-3" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", }} onClick={() => navigate('/apply')}>
             Click Here To Apply
           </button>
         )}

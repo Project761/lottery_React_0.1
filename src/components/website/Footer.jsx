@@ -1,11 +1,18 @@
 import React from "react";
-import visa from "../assets/image/visa.png";
-import discover from "../assets/image/discover.png";
-import mastercard from "../assets/image/master-card.png";
-import paypal from "../assets/image/paypal.png";
-import amex from "../assets/image/american-express.png";
+import { useNavigate } from "react-router-dom";
+import { FiLock } from "react-icons/fi";
+import visa from "../../assets/image/visa.png";
+import discover from "../../assets/image/discover.png";
+import mastercard from "../../assets/image/master-card.png";
+import paypal from "../../assets/image/paypal.png";
+import amex from "../../assets/image/american-express.png";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleAdminClick = () => {
+    navigate('/admin');
+  };
   return (
     <footer className="bg-dark text-white py-4">
       <div className="container">
@@ -56,7 +63,13 @@ const Footer = () => {
           {/* Contact Section */}
           <div className="col-md-4">
             <p className="mb-1 text-white">Contact</p>
-            <p className="fw-medium mb-0">5454565768</p>
+            <p className="fw-medium mb-3">5454565768</p>
+            <button 
+              onClick={handleAdminClick}
+              className="btn btn-sm btn-outline-light d-flex align-items-center mx-auto"
+            >
+              <FiLock className="me-1" /> Admin
+            </button>
           </div>
         </div>
       </div>

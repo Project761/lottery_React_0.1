@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { showSuccess, showError } from "../utils/toast";
+import { showSuccess, showError } from "../../utils/toast";
 
 const TermsModal = ({ show, onClose, onAgree }) => {
     const [agree, setAgree] = useState(false);
