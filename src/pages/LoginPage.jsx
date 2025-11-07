@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { showError, showSuccess } from "../utils/toast";
 import { fetchDirectData } from "../components/hooks/Api";
+import { mobileNoValidation } from "../utils/Comman";
 
 const LoginPage = () => {
   const [mobile, setMobile] = useState("");
@@ -12,7 +13,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (!mobile.trim() || !applicant.trim()) {
-      showError("Please fill in all required fields.");
+      showError("Please fill all required fields.");
       return;
     }
 
@@ -77,7 +78,9 @@ const LoginPage = () => {
                     <label className="form-label fw-semibold">
                       Mobile Number <span className="text-danger">*</span>
                     </label>
-                    <input type="text" className="form-control" placeholder="Enter Mobile Number" value={mobile} autoComplete="off" onChange={(e) => setMobile(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Enter Mobile Number" value={mobile} autoComplete="off" onChange={(e) =>{ 
+                      const formattedMobile = mobileNoValidation(e.target.value);
+                      setMobile(formattedMobile)}} />
                   </div>
 
                   {/* Applicant-No */}
