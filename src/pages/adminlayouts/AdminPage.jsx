@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataTablePage from "./DataTablePage";
-import { getPageConfig } from "../../config/adminPages.jsx";
-import { getApiForPage } from "../../services/adminApiService";
+
 
 const AdminPage = ({ page: propPage }) => {
   console.log("🚀 ~ AdminPage ~ propPage:", propPage)
