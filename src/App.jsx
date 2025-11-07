@@ -1,33 +1,42 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import './interceptors/Axios';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import TabHeader from './components/TabHeader';
-import Home from './pages/Home';
-import PersonalDetailsForm from './pages/PersonalDetailsForm';
-import BankDetailsForm from './pages/BankDetailsForm';
-import DemandDraftDetails from './pages/DemandDraftDetails';
-import IncomeDetails from './pages/IncomeDetails';
-import LoginPage from './pages/LoginPage';
-import OtpVerify from './components/OtpVerify';
-import ThankYouPage from './components/ThankYouPage';
+import Header from './components/website/Header';
+import Footer from './components/website/Footer';
+import TabHeader from './components/website/TabHeader';
+import Home from './pages/websitelayouts/Home';
+import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
+import BankDetailsForm from './pages/websitelayouts/BankDetailsForm';
+import DemandDraftDetails from './pages/websitelayouts/DemandDraftDetails';
+import IncomeDetails from './pages/websitelayouts/IncomeDetails';
+import LoginPage from './pages/websitelayouts/LoginPage';
+import OtpVerify from './components/website/OtpVerify';
+import ThankYouPage from './components/website/ThankYouPage';
 import { FormDataProvider } from './context/FormDataContext';
+import AdminLayout from './layouts/admin/AdminLayout';
+import AdminPage from "./pages/adminlayouts/AdminPage";
+import Dashboard from './pages/adminlayouts/Dashboard';
+import AdminLogin from './components/admin/Login';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
-const AppWithRouter = () => (
-  <Router>
-    <App />
-  </Router>
-);
+// Admin Layout Wrapper
+// const AdminLayout = () => {
+//   return (
+//     <div className="d-flex">
+//       <div className="flex-grow-1">
+//         <Outlet />
+//       </div>
+//     </div>
+//   );
+// };
 
-function App() {
-  const [isLoading, setIsLoading] = useState(true);
+// Website Layout Wrapper
+const WebsiteLayout = () => {
   const [activeTab, setActiveTab] = useState('');
   const location = useLocation();
-  const navigate = useNavigate();
 
   const updateActiveTab = useCallback(() => {
     const path = location.pathname;
@@ -38,39 +47,66 @@ function App() {
     else setActiveTab('');
   }, [location]);
 
-  const handleTabChange = useCallback((tabId) => {
-    setActiveTab(tabId);
-    switch (tabId) {
-      case 'personal':
-        navigate('/apply');
-        break;
-      case 'bank':
-        navigate('/bank-details');
-        break;
-      case 'dd':
-        navigate('/dd-details');
-        break;
-      case 'income':
-        navigate('/income-details');
-        break;
-      default:
-        break;
-    }
-  }, [navigate]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+    updateActiveTab();
+  }, [location.pathname, updateActiveTab]);
+
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <Header />
+      <div className="container mt-4 mb-4 flex-grow-1">
+        {activeTab && (
+          <TabHeader activeTab={activeTab} onTabChange={(tab) => {
+            setActiveTab(tab);
+            // You can add navigation logic here if needed
+          }} />
+        )}
+        <main className="flex-grow-1">
+          <Outlet />
+        </main>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+
+function AppContent() {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem('isAuthenticated') === 'true'
+  );
+
+  const handleLogin = useCallback(() => {
+    localStorage.setItem('isAuthenticated', 'true');
+    setIsAuthenticated(true);
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    setIsAuthenticated(false);
+    setTimeout(() => {
+      window.location.href = '/admin/login';
+      window.location.reload();
+    }, 800); 
+  }, []);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
-
-    updateActiveTab();
-
+    }, 1000);
     return () => clearTimeout(timer);
-  }, [updateActiveTab]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -89,37 +125,45 @@ function App() {
   }
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Header />
+    <FormDataProvider>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/admin/login" element={
+          isAuthenticated ? 
+          <Navigate to="/admin/dashboard" replace /> : 
+          <AdminLogin onLogin={handleLogin} />
+        } />
 
-      {/* Main Content */}
-      <div className="container mt-4 mb-4 flex-grow-1">
-        {activeTab && (
-          <TabHeader activeTab={activeTab} onTabChange={handleTabChange} />
-        )}
+        {/* Protected Admin Routes */}
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <AdminLayout onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          {["bank", "project", "caste", "plot", "application", "bank-details"].map((pageName) => (
+            <Route key={pageName} path={pageName} element={<AdminPage page={pageName} />} />
+          ))}
+        </Route>
 
-        <main className="flex-grow-1">
-
-          <FormDataProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/apply" element={<PersonalDetailsForm />} />
-              <Route path="/bank-details" element={<BankDetailsForm onBack={() => handleTabChange('personal')} />} />
-              <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
-              <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
-              <Route path="/dd-details" element={<DemandDraftDetails onBack={() => handleTabChange('bank')} />} />
-              <Route path="/income-details" element={<IncomeDetails onBack={() => handleTabChange('dd')} />} />
-              <Route path="/verify-otp" element={<OtpVerify />} />
-              <Route path="/thank-you" element={<ThankYouPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </FormDataProvider>
-        </main>
-      </div>
-
-      <Footer />
-
+        {/* Public Website Routes */}
+        <Route element={<WebsiteLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/apply" element={<PersonalDetailsForm />} />
+          <Route path="/bank-details" element={<BankDetailsForm />} />
+          <Route path="/dd-details" element={<DemandDraftDetails />} />
+          <Route path="/income-details" element={<IncomeDetails />} />
+          <Route path="/verify-otp" element={<OtpVerify />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+      
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -131,8 +175,8 @@ function App() {
         draggable
         pauseOnHover
       />
-    </div>
+    </FormDataProvider>
   );
 }
 
-export default AppWithRouter;
+export default App;

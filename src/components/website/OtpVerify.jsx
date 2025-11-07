@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { showError, showSuccess } from "../utils/toast";
-import { fetchPostData } from "../components/hooks/Api";
+import { showError, showSuccess } from "../../utils/toast";
+import { fetchPostData } from "../hooks/Api";
 
 const OtpVerify = ({ onVerify, MobileNumber, isSubmitting }) => {
   const [otp, setOtp] = useState("");

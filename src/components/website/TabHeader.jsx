@@ -1,5 +1,5 @@
 import React from 'react';
-import tabsConfig from '../config/tabs';
+import tabsConfig from '../../config/tabs';
 
 const TabHeader = ({ activeTab, onTabChange }) => {
   const tabs = tabsConfig;

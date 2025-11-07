@@ -7,6 +7,7 @@ import { showError, showSuccess } from "../utils/toast.js";
 import { useFormData } from "../context/FormDataContext.jsx";
 import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../utils/Comman.js";
 
+
 const IncomeDetails = ({ onBack }) => {
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);

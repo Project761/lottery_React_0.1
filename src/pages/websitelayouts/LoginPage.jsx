@@ -47,7 +47,7 @@ const LoginPage = () => {
 
         if (timeUntilExpiry > 0) {
           setTimeout(async () => {
-            const { refreshAccessToken } = await import("../utils/auth");
+            const { refreshAccessToken } = await import("../../utils/auth");
             await refreshAccessToken();
           }, timeUntilExpiry);
         }

@@ -8,6 +8,8 @@ import { onChangeDropdown, formatTextwithSpace, mobileNoValidation, ChangeArrayF
 import { useFormData } from "../context/FormDataContext.jsx";
 import { defaultFormStructure } from "../context/FormDataContext";
 import { useNavigate } from "react-router-dom";
+import OtpVerify from "../../components/website/OtpVerify.jsx";
+import BankDetailsForm from "./BankDetailsForm.jsx";
 
 const sendOtpToMobile = async (MobileNumber) => {
     try {
