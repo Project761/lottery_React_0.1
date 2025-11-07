@@ -62,17 +62,10 @@ const PersonalDetailsPage = () => {
                 {/* ✅ Custom Tab Header */}
                 <div className="d-flex border-bottom mt-3">
                     {["basic", "account"].map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`flex-fill py-2 fw-semibold border-0 ${activeTab === tab ? "active-tab" : "inactive-tab"
-                                }`}
-                            onMouseEnter={(e) => {
-                                if (activeTab !== tab) e.currentTarget.style.backgroundColor = "#E9E3FF";
-                            }}
-                            onMouseLeave={(e) => {
-                                if (activeTab !== tab) e.currentTarget.style.backgroundColor = "transparent";
-                            }}
+                        <button key={tab} onClick={() => setActiveTab(tab)}
+                            className={`flex-fill py-2 fw-semibold border-0 ${activeTab === tab ? "active-tab" : "inactive-tab"}`}
+                            onMouseEnter={(e) => { if (activeTab !== tab) e.currentTarget.style.backgroundColor = "#E9E3FF"; }}
+                            onMouseLeave={(e) => { if (activeTab !== tab) e.currentTarget.style.backgroundColor = "transparent"; }}
                         >
                             {tab === "basic" ? "Basic Info" : "Account Details"}
                         </button>
