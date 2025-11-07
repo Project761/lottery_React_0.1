@@ -145,7 +145,7 @@ function AppContent() {
         >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          {["bank", "project", "caste", "plot", "application", "bank-details", "DemandDraftAmount"].map((pageName) => (
+          {["project", "plot", "application", "bank-details", "bank", "caste", "DemandDraftAmount", "City"].map((pageName) => (
             <Route key={pageName} path={pageName} element={<AdminPage page={pageName} />} />
           ))}
         </Route>
