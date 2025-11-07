@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { showError, showSuccess } from "../../utils/toast";
 import { fetchDirectData } from "../../components/hooks/Api";
+import { mobileNoValidation } from "../../utils/Comman";
 
 const LoginPage = () => {
 
@@ -14,7 +15,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (!mobile.trim() || !applicant.trim()) {
-      showError("Please fill in all required fields.");
+      showError("Please fill all required fields.");
       return;
     }
 
@@ -39,7 +40,7 @@ const LoginPage = () => {
         localStorage.setItem("refresh_token", response.refresh_token);
         localStorage.setItem("token_expiry", response.expires);
 
-        showSuccess("Login successful!");
+        showSuccess("Login Successful!");
 
         // Schedule auto token refresh 1 minute before expiry
         const expiryTime = new Date(response.expires).getTime();
@@ -79,7 +80,9 @@ const LoginPage = () => {
                     <label className="form-label fw-semibold">
                       Mobile Number <span className="text-danger">*</span>
                     </label>
-                    <input type="text" className="form-control" placeholder="Enter Mobile Number" value={mobile} autoComplete="off" onChange={(e) => setMobile(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Enter Mobile Number" value={mobile} autoComplete="off" onChange={(e) =>{ 
+                      const formattedMobile = mobileNoValidation(e.target.value);
+                      setMobile(formattedMobile)}} />
                   </div>
 
                   {/* Applicant-No */}
@@ -90,18 +93,9 @@ const LoginPage = () => {
                     <input type="text" className="form-control" placeholder="Enter Applicant Number" value={applicant} autoComplete="off" onChange={(e) => setApplicant(e.target.value)} />
                   </div>
                 </div>
-
+  
                 <div className="mt-4 text-center">
-                  <button
-                    type="submit"
-                    className="btn text-white fw-semibold py-2 px-4"
-                    style={{
-                      backgroundColor: "#A992F7",
-                      fontSize: "16px",
-                      width: "auto",
-                      minWidth: "100px",
-                    }}
-                  >
+                  <button type="submit" className="btn text-white fw-semibold py-2 px-4" style={{ backgroundColor: "#A992F7", fontSize: "16px", width: "auto", minWidth: "100px",}}>
                     Login
                   </button>
                 </div>
