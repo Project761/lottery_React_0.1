@@ -162,3 +162,14 @@ export const fetchDirectData = async (url, postData) => {
 
     return await res.data;
 }
+
+
+/// <---------- AddDeleteUpdate Data ---------->
+
+export const AddDeleteUpdateData = async (url, postData) => {
+
+    const res = await axios.post(url, postData);
+    console.log(res);
+
+    return await res.data;
+}
