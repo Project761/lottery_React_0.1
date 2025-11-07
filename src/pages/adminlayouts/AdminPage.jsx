@@ -5,7 +5,7 @@ import { getPageConfig } from "../../config/adminPages.jsx";
 import { getApiForPage } from "../../services/adminApiService";
 
 const AdminPage = ({ page: propPage }) => {
-  console.log("🚀 ~ AdminPage ~ propPage:", propPage)
+  // console.log("🚀 ~ AdminPage ~ propPage:", propPage)
 
   return (
     <div className="container py-4">
