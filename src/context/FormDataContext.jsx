@@ -33,7 +33,7 @@ export const defaultFormStructure = {
   // Payment Details
   PaymentTrasnum: '',
   PaymentDate: '',
-  PaymentBank: '', //No
+  PaymentBank: '', 
   BankAmount: '',
   PaymentAttachement: '',
 

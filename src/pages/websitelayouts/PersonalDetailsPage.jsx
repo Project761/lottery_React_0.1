@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 const PersonalDetailsPage = () => {
@@ -28,6 +28,9 @@ const PersonalDetailsPage = () => {
         accountType: "Savings",
     };
 
+    const userData = JSON.parse(localStorage.getItem('applicationFormData'));
+    // console.log(userData);
+
     return (
         <div className="container mt-4 mb-5">
             <div className="card shadow-sm border-0">
@@ -42,32 +45,15 @@ const PersonalDetailsPage = () => {
                 {/* Applicant Details */}
                 <div className="card-body text-center border-bottom">
                     <h4 className="fw-bold">{applicantData.name}</h4>
-                    <p className="mb-1">
-                        <strong>Applicant Number:</strong> {applicantData.applicantNumber}
-                    </p>
-                    <p className="mb-1">
-                        <strong>Email:</strong> {applicantData.email}
-                    </p>
-                    <p className="mb-3">
-                        <strong>Date:</strong> {applicantData.date}
-                    </p>
-                    <Link
-                        to="/acknowledgement-receipt"
-                        className="btn px-4"
-                        style={{
-                            backgroundColor: "#A992F7",
-                            color: "white",
-                            padding: "10px 20px",
-                            fontWeight: "500",
-                            textDecoration: 'none',
-                            display: 'inline-block'
-                        }}
-                    >
+                    <p className="mb-1"> <strong>Applicant Number:</strong> {applicantData.applicantNumber}</p>
+                    <p className="mb-1"> <strong>Email:</strong> {userData.Email} </p>
+                    <p className="mb-3"> <strong>Date:</strong> {userData.Dob} </p>
+                    <Link to="/acknowledgement-receipt" className="btn px-4" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", textDecoration: 'none', display: 'inline-block'}}>
                         Download Receipt
                     </Link>
                 </div>
 
-                {/* ✅ Custom Tab Header */}
+                {/*Custom Tab Header */}
                 <div className="d-flex border-bottom mt-3">
                     {["basic", "account"].map((tab) => (
                         <button key={tab} onClick={() => setActiveTab(tab)}
@@ -81,34 +67,34 @@ const PersonalDetailsPage = () => {
 
                 </div>
 
-                {/* ✅ Tab Content */}
+                {/*Tab Content */}
                 <div className="p-4 border border-top-0 rounded-bottom bg-white">
                     {activeTab === "basic" ? (
                         <table className="table table-bordered align-middle">
                             <tbody>
                                 <tr>
                                     <th width="30%">Fullname</th>
-                                    <td>{applicantData.basicInfo.fullname}</td>
+                                    <td>{userData.FullName}</td>
                                 </tr>
                                 <tr>
                                     <th>Date of Birth</th>
-                                    <td>{applicantData.basicInfo.dob}</td>
+                                    <td>{userData.Dob}</td>
                                 </tr>
                                 <tr>
                                     <th>Father/Husband Name</th>
-                                    <td>{applicantData.basicInfo.fatherName}</td>
+                                    <td>{userData.Fhname}</td>
                                 </tr>
                                 <tr>
                                     <th>Mobile Number</th>
-                                    <td>{applicantData.basicInfo.mobile}</td>
+                                    <td>{userData.MobileNumber}</td>
                                 </tr>
                                 <tr>
                                     <th>Address</th>
-                                    <td>{applicantData.basicInfo.address}</td>
+                                    <td>{userData.Paraddress}</td>
                                 </tr>
                                 <tr>
                                     <th>Zip Code</th>
-                                    <td>{applicantData.basicInfo.zip}</td>
+                                    <td>{userData.ZipCode}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -126,27 +112,27 @@ const PersonalDetailsPage = () => {
                                         <tbody>
                                             <tr>
                                                 <th width="30%">Account Holder Name</th>
-                                                <td>{accountInfo.accountHolderName}</td>
+                                                <td>{userData.BankUserName}</td>
                                             </tr>
                                             <tr>
                                                 <th>Account Number</th>
-                                                <td>{accountInfo.accountNumber}</td>
+                                                <td>{userData.AccountNumber}</td>
                                             </tr>
                                             <tr>
                                                 <th>Bank Name</th>
-                                                <td>{accountInfo.bankName}</td>
+                                                <td>{userData.bankName}</td>
                                             </tr>
                                             <tr>
-                                                <th>Branch Name</th>
-                                                <td>{accountInfo.branchName}</td>
+                                                <th>Branch Address</th>
+                                                <td>{userData.BranchAddress}</td>
                                             </tr>
                                             <tr>
                                                 <th>IFSC Code</th>
-                                                <td>{accountInfo.ifscCode}</td>
+                                                <td>{userData.IfscCode}</td>
                                             </tr>
                                             <tr>
                                                 <th>Account Type</th>
-                                                <td>{accountInfo.accountType}</td>
+                                                <td>{userData.accountType}</td>
                                             </tr>
                                         </tbody>
                                     </table>

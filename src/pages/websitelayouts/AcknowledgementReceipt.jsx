@@ -2,6 +2,7 @@ import React from "react";
 import { FaPrint } from "react-icons/fa";
 
 
+const userData = JSON.parse(localStorage.getItem('applicationFormData'));
 const AcknowledgementReceipt = () => {
   const data = {
     applicationRef: "2502600190",
@@ -34,18 +35,15 @@ const AcknowledgementReceipt = () => {
         <p className="fw-semibold mb-0 hindi-text">
           जयपुर की आवासीय योजना अंतर विहार में भूखण्डों के आवंटन हेतु ऑनलाइन आवेदन
         </p>
-        <p className="fw-semibold hindi-text mb-3">
-          जयपुर की आवासीय योजना अंतर विहार में भूखण्डों के आवंटन हेतु ऑनलाइन आवेदन
-        </p>
       </div>
 
-      <div className="d-flex justify-content-end mb-3 no-print" style={{position:"absolute", right:"0px", top:"45px"}}>
-        <button 
+      <div className="d-flex justify-content-end mb-3 no-print" style={{ position: "absolute", right: "0px", top: "45px" }}>
+        <button
           onClick={() => window.print()}
           className="btn  d-flex align-items-center gap-2"
           style={{ backgroundColor: "#a992f7", color: "white" }}
         >
-          <FaPrint /> Print 
+          <FaPrint /> Print
         </button>
       </div>
 
@@ -77,27 +75,27 @@ const AcknowledgementReceipt = () => {
         <tbody>
           <tr>
             <th>Applicant's Full Name</th>
-            <td>{data.applicantName}</td>
+            <td>{userData.FullName}</td>
           </tr>
           <tr>
             <th>Father’s/Husband’s Full Name</th>
-            <td>{data.fatherName}</td>
+            <td>{userData.Fhname}</td>
           </tr>
           <tr>
             <th>Date of Birth</th>
-            <td>{data.dob}</td>
+            <td>{userData.Dob}</td>
           </tr>
           <tr>
             <th>Mobile No</th>
-            <td>{data.mobile}</td>
+            <td>{userData.MobileNumber}</td>
           </tr>
           <tr>
             <th>Address</th>
-            <td>{data.address}</td>
+            <td>{userData.Paraddress}</td>
           </tr>
           <tr>
             <th>eMail ID</th>
-            <td>{data.email}</td>
+            <td>{userData.Email}</td>
           </tr>
         </tbody>
       </table>
