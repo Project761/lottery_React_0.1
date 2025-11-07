@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { showError, showSuccess } from "../utils/toast";
-import { fetchDirectData } from "../components/hooks/Api";
+import { showError, showSuccess } from "../../utils/toast";
+import { fetchDirectData } from "../../components/hooks/Api";
 
 const LoginPage = () => {
   const [mobile, setMobile] = useState("");
@@ -46,7 +46,7 @@ const LoginPage = () => {
 
         if (timeUntilExpiry > 0) {
           setTimeout(async () => {
-            const { refreshAccessToken } = await import("../utils/auth");
+            const { refreshAccessToken } = await import("../../utils/auth");
             await refreshAccessToken();
           }, timeUntilExpiry);
         }
