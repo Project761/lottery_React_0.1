@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-
 const PersonalDetailsPage = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("basic");
@@ -157,7 +156,6 @@ const PersonalDetailsPage = () => {
                         </table>
                     )}
                 </div>
-
             </div>
         </div>
     );
