@@ -20,7 +20,7 @@ const Header = () => {
         {userID ? (
           <div>
             <Link to="/personal-details">
-              <Button className="log-button" onClick={resetFormData} style={{marginRight: '18px'}}>Download Receipt</Button>
+              <Button className="log-button" style={{marginRight: '18px'}}>Download Receipt</Button>
             </Link>
             <Link to="/">
               <Button className="log-button" onClick={resetFormData}>Logout</Button>
