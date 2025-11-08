@@ -317,6 +317,28 @@ footer {
 
 
 
+@media print {
+  @page {
+    margin: 1cm;
+    size: A4 portrait;
+
+    /* 👇  this removes the header/footer (date, URL, etc.) */
+    @top-center { content: none; }
+    @bottom-center { content: none; }
+  }
+
+  /* optional tweaks */
+  body {
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+
+
+
+
 
 
 
