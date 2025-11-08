@@ -1,9 +1,6 @@
-import React from "react";
-import { FaPrint } from "react-icons/fa";
+import React, { forwardRef } from "react";
 
-
-const userData = JSON.parse(localStorage.getItem('applicationFormData'));
-const AcknowledgementReceipt = () => {
+const AcknowledgementReceipt = forwardRef((props, ref) => {
   const data = {
     applicationRef: "2502600190",
     status: "Acknowledged",
@@ -25,10 +22,12 @@ const AcknowledgementReceipt = () => {
     date: "26 Jan 2025",
     region: "JHUNJHUNU",
     institute: "JDA",
+    lotteryNumber: "LOT-2025-00123",
+    lotteryDate: "15 Dec 2025",
   };
 
   return (
-    <div className="receipt-container container mt-4 mb-5 position-relative">
+    <div ref={ref} className="receipt-container container mt-4 mb-5 position-relative">
       {/* Header */}
       <div className="text-center">
         <h5 className="fw-bold text-danger mb-1">JAIPUR DEVELOPMENT AUTHORITY</h5>
@@ -37,18 +36,8 @@ const AcknowledgementReceipt = () => {
         </p>
       </div>
 
-      <div className="d-flex justify-content-end mb-3 no-print" style={{ position: "absolute", right: "0px", top: "45px" }}>
-        <button
-          onClick={() => window.print()}
-          className="btn  d-flex align-items-center gap-2"
-          style={{ backgroundColor: "#a992f7", color: "white" }}
-        >
-          <FaPrint /> Print
-        </button>
-      </div>
-
       {/* Application Info */}
-      <table className="table table-bordered">
+      <table className="table table-bordered mt-3">
         <tbody>
           <tr>
             <th>Application Reference Number</th>
@@ -70,7 +59,7 @@ const AcknowledgementReceipt = () => {
       </table>
 
       {/* Applicant Details */}
-      <h6 className="section-heading">Applicant Detail ➤</h6>
+      <h6 className="mt-4">Applicant Detail ➤</h6>
       <table className="table table-bordered">
         <tbody>
           <tr>
@@ -94,36 +83,29 @@ const AcknowledgementReceipt = () => {
             <td>{userData.Paraddress}</td>
           </tr>
           <tr>
-            <th>eMail ID</th>
-            <td>{userData.Email}</td>
+            <th>Email</th>
+            <td>{data.email}</td>
           </tr>
         </tbody>
       </table>
 
-      {/* Application Summary */}
-      <table className="table table-bordered text-center">
-        <thead className="table-light">
-          <tr>
-            <th>Priority</th>
-            <th>Application No.</th>
-            <th>Scheme Name</th>
-            <th>Plot Category</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
+      {/* Lottery Details */}
+      <h6 className="mt-4">Lottery Details ➤</h6>
+      <table className="table table-bordered">
         <tbody>
           <tr>
-            <td>1</td>
-            <td>{data.applicationRef}</td>
-            <td>{data.schemeName}</td>
-            <td>{data.plotCategory}</td>
-            <td>{data.amount}</td>
+            <th>Lottery Number</th>
+            <td className="fw-bold text-primary">{data.lotteryNumber}</td>
+          </tr>
+          <tr>
+            <th>Lottery Date</th>
+            <td>{data.lotteryDate}</td>
           </tr>
         </tbody>
       </table>
 
       {/* Payment Details */}
-      <h6 className="section-heading">Payment Details ➤</h6>
+      <h6 className="mt-4">Payment Details ➤</h6>
       <table className="table table-bordered">
         <tbody>
           <tr>
@@ -160,16 +142,8 @@ const AcknowledgementReceipt = () => {
           </tr>
         </tbody>
       </table>
-
-      {/* Footer */}
-      <p className="note-text">
-        <strong>Note:</strong> If payment is made through Credit/Debit Card, in
-        case of refund by JDA, the amount will only be credited to the Bank
-        Account provided by applicant while filling form. JDA will not entertain
-        any Chargeback claims, if any.
-      </p>
     </div>
   );
-};
+});
 
 export default AcknowledgementReceipt;
