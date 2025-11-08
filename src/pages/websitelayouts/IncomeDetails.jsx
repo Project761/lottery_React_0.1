@@ -8,7 +8,7 @@ import { useFormData } from "../../context/FormDataContext.jsx";
 import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Comman.js";
 
 
-const IncomeDetails = ({ onBack }) => {
+const IncomeDetails = () => {
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -122,6 +122,10 @@ const IncomeDetails = ({ onBack }) => {
       // console.error("Submit Error:", error);
     }
   };
+
+  const onBack = () => {
+    navigate("/dd-details");
+  }
 
   return (
     <div className="container px-0 ">

@@ -6,7 +6,7 @@ import { showError } from "../../utils/toast.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
-const DemandDraftDetails = ({ onBack }) => {
+const DemandDraftDetails = () => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
     const { formData, setFormData } = useFormData();
@@ -95,6 +95,10 @@ const DemandDraftDetails = ({ onBack }) => {
             });
         }
     };
+
+    const onBack = () => {
+        navigate("/bank-details");
+    }
 
     return (
         <div className="container px-0 ">
