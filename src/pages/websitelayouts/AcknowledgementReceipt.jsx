@@ -1,30 +1,78 @@
-import React, { forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
+import { showError } from "../../utils/toast";
+import { fetchPostData } from "../../components/hooks/Api";
 
 const AcknowledgementReceipt = forwardRef((props, ref) => {
-  const data = {
-    applicationRef: "2502600190",
-    status: "Acknowledged",
-    incomeGroup: "300001/- To 600000/ Per Year",
-    category: "Un-Reserved",
-    applicantName: "PATASI",
-    fatherName: "MOOL CHAND",
-    dob: "01 JAN 1959",
-    mobile: "9549868573",
-    address: "JEEVA KA BASS, KHARKHARI, JHUNJHUNU, Rajasthan, Pin Code 333011",
-    email: "jangid770@gmail.com",
-    schemeName: "ATAL VIHAR",
-    plotCategory: "LIG",
-    amount: "20000.00",
-    paymentStatus: "Payment Acknowledged",
-    paymentMode: "Online",
-    paymentControlNo: "64250260190",
-    instrumentNo: "ICINXBK776",
-    date: "26 Jan 2025",
-    region: "JHUNJHUNU",
-    institute: "JDA",
-    lotteryNumber: "LOT-2025-00123",
-    lotteryDate: "15 Dec 2025",
+  const [category, setcategory] = useState("");
+  const [income, setIncome] = useState("");
+  const [bank, setBank] = useState("");
+
+  const userData = JSON.parse(localStorage.getItem('applicationFormData'));
+
+  //---------------------- Dropdowns -----------------------
+  const fetchCategory = async () => {
+    try {
+      const response = await fetchPostData(
+        "Category/GetDataDropDown_Category",
+        {
+          // CompanyId: Number(localStorage.getItem('companyID')),
+          CompanyID: 1,
+        }
+      );
+      console.log(response);
+
+      if (response && Array.isArray(response)) {
+        const data = response.find((arr) => String(arr.CategoryID) === String(userData.Category))?.Description;
+        setcategory(data);
+        // console.log(data);
+      } else {
+        setcategory("");
+      }
+    } catch {
+      showError("Error fetching States");
+    }
   };
+
+  const fetchAnnualIncome = async () => {
+    try {
+      const response = await fetchPostData("AnnualIncome/GetDataDropDown_AnnualIncome",
+        {
+          CompanyID: 1,
+        }
+      );
+      console.log(response);
+      if (response && Array.isArray(response)) {
+        const data = response.find((arr) => String(arr.AnnualIncomeID) === String(userData.AnnualIncome))?.Description
+        setIncome(data);
+      } else {
+        setIncome("");
+      }
+    } catch {
+      showError("Error fetching Annual Income");
+    }
+  };
+
+  const fetchBank = async () => {
+    const response = await fetchPostData('Bank/GetDataDropDown_Bank',
+      {
+        CompanyID: 1
+      }
+    );
+    // console.log(response);
+
+    if (response && Array.isArray(response)) {
+      const data = response.find((arr) => String(arr.BankID) === String(userData.BankName))?.Description;
+      setBank(data);
+    } else {
+      setBank("");
+    }
+  }
+
+  useEffect(() => {
+    fetchCategory();
+    fetchAnnualIncome();
+    fetchBank();
+  }, []);
 
   return (
     <div ref={ref} className="receipt-container container mt-4 mb-5 position-relative">
@@ -41,19 +89,19 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
         <tbody>
           <tr>
             <th>Application Reference Number</th>
-            <td>{data.applicationRef}</td>
+            <td>{userData.ApplicantNumber}</td>
           </tr>
           <tr>
             <th>Application Status</th>
-            <td>{data.status}</td>
+            <td>Acknowledged</td>
           </tr>
           <tr>
             <th>Income Group and Category</th>
-            <td>{data.incomeGroup}</td>
+            <td>{category}</td>
           </tr>
           <tr>
             <th>Reservation of Plot Category</th>
-            <td>{data.category}</td>
+            <td>{income}</td>
           </tr>
         </tbody>
       </table>
@@ -84,13 +132,13 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
           </tr>
           <tr>
             <th>Email</th>
-            <td>{data.email}</td>
+            <td>{userData.Email}</td>
           </tr>
         </tbody>
       </table>
 
       {/* Lottery Details */}
-      <h6 className="mt-4">Lottery Details ➤</h6>
+      {/* <h6 className="mt-4">Lottery Details ➤</h6>
       <table className="table table-bordered">
         <tbody>
           <tr>
@@ -102,7 +150,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
             <td>{data.lotteryDate}</td>
           </tr>
         </tbody>
-      </table>
+      </table> */}
 
       {/* Payment Details */}
       <h6 className="mt-4">Payment Details ➤</h6>
@@ -110,36 +158,36 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
         <tbody>
           <tr>
             <th>Status</th>
-            <td>{data.paymentStatus}</td>
+            <td>Payment Acknowledged</td>
           </tr>
           <tr>
             <th>Payment Mode</th>
-            <td>{data.paymentMode}</td>
+            <td>Online</td>
           </tr>
           <tr>
-            <th>Payment Control No.</th>
-            <td>{data.paymentControlNo}</td>
+            <th>Account Holder Name</th>
+            <td>{userData.BankUserName}</td>
           </tr>
           <tr>
-            <th>Instrument No.</th>
-            <td>{data.instrumentNo}</td>
+            <th>Account Number</th>
+            <td>{userData.AccountNumber}</td>
           </tr>
           <tr>
-            <th>Instrument Date</th>
-            <td>{data.date}</td>
+            <th>IFSC Code</th>
+            <td>{userData.IfscCode}</td>
           </tr>
           <tr>
-            <th>Region</th>
-            <td>{data.region}</td>
+            <th>Bank Name</th>
+            <td>{bank}</td>
           </tr>
           <tr>
-            <th>Institution</th>
-            <td>{data.institute}</td>
+            <th>Branch Address</th>
+            <td>{userData.BranchAddress}</td>
           </tr>
-          <tr>
+          {/* <tr>
             <th>Instrument Amount</th>
             <td>{data.amount}</td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </div>
