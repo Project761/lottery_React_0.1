@@ -92,6 +92,9 @@ const PersonalDetailsPage = () => {
         accountType: "Savings",
     };
 
+    const userData = JSON.parse(localStorage.getItem('applicationFormData'));
+    // console.log(userData);
+
     return (
         <div className="container mt-4 mb-5">
             <div className="card shadow-sm border-0">
@@ -153,27 +156,27 @@ const PersonalDetailsPage = () => {
                             <tbody>
                                 <tr>
                                     <th width="30%">Fullname</th>
-                                    <td>{applicantData.basicInfo.fullname}</td>
+                                    <td>{userData.FullName}</td>
                                 </tr>
                                 <tr>
                                     <th>Date of Birth</th>
-                                    <td>{applicantData.basicInfo.dob}</td>
+                                    <td>{userData.Dob}</td>
                                 </tr>
                                 <tr>
                                     <th>Father/Husband Name</th>
-                                    <td>{applicantData.basicInfo.fatherName}</td>
+                                    <td>{userData.Fhname}</td>
                                 </tr>
                                 <tr>
                                     <th>Mobile Number</th>
-                                    <td>{applicantData.basicInfo.mobile}</td>
+                                    <td>{userData.MobileNumber}</td>
                                 </tr>
                                 <tr>
                                     <th>Address</th>
-                                    <td>{applicantData.basicInfo.address}</td>
+                                    <td>{userData.Paraddress}</td>
                                 </tr>
                                 <tr>
                                     <th>Zip Code</th>
-                                    <td>{applicantData.basicInfo.zip}</td>
+                                    <td>{userData.ZipCode}</td>
                                 </tr>
                             </tbody>
                         </table>

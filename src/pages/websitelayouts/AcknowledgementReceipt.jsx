@@ -64,23 +64,23 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
         <tbody>
           <tr>
             <th>Applicant's Full Name</th>
-            <td>{data.applicantName}</td>
+            <td>{userData.FullName}</td>
           </tr>
           <tr>
             <th>Father’s/Husband’s Full Name</th>
-            <td>{data.fatherName}</td>
+            <td>{userData.Fhname}</td>
           </tr>
           <tr>
             <th>Date of Birth</th>
-            <td>{data.dob}</td>
+            <td>{userData.Dob}</td>
           </tr>
           <tr>
             <th>Mobile No</th>
-            <td>{data.mobile}</td>
+            <td>{userData.MobileNumber}</td>
           </tr>
           <tr>
             <th>Address</th>
-            <td>{data.address}</td>
+            <td>{userData.Paraddress}</td>
           </tr>
           <tr>
             <th>Email</th>
