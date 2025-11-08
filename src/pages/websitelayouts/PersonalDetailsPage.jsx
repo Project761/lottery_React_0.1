@@ -1,13 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaPrint } from "react-icons/fa";
 import { useReactToPrint } from "react-to-print";
 import AcknowledgementReceipt from "./AcknowledgementReceipt";
 import { useNavigate } from "react-router-dom";
+import { fetchPostData } from "../../components/hooks/Api";
 
 const PersonalDetailsPage = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("basic");
     const receiptRef = useRef();
+    const [bank, setBank] = useState("");
 
     const handlePrint = () => {
         const receiptContent = document.getElementById("receipt-content").innerHTML;
@@ -67,33 +69,28 @@ const PersonalDetailsPage = () => {
 
         printWindow.document.close();
     };
-
-    const applicantData = {
-        name: "HAHSH",
-        applicantNumber: "1251",
-        email: "hah@gmail.com",
-        date: "02-10-2025 11:15:02 PM",
-        basicInfo: {
-            fullname: "Hahsh",
-            dob: "2025-10-02",
-            fatherName: "Hd",
-            mobile: "8385075298",
-            address: "Hdhdj",
-            zip: "302005",
-        },
-    };
-
-    const accountInfo = {
-        accountHolderName: "Hahsh",
-        accountNumber: "1251",
-        bankName: "State Bank of India",
-        branchName: "Jaipur Main",
-        ifscCode: "SBIN0001234",
-        accountType: "Savings",
-    };
-
+    
     const userData = JSON.parse(localStorage.getItem('applicationFormData'));
-    // console.log(userData);
+
+    const fetchBank = async () => {
+        const response = await fetchPostData('Bank/GetDataDropDown_Bank', 
+            {
+                CompanyID: 1
+            }
+        );
+        // console.log(response);
+
+        if(response && Array.isArray(response)){
+            const data = response.find((arr) => String(arr.BankID) === String(userData.BankName))?.Description
+            setBank(data);
+        }else{
+            setBank("");
+        }
+    }
+
+    useEffect(() => {
+        fetchBank();
+    }, []);
 
     return (
         <div className="container mt-4 mb-5">
@@ -115,15 +112,15 @@ const PersonalDetailsPage = () => {
 
                 {/* Applicant Details */}
                 <div className="card-body text-center border-bottom">
-                    <h4 className="fw-bold">{applicantData.name}</h4>
+                    <h4 className="fw-bold">{userData.FullName}</h4>
                     <p className="mb-1">
-                        <strong>Applicant Number:</strong> {applicantData.applicantNumber}
+                        <strong>Applicant Number:</strong> {userData.ApplicantNumber}
                     </p>
                     <p className="mb-1">
-                        <strong>Email:</strong> {applicantData.email}
+                        <strong>Email:</strong> {userData.Email}
                     </p>
                     <p className="mb-3">
-                        <strong>Date:</strong> {applicantData.date}
+                        <strong>Date:</strong> {userData.Dob}
                     </p>
                 </div>
 
@@ -185,28 +182,28 @@ const PersonalDetailsPage = () => {
                             <tbody>
                                 <tr>
                                     <th width="30%">Account Holder Name</th>
-                                    <td>{accountInfo.accountHolderName}</td>
+                                    <td>{userData.BankUserName}</td>
                                 </tr>
                                 <tr>
                                     <th>Account Number</th>
-                                    <td>{accountInfo.accountNumber}</td>
+                                    <td>{userData.AccountNumber}</td>
                                 </tr>
                                 <tr>
                                     <th>Bank Name</th>
-                                    <td>{accountInfo.bankName}</td>
+                                    <td>{bank}</td>
                                 </tr>
                                 <tr>
-                                    <th>Branch Name</th>
-                                    <td>{accountInfo.branchName}</td>
+                                    <th>Branch Address</th>
+                                    <td>{userData.BranchAddress}</td>
                                 </tr>
                                 <tr>
                                     <th>IFSC Code</th>
-                                    <td>{accountInfo.ifscCode}</td>
+                                    <td>{userData.IfscCode}</td>
                                 </tr>
-                                <tr>
+                                {/* <tr>
                                     <th>Account Type</th>
-                                    <td>{accountInfo.accountType}</td>
-                                </tr>
+                                    <td>{userData.accountType}</td>
+                                </tr> */}
                             </tbody>
                         </table>
                     )}
