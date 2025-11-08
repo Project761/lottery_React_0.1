@@ -119,7 +119,6 @@ const DataTablePage = (props) => {
 
   const handleEdit = (row) => {
     console.log("🚀 ~ handleEdit ~ row:", row)
-    showWarning("Editing item... please wait");
     setFormData({
       [listCode]: row[listCode],
       [listId]: row[listId],
@@ -233,41 +232,73 @@ const DataTablePage = (props) => {
     );
   });
 
-  return (
-    <div className="container-fluid py-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        {/* <h2>{title}</h2> */}
-        <Button
-          variant="primary"
-          onClick={() => {
-            handleAddNew();
-            setShowModal(true);
-          }}
-        >
-          <FaPlus className="me-2" /> Add New
-        </Button>
-      </div>
+  const customStyles = {
+    headCells: {
+      style: {
+        background: '#0d6efd',
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: '14px',
+        position: "sticky",
+        top: 0,
+        zIndex: 2,
+      },
+      rows: {
+        style: {
+          padding: '10px',
+        },
+      },
+    },
 
-      <Card className="shadow-sm">
+  };
+
+  return (
+    <div className="container-fluid">
+      <Card className="mb-0" >
         <Card.Body>
-          <div className="mb-3">
-            <InputGroup className="mb-3">
-              <InputGroup.Text>
-                <FaSearch />
-              </InputGroup.Text>
-              <Form.Control
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </InputGroup>
+          <div className="d-flex justify-content-end align-items-center mb-2 pb-1" style={{ gap: '15px' }}>
+            <div className="ml-2">
+              <InputGroup className="">
+                <InputGroup.Text>
+                  <FaSearch />
+                </InputGroup.Text>
+                <Form.Control
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </InputGroup>
+            </div>
+
+            <div className="d-flex justify-content-between align-items-center ">
+              {/* <h2>{title}</h2> */}
+              <Button
+                variant="primary"
+                className="btn-mobile-small"
+                onClick={() => {
+                  handleAddNew();
+                  setShowModal(true);
+                }}
+              >
+                <FaPlus className="me-2" /> Add New
+              </Button>
+            </div>
           </div>
           <div className="table-responsive">
-            <Table hover className="align-middle">
+            <Table className="align-middle" style={{ overflowX: "auto", overflowY: "auto" }}>
               <DataTable
-                data={filteredData ? filteredData : data}
+                className='px-0'
+                data={filteredData || data}
                 columns={columns}
+                pagination
+                paginationPerPage={7}
+                paginationRowsPerPageOptions={[7, 10, 25, 50]}
+                customStyles={customStyles}
+                fixedHeader
+                fixedHeaderScrollHeight="325px"
               />
+
+
             </Table>
           </div>
         </Card.Body>

@@ -111,7 +111,7 @@ const Login = (props) => {
                 </Card.Body>
             </Card>
 
-            <footer className="login-footer text-center text-light mt-3">
+            {/* <footer className="login-footer text-center text-light mt-3">
                 © 2025, made with ❤️ by{" "}
                 <a
                     href="https://arustutechnology.com"
@@ -122,7 +122,7 @@ const Login = (props) => {
                     Arustu Technology
                 </a>{" "}
                 for a better web.
-            </footer>
+            </footer> */}
         </div>
     );
 };
