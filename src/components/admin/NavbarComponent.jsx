@@ -13,7 +13,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
       zIndex: 1030,
     }}>
       {/* Sidebar toggle (for mobile) */}
-      <Button  
+      <Button
         variant="link"
         className="text-dark d-lg-none me-2"
         onClick={toggleSidebar}
@@ -28,7 +28,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
         </span>
 
         {/* Show total entries only on specific pages */}
-        
+
         {/* {totalEntries !== undefined &&
           currentPage.toLowerCase() !== 'dashboard' &&
           currentPage.toLowerCase() !== 'application' &&
@@ -56,10 +56,10 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
               {localStorage.getItem('FullName') || 'Admin User'}
             </Dropdown.Header>
             <Dropdown.Divider />
-            <Dropdown.Item href="/admin/profile" className="d-flex align-items-center">
+            <Dropdown.Item className="d-flex align-items-center">
               <FaUserCog className="me-2" /> Profile
             </Dropdown.Item>
-            <Dropdown.Item href="/admin/settings" className="d-flex align-items-center">
+            <Dropdown.Item className="d-flex align-items-center">
               <FaCog className="me-2" /> Settings
             </Dropdown.Item>
             <Dropdown.Divider />

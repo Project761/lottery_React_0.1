@@ -1,6 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { FiLock } from "react-icons/fi";
+import { useNavigate, Link } from "react-router-dom";
+import { FiLock, FiUser } from "react-icons/fi";
 import visa from "../../assets/image/visa.png";
 import discover from "../../assets/image/discover.png";
 import mastercard from "../../assets/image/master-card.png";
@@ -11,7 +11,7 @@ const Footer = () => {
   const navigate = useNavigate();
 
   const handleAdminClick = () => {
-    navigate('/admin');
+    navigate('/admin/login');
   };
   return (
     <footer className="bg-dark text-white py-4">
@@ -64,12 +64,14 @@ const Footer = () => {
           <div className="col-md-4">
             <p className="mb-1 text-white">Contact</p>
             <p className="fw-medium mb-3">5454565768</p>
-            <button 
-              onClick={handleAdminClick}
-              className="btn btn-sm btn-outline-light d-flex align-items-center mx-auto"
-            >
-              <FiLock className="me-1" /> Admin
-            </button>
+            <p className="mb-0">
+              <Link
+                to="/admin/login"
+                className="btn btn-sm btn-outline-light d-inline-flex align-items-center gap-1"
+              >
+                <FiUser size={14} /> Admin Login
+              </Link>
+            </p>
           </div>
         </div>
       </div>

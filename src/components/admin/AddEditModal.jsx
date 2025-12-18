@@ -43,20 +43,7 @@ const AddEditModal = ({
                     </Form.Group>
 
 
-                    {/* <Form.Group key={field.name} className="mb-3">
-                            <Form.Label>{field.label}</Form.Label>
-                            <Form.Control
-                                type={field.type || 'text'}
-                                name={field.name}
-                                value={formData[field.name] || ''}
-                                onChange={onInputChange}
-                                placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-                                autoFocus={field.autoFocus}
-                                required={field.required}
-                                as={field.as}
-                                rows={field.rows}
-                            />
-                        </Form.Group> */}
+                   
 
                     <div className="text-end">
                         <Button variant="secondary" onClick={onHide} className="me-2">

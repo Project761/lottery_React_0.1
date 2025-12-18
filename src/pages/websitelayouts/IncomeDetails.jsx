@@ -6,26 +6,26 @@ import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError, showSuccess } from "../../utils/toast.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Comman.js";
-
-
-const IncomeDetails = ({ onBack }) => {
+ 
+ 
+const IncomeDetails = () => {
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [category, setcategory] = useState([]);
   const [income, setIncome] = useState([]);
-
+ 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setShowTermsModal(true);
   };
-
+ 
   const { formData, setFormData } = useFormData();
   useEffect(() => {
     localStorage.setItem("applicationFormData", JSON.stringify(formData));
   }, [formData]);
   // setFormData({...formData, Country: 'INDIA', CompanyID: 1});
-
+ 
   //---------------------- Dropdowns -----------------------
   const fetchCategory = async () => {
     try {
@@ -37,7 +37,7 @@ const IncomeDetails = ({ onBack }) => {
         }
       );
       // console.log(response);
-
+ 
       if (response && Array.isArray(response)) {
         setcategory(response);
       } else {
@@ -47,7 +47,7 @@ const IncomeDetails = ({ onBack }) => {
       showError("Error fetching States");
     }
   };
-
+ 
   const fetchAnnualIncome = async () => {
     try {
       const response = await fetchPostData(
@@ -66,25 +66,25 @@ const IncomeDetails = ({ onBack }) => {
       showError("Error fetching Annual Income");
     }
   };
-
+ 
   useEffect(() => {
     fetchCategory();
     fetchAnnualIncome();
   }, []);
-
+ 
   const userID = localStorage.getItem("UserID");
   const insertFormData = async () => {
     try {
       const response = await fetchPostData("User/Insert_User", formData);
       // console.log(response[0].ApplicantNumber);
       localStorage.setItem("ApplicantNumber", response[0].ApplicantNumber);
-
+ 
       if (response) {
         showSuccess("Application submitted successfully!");
-
+ 
         localStorage.removeItem("applicationFormData");
         setFormData({});
-
+ 
         setTimeout(() => navigate("/thank-you"), 1000);
       } else {
         showError(
@@ -96,21 +96,21 @@ const IncomeDetails = ({ onBack }) => {
       // console.error("Submit Error:", error);
     }
   };
-
+ 
   const updateFormData = async () => {
     try {
       const response = await fetchPostData("User/Update_User", formData);
       // console.log(response[0].ApplicantNumber);
       // localStorage.setItem('ApplicantNumber', response[0].ApplicantNumber);
-
+ 
       if (response) {
         showSuccess("Application Updated successfully!");
-
+ 
         localStorage.removeItem("applicationFormData");
         localStorage.removeItem("UserId");
         localStorage.removeItem("sameAddress");
         setFormData({});
-
+ 
         setTimeout(() => navigate("/"), 1000);
       } else {
         showError(
@@ -122,18 +122,22 @@ const IncomeDetails = ({ onBack }) => {
       // console.error("Submit Error:", error);
     }
   };
-
+ 
+  const onBack = () => {
+    navigate("/dd-details");
+  }
+ 
   return (
     <div className="container px-0 ">
       {/* Header */}
       <div className="bg-secondary text-white text-center py-2 fw-semibold">
         Fill Income Details
       </div>
-
+ 
       {/* Form */}
       <form onSubmit={handleFormSubmit} className="border p-4 bg-white shadow-sm">
         <div className="row mb-2">
-
+ 
           {/* Category */}
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1"> Select Category <span className="text-danger">*</span></label>
@@ -152,15 +156,15 @@ const IncomeDetails = ({ onBack }) => {
                 }),
             }}/>
           </div>
-
+ 
           {/* Annual Income */}
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1">Annual Income<span className="text-danger">*</span></label>
             <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
-              // value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ? 
+              // value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ?
               //   {
               //     value: String(formData.AnnualIncome),
-              //     label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description 
+              //     label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description
               //   } : null
               // }
               value={selectValue(income, 'AnnualIncomeID', formData.AnnualIncome, 'Description')}
@@ -177,7 +181,7 @@ const IncomeDetails = ({ onBack }) => {
             />
           </div>
         </div>
-
+ 
         {/* Project Name */}
         <div className="row my-3">
           <div className="col-md-6">
@@ -201,7 +205,7 @@ const IncomeDetails = ({ onBack }) => {
             </div>
           </div>
         </div>
-
+ 
         {/* Terms Checkbox */}
         <div className="row mb-3">
           <div className="col-12">
@@ -232,10 +236,10 @@ const IncomeDetails = ({ onBack }) => {
             </div>
           </div>
         </div>
-
+ 
         {/* Terms-Modal */}
         <TermsModal show={showTermsModal} onClose={() => setShowTermsModal(false)} onAgree={userID ? updateFormData : insertFormData}/>
-
+ 
         {/* Buttons */}
         <div className="d-flex justify-content-center gap-3 mt-4">
           <button type="button" className="btn btn-secondary px-4" onClick={onBack}>
@@ -246,12 +250,12 @@ const IncomeDetails = ({ onBack }) => {
     </div>
   );
 };
-
+ 
 {/* <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
-              value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ? 
+              value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ?
                 {
                   value: String(formData.AnnualIncome),
-                  label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description 
+                  label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description
                 } : null
               }
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "AnnualIncome")}
@@ -268,5 +272,5 @@ const IncomeDetails = ({ onBack }) => {
                 }),
               }}
 /> */}
-
+ 
 export default IncomeDetails;

@@ -6,7 +6,7 @@ import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue } from
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
-const BankDetailsForm = ({ onBack }) => {
+const BankDetailsForm = () => {
     const [selectedBank, setSelectedBank] = useState(null);
     const [activeTab, setActiveTab] = useState("bank");
     const { formData, setFormData } = useFormData();
@@ -54,6 +54,10 @@ const BankDetailsForm = ({ onBack }) => {
 
     navigate("/dd-details");
     };
+
+    const onBack = () => {
+        navigate("/apply")
+    }
 
     useEffect(() => {
         fetchBankDetails();
