@@ -52,12 +52,12 @@ export default function PaperImage() {
                             {/* Image */}
                             <div
                                 className="bg-light d-flex align-items-center justify-content-center"
-                                style={{ height: 160 }}
+                                style={{ height: 200 }}
                             >
                                 <img
                                     src={img.preview}
                                     alt="Paper"
-                                    className="img-fluid"
+                                    className="img-fluid w-100"
                                     style={{ maxHeight: "100%" }}
                                 />
                             </div>
