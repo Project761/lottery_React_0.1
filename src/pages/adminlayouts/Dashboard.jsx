@@ -2,6 +2,11 @@ import React from "react";
 import StatCard from "../../components/admin/StatCard";
 
 const Dashboard = () => {
+
+
+
+
+
   return (
     <div className="container-fluid py-4">
       {/* 👇 "row" covers full width with no side gap */}
@@ -11,7 +16,7 @@ const Dashboard = () => {
           value="318"
           icon="user"
           color="#e91e63"
-        />  
+        />
         <StatCard
           title="Success Application"
           value="318"
