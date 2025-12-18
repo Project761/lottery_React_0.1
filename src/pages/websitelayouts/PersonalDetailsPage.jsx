@@ -69,21 +69,21 @@ const PersonalDetailsPage = () => {
 
         printWindow.document.close();
     };
-    
+
     const userData = JSON.parse(localStorage.getItem('applicationFormData'));
 
     const fetchBank = async () => {
-        const response = await fetchPostData('Bank/GetDataDropDown_Bank', 
+        const response = await fetchPostData('Bank/GetDataDropDown_Bank',
             {
                 CompanyID: 1
             }
         );
         // console.log(response);
 
-        if(response && Array.isArray(response)){
+        if (response && Array.isArray(response)) {
             const data = response.find((arr) => String(arr.BankID) === String(userData.BankName))?.Description
             setBank(data);
-        }else{
+        } else {
             setBank("");
         }
     }
@@ -219,3 +219,6 @@ const PersonalDetailsPage = () => {
 };
 
 export default PersonalDetailsPage;
+
+
+

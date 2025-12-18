@@ -82,28 +82,28 @@ const AdminPage = ({ page: propPage }) => {
                   propPage === "plot" ? (
                     <DataTablePage
                       page={propPage}
-                      getDataApiUrl={"Plot/GetData_Plot"}
-                      addApiUrl={"Plot/Insert_Plot"}
-                      updateApiUrl={"Plot/Update_Plot"}
-                      deleteApiUrl={"Plot/Delete_Plot"}
-                      getSingleDataApiUrl={"Plot/GetSingleData_Plot"}
+                      getDataApiUrl={"Category/GetDataDropDown_Category"}
+                      addApiUrl={"Category/Insert_Category"}
+                      updateApiUrl={"Category/Update_Category"}
+                      deleteApiUrl={"Category/Delete_Category"}
+                      getSingleDataApiUrl={"Category/GetSingleData_Category"}
 
-                      listCode={"PlotCode"}
-                      listId={"PlotID"}
+                      listCode={"CategoryCode"}
+                      listId={"CategoryID"}
                     />
                   )
                     :
                     propPage === "application" ? (
                       <DataTablePage
                         page={propPage}
-                        getDataApiUrl={"Application/GetData_Application"}
-                        addApiUrl={"Application/Insert_Application"}
-                        updateApiUrl={"Application/Update_Application"}
-                        deleteApiUrl={"Application/Delete_Application"}
-                        getSingleDataApiUrl={"Application/GetSingleData_Application"}
+                        getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
+                        addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
+                        updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
+                        deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
+                        getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
 
-                        listCode={"ApplicationCode"}
-                        listId={"ApplicationID"}
+                        listCode={"AnnualIncomeCode"}
+                        listId={"AnnualIncomeID"}
                       />
                     )
                       :
