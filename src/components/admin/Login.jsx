@@ -8,6 +8,7 @@ import { showSuccess, showError, showWarning } from "../../utils/toast";
 axios.defaults.baseURL = "https://lotteryapi.arustu.com/api/";
 
 const Login = (props) => {
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/admin/dashboard";
@@ -45,12 +46,12 @@ const Login = (props) => {
                 localStorage.setItem('FullName', response.data.FullName);
                 localStorage.setItem('CompanyID', response.data.CompanyID);
                 showSuccess('Login successful!');
-                
+
                 // Call the onLogin prop if it exists
                 if (props.onLogin) {
                     props.onLogin();
                 }
-                
+
                 navigate(from, { replace: true });
             } else {
                 showError(data.error_description || 'Invalid credentials!');
