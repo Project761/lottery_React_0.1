@@ -173,3 +173,26 @@ export const AddDeleteUpdateData = async (url, postData) => {
 
     return await res.data;
 }
+
+
+
+export const AddDelete_Img = async (url, FormData) => {
+    if (FormData) {
+        try {
+            const res = await axios.post(url, FormData);
+            console.log('AddDelete_Img', res)
+            if (res.code === 'ERR_BAD_REQUEST') {
+                return res
+            } else {
+                return res.data;
+            }
+        }
+        catch (error) {
+            console.error(error)
+        }
+    } else {
+        // console.log(`${url}-----${FormData}`)
+        console.log("%c🚀 ~ AddDelete_Img: " + `${url}-----${FormData}`, "padding: 6px; font-weight: bold; background-color: #2ecc71; color: black'");
+
+    }
+}

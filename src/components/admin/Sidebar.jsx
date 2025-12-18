@@ -5,7 +5,6 @@ import {
     BiBuildingHouse,
     BiUser,
     BiFolder,
-    
     BiMap,
     BiLogOut,
     BiCreditCard,
@@ -13,6 +12,7 @@ import {
 import { showSuccess } from "../../utils/toast";
 
 const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
+
     const location = useLocation();
 
     const menuItems = [
@@ -20,10 +20,8 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
         { path: "/admin/bank", icon: <BiBuildingHouse />, label: "Banks" },
         { path: "/admin/DemandDraftAmount", icon: <BiBuildingHouse />, label: "Demand Draft Amount" },
         { path: "/admin/caste", icon: <BiUser />, label: "Castes" },
+
         { path: "/admin/city", icon: <BiUser />, label: "Cities" },
-
-
-
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },
         { path: "/admin/application", icon: <BiFolder />, label: "Applications" },

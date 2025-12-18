@@ -4,6 +4,7 @@ import { useFormData } from "../../context/FormDataContext.jsx";
 import HomeSvg from "../../components/website/HomeSvg.jsx";
 
 const Home = () => {
+
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const { resetFormData } = useFormData();
