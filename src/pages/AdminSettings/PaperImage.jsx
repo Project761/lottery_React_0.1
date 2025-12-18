@@ -148,7 +148,10 @@ export default function PaperImage() {
                 show={open}
                 onClose={() => setOpen(false)}
                 onSave={handleSave}
+                title="Add Paper Image"
+                showButtonName={false}
             />
+
         </>
     );
 }
