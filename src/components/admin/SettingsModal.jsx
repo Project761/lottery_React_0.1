@@ -12,7 +12,7 @@ const SettingsModal = ({
   const handleSave = () => {
     if (!file) return alert("Please select an image");
     onSave(file);
-    setFile(null);
+    // setFile(null);
   };
 
   return (
