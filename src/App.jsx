@@ -24,6 +24,7 @@ import AdminLogin from './components/admin/Login';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import PersonalDetailsPage from './pages/websitelayouts/PersonalDetailsPage';
 import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
+import AdminSettings from './pages/AdminSettings/AdminSettings';
 
 
 
@@ -147,6 +148,7 @@ function AppContent() {
         >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="settings" element={<AdminSettings />} />
           {["project", "plot", "application", "bank-details", "bank", "caste", "DemandDraftAmount", "City"].map((pageName) => (
             <Route key={pageName} path={pageName} element={<AdminPage page={pageName} />} />
           ))}

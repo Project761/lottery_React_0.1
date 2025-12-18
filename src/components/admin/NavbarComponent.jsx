@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Navbar, Button, Dropdown } from "react-bootstrap";
 import { FaBars, FaUserCircle, FaSignOutAlt, FaUserCog, FaCog } from "react-icons/fa";
 import { showSuccess } from "../../utils/toast";
+import { FiTool } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -56,6 +59,12 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
               {localStorage.getItem('FullName') || 'Admin User'}
             </Dropdown.Header>
             <Dropdown.Divider />
+            <Dropdown.Item 
+              className="d-flex align-items-center"
+              onClick={() => navigate('/admin/settings')}
+            >
+              <FiTool className="me-2" /> Utility
+            </Dropdown.Item>
             <Dropdown.Item className="d-flex align-items-center">
               <FaUserCog className="me-2" /> Profile
             </Dropdown.Item>
@@ -75,6 +84,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
               <FaSignOutAlt className="me-2" /> Logout
             </Dropdown.Item>
           </Dropdown.Menu>
+
         </Dropdown>
       </div>
     </Navbar>
