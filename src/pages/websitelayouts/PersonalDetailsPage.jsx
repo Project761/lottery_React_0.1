@@ -4,19 +4,19 @@ import { useReactToPrint } from "react-to-print";
 import AcknowledgementReceipt from "./AcknowledgementReceipt";
 import { useNavigate } from "react-router-dom";
 import { fetchPostData } from "../../components/hooks/Api";
-
+ 
 const PersonalDetailsPage = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("basic");
     const receiptRef = useRef();
     const [bank, setBank] = useState("");
-
+ 
     const handlePrint = () => {
         const receiptContent = document.getElementById("receipt-content").innerHTML;
-
+ 
         // 🪟 Open a clean, blank popup window
         const printWindow = window.open("", "_blank", "width=900,height=650");
-
+ 
         printWindow.document.open();
         printWindow.document.write(`
     <!DOCTYPE html>
@@ -25,7 +25,7 @@ const PersonalDetailsPage = () => {
       <meta charset="utf-8">
       <title></title>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+ 
       <style>
         @page {
           margin: 0;
@@ -39,7 +39,7 @@ const PersonalDetailsPage = () => {
         }
         .receipt-container { width: 100%; }
         .table th, .table td { border: 1px solid #dee2e6; padding: 6px; }
-
+ 
         /* 🧩 Trick: hide URL, title, and date/time overlays */
         @media print {
           html::before, html::after,
@@ -55,7 +55,7 @@ const PersonalDetailsPage = () => {
       <div class="receipt-container">
         ${receiptContent}
       </div>
-
+ 
       <script>
         document.title = ""; // remove title
         setTimeout(() => {
@@ -66,12 +66,12 @@ const PersonalDetailsPage = () => {
     </body>
     </html>
   `);
-
+ 
         printWindow.document.close();
     };
-
+   
     const userData = JSON.parse(localStorage.getItem('applicationFormData'));
-
+ 
     const fetchBank = async () => {
         const response = await fetchPostData('Bank/GetDataDropDown_Bank',
             {
@@ -79,19 +79,19 @@ const PersonalDetailsPage = () => {
             }
         );
         // console.log(response);
-
-        if (response && Array.isArray(response)) {
+ 
+        if(response && Array.isArray(response)){
             const data = response.find((arr) => String(arr.BankID) === String(userData.BankName))?.Description
             setBank(data);
-        } else {
+        }else{
             setBank("");
         }
     }
-
+ 
     useEffect(() => {
         fetchBank();
     }, []);
-
+ 
     return (
         <div className="container mt-4 mb-5">
             <div className="card shadow-sm border-0">
@@ -100,7 +100,7 @@ const PersonalDetailsPage = () => {
                     <div className="fw-bold text-danger border-bottom border-danger pb-1">
                         Personal Details
                     </div>
-
+ 
                     <button
                         onClick={handlePrint}
                         className="btn d-flex align-items-center gap-2 no-print"
@@ -109,7 +109,7 @@ const PersonalDetailsPage = () => {
                         <FaPrint /> Print Receipt
                     </button>
                 </div>
-
+ 
                 {/* Applicant Details */}
                 <div className="card-body text-center border-bottom">
                     <h4 className="fw-bold">{userData.FullName}</h4>
@@ -123,7 +123,7 @@ const PersonalDetailsPage = () => {
                         <strong>Date:</strong> {userData.Dob}
                     </p>
                 </div>
-
+ 
                 {/* Tabs */}
                 <div className="d-flex border-bottom mt-3">
                     {["basic", "account"].map((tab) => (
@@ -145,7 +145,7 @@ const PersonalDetailsPage = () => {
                         </button>
                     ))}
                 </div>
-
+ 
                 {/* Tab content (same as before) */}
                 <div className="p-4 border border-top-0 rounded-bottom bg-white">
                     {activeTab === "basic" ? (
@@ -209,7 +209,7 @@ const PersonalDetailsPage = () => {
                     )}
                 </div>
             </div>
-
+ 
             {/* Hidden Receipt for Printing */}
             <div id="receipt-content" style={{ display: "none" }}>
                 <AcknowledgementReceipt />
@@ -217,8 +217,5 @@ const PersonalDetailsPage = () => {
         </div>
     );
 };
-
+ 
 export default PersonalDetailsPage;
-
-
-
