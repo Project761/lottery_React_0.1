@@ -63,6 +63,10 @@ export default function PaperImage() {
         const response = AddDeleteUpdateData("ButtonDetails/Delete_ButtonDetails", {
             "IsActive": '0',
             "ButtonDetailsID": id,
+        }).then(() => {
+            // get Image
+            getPaperImage()
+
         });
         console.log("🚀 ~ handleRemove ~ response:", response)
     };
