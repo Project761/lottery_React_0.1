@@ -142,7 +142,7 @@ const IncomeDetails = () => {
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1"> Select Category <span className="text-danger">*</span></label>
             <Select name="Category"
-              value={ selectValue(category, 'CategoryID', formData.Category, 'Description') }
+              value={selectValue(category, 'CategoryID', formData.Category, 'Description')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "Category")}
               options={ChangeArrayFormat(category, 'CategoryID', 'Description')}
               placeholder="Select Category"
@@ -154,7 +154,7 @@ const IncomeDetails = () => {
                   minHeight: "38px",
                   height: "38px",
                 }),
-            }}/>
+              }} />
           </div>
 
           {/* Annual Income */}
@@ -212,7 +212,7 @@ const IncomeDetails = () => {
             <div className="form-check">
               <input className="form-check-input" type="checkbox" id="termsCheck" checked={isTermsAgreed}
                 onChange={(e) => {
-                  const requiredFields = [ "Category", "AnnualIncome", "ProjectName" ];
+                  const requiredFields = ["Category", "AnnualIncome", "ProjectName"];
                   const isAnyFieldMissing = requiredFields.some(
                     (field) =>
                       !formData[field] ||
@@ -238,7 +238,7 @@ const IncomeDetails = () => {
         </div>
 
         {/* Terms-Modal */}
-        <TermsModal show={showTermsModal} onClose={() => setShowTermsModal(false)} onAgree={userID ? updateFormData : insertFormData}/>
+        <TermsModal show={showTermsModal} onClose={() => setShowTermsModal(false)} onAgree={userID ? updateFormData : insertFormData} />
 
         {/* Buttons */}
         <div className="d-flex justify-content-center gap-3 mt-4">
