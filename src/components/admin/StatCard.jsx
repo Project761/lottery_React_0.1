@@ -3,6 +3,7 @@ import { Card, Button } from "react-bootstrap";
 import { FaUsers } from "react-icons/fa";
 
 const StatCard = ({ title, value, icon, color, showButtons }) => {
+
   const getIcon = () => {
     switch (icon) {
       case "user":
