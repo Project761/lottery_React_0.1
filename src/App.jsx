@@ -133,11 +133,8 @@ function AppContent() {
     <FormDataProvider>
       <Routes>
         {/* Public Routes */}
-        <Route path="/admin/login" element={
-          isAuthenticated ?
-            <Navigate to="/admin/dashboard" replace /> :
-            <AdminLogin onLogin={handleLogin} />
-        } />
+        {/* <Route path="/admin/login" element={isAuthenticated ? <Navigate to="/admin/dashboard" replace /> : <AdminLogin onLogin={handleLogin} />} /> */}
+        <Route path="/admin/login" element={<AdminLogin onLogin={handleLogin} />} />
 
         {/* Protected Admin Routes */}
         <Route
