@@ -107,13 +107,13 @@ export default function Note() {
             </div>
 
             {/* Empty State Card */}
-            <div className="card shadow-sm">
+            {/* <div className="card shadow-sm">
                 <div className="card-body text-center py-2">
                     <span className="text-danger small fw-semibold">
                         There Are No Note Available
                     </span>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
