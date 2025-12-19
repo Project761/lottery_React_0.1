@@ -106,59 +106,45 @@ const AdminPage = ({ page: propPage }) => {
                         listId={"ProjectID"}
                       />
                     )
+                      // :
+                      // propPage === "application" ? (
+                      //   <DataTablePage
+                      //     page={propPage}
+                      //     getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
+                      //     addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
+                      //     updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
+                      //     deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
+                      //     getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
+
+                      //     listCode={"AnnualIncomeCode"}
+                      //     listId={"AnnualIncomeID"}
+                      //   />
+                      // )
                       :
-                      propPage === "plot" ? (
+                      propPage === "bank-details" ? (
                         <DataTablePage
                           page={propPage}
-                          getDataApiUrl={"Category/GetDataDropDown_Category"}
-                          addApiUrl={"Category/Insert_Category"}
-                          updateApiUrl={"Category/Update_Category"}
-                          deleteApiUrl={"Category/Delete_Category"}
-                          getSingleDataApiUrl={"Category/GetSingleData_Category"}
+                          getDataApiUrl={"BankDetails/GetData_BankDetails"}
+                          addApiUrl={"BankDetails/Insert_BankDetails"}
+                          updateApiUrl={"BankDetails/Update_BankDetails"}
+                          deleteApiUrl={"BankDetails/Delete_BankDetails"}
+                          getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
 
-                          listCode={"CategoryCode"}
-                          listId={"CategoryID"}
+                          listCode={"BankDetailsCode"}
+                          listId={"BankDetailsID"}
                         />
                       )
                         :
-                        propPage === "application" ? (
+                        (
                           <DataTablePage
                             page={propPage}
-                            getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
-                            addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
-                            updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
-                            deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
-                            getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
-
-                            listCode={"AnnualIncomeCode"}
-                            listId={"AnnualIncomeID"}
+                            getDataApiUrl={""}
+                            updateApiUrl={""}
+                            deleteApiUrl={""}
+                            addApiUrl={""}
+                            getSingleDataApiUrl={""}
                           />
                         )
-                          :
-                          propPage === "bank-details" ? (
-                            <DataTablePage
-                              page={propPage}
-                              getDataApiUrl={"BankDetails/GetData_BankDetails"}
-                              addApiUrl={"BankDetails/Insert_BankDetails"}
-                              updateApiUrl={"BankDetails/Update_BankDetails"}
-                              deleteApiUrl={"BankDetails/Delete_BankDetails"}
-                              getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
-
-                              listCode={"BankDetailsCode"}
-                              listId={"BankDetailsID"}
-                            />
-                          )
-                            :
-                            (
-                              <DataTablePage
-                                page={propPage}
-                                getDataApiUrl={""}
-                                updateApiUrl={""}
-                                deleteApiUrl={""}
-                                addApiUrl={""}
-                                getSingleDataApiUrl={""}
-                              />
-                            )
       }
     </div>
   );
