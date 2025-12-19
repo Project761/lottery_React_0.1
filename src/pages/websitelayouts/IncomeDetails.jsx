@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TermsModal from "../../components/website/TermsModal.jsx";
 import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
-import { fetchPostData } from "../../components/hooks/Api.js";
+import { fetchPostData, fetchPostFormData } from "../../components/hooks/Api.js";
 import { showError, showSuccess } from "../../utils/toast.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Comman.js";
-
+import { buildFormData } from "../../utils/formDataHelper.js";
 
 const IncomeDetails = () => {
   const navigate = useNavigate();
@@ -74,27 +74,49 @@ const IncomeDetails = () => {
 
   const userID = localStorage.getItem("UserID");
 
+  // const insertFormData = async () => {
+  //   try {
+  //     const payload = buildFormData(formData);
+  //     const response = await fetchPostFormData("User/Insert_User", payload);
+  //     // console.log(response[0].ApplicantNumber);
+  //     localStorage.setItem("ApplicantNumber", response[0].ApplicantNumber);
+
+  //     if (response) {
+  //       showSuccess("Application submitted successfully!");
+
+  //       localStorage.removeItem("applicationFormData");
+  //       setFormData({});
+
+  //       setTimeout(() => navigate("/thank-you"), 1000);
+  //     } else {
+  //       showError(
+  //         response?.Message || "Something went wrong while submitting!"
+  //       );
+  //     }
+  //   } catch (error) {
+  //     showError("Error submitting form. Please try again!");
+  //     // console.error("Submit Error:", error);
+  //   }
+  // };
+
   const insertFormData = async () => {
     try {
-      const response = await fetchPostData("User/Insert_User", formData);
-      // console.log(response[0].ApplicantNumber);
+      const payload = buildFormData(formData, formData.PaymentAttachement);
+
+      const response = await fetchPostFormData(
+        "User/Insert_User",
+        payload
+      );
+
       localStorage.setItem("ApplicantNumber", response[0].ApplicantNumber);
+      showSuccess("Application submitted successfully!");
 
-      if (response) {
-        showSuccess("Application submitted successfully!");
+      localStorage.removeItem("applicationFormData");
+      setFormData({});
+      setTimeout(() => navigate("/thank-you"), 1000);
 
-        localStorage.removeItem("applicationFormData");
-        setFormData({});
-
-        setTimeout(() => navigate("/thank-you"), 1000);
-      } else {
-        showError(
-          response?.Message || "Something went wrong while submitting!"
-        );
-      }
     } catch (error) {
       showError("Error submitting form. Please try again!");
-      // console.error("Submit Error:", error);
     }
   };
 
@@ -106,7 +128,6 @@ const IncomeDetails = () => {
 
       if (response) {
         showSuccess("Application Updated successfully!");
-
         localStorage.removeItem("applicationFormData");
         localStorage.removeItem("UserId");
         localStorage.removeItem("sameAddress");
@@ -127,6 +148,27 @@ const IncomeDetails = () => {
   const onBack = () => {
     navigate("/dd-details");
   }
+// 1004. Max Consecutive Ones III
+// Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
+
+// Example 1:
+
+// Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+// Output: 6
+// Explanation: [1,1,1,0,0,1,1,1,1,1,1]
+// Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+// Example 2:
+
+// Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+// Output: 10
+// Explanation: [0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
+// Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+ 
+// Constraints:
+
+// 1 <= nums.length <= 105
+// nums[i] is either 0 or 1.
+// 0 <= k <= nums.length
 
   return (
     <div className="container px-0 ">

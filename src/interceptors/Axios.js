@@ -4,9 +4,9 @@ const BASE_URL = "https://lotteryapi.arustu.com/api/";
 
 const api = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
 });
 
 let isRefreshing = false;
@@ -16,6 +16,12 @@ api.interceptors.request.use(
     const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
       request.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    if(request.data instanceof FormData){
+      delete request.headers["Content-Type"];
+    }else{
+      request.headers["Content-Type"] = "application/json";
     }
     return request;
   },
