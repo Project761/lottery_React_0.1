@@ -51,59 +51,59 @@ const AdminPage = ({ page: propPage }) => {
               />
             )
               :
-              propPage === "caste" ? (
+              propPage === "Category" ? (
                 <DataTablePage
                   page={propPage}
-                  getDataApiUrl={"Cast/GetData_Cast"}
-                  addApiUrl={"Cast/Insert_Cast"}
-                  updateApiUrl={"Cast/Update_Cast"}
-                  deleteApiUrl={"Cast/Delete_Cast"}
-                  getSingleDataApiUrl={"Cast/GetSingleData_Cast"}
+                  getDataApiUrl={"Category/GetData_Category"}
+                  updateApiUrl={"Category/Update_Category"}
+                  deleteApiUrl={"Category/Delete_Category"}
+                  addApiUrl={"Category/Insert_Category"}
+                  getSingleDataApiUrl={"Category/GetSingleData_Category"}
 
-                  listCode={"CastCode"}
-                  listId={"CastID"}
+                  listCode={"CategoryCode"}
+                  listId={"CategoryID"}
                 />
               )
                 :
-                propPage === "City" ? (
+                propPage === "caste" ? (
                   <DataTablePage
                     page={propPage}
-                    getDataApiUrl={"City/GetData_City"}
-                    addApiUrl={"City/Insert_City"}
-                    updateApiUrl={"City/Update_City"}
-                    deleteApiUrl={"City/Delete_City"}
-                    getSingleDataApiUrl={"City/GetSingleData_City"}
+                    getDataApiUrl={"Cast/GetData_Cast"}
+                    addApiUrl={"Cast/Insert_Cast"}
+                    updateApiUrl={"Cast/Update_Cast"}
+                    deleteApiUrl={"Cast/Delete_Cast"}
+                    getSingleDataApiUrl={"Cast/GetSingleData_Cast"}
 
-                    listCode={"CityCode"}
-                    listId={"CityID"}
+                    listCode={"CastCode"}
+                    listId={"CastID"}
                   />
                 )
                   :
-                  propPage === "project" ? (
+                  propPage === "City" ? (
                     <DataTablePage
                       page={propPage}
-                      getDataApiUrl={"Project/GetData_Project"}
-                      addApiUrl={"Project/Insert_Project"}
-                      updateApiUrl={"Project/Update_Project"}
-                      deleteApiUrl={"Project/Delete_Project"}
-                      getSingleDataApiUrl={"Project/GetSingleData_Project"}
+                      getDataApiUrl={"City/GetData_City"}
+                      addApiUrl={"City/Insert_City"}
+                      updateApiUrl={"City/Update_City"}
+                      deleteApiUrl={"City/Delete_City"}
+                      getSingleDataApiUrl={"City/GetSingleData_City"}
 
-                      listCode={"ProjectCode"}
-                      listId={"ProjectID"}
+                      listCode={"CityCode"}
+                      listId={"CityID"}
                     />
                   )
                     :
-                    propPage === "plot" ? (
+                    propPage === "project" ? (
                       <DataTablePage
                         page={propPage}
-                        getDataApiUrl={"Category/GetDataDropDown_Category"}
-                        addApiUrl={"Category/Insert_Category"}
-                        updateApiUrl={"Category/Update_Category"}
-                        deleteApiUrl={"Category/Delete_Category"}
-                        getSingleDataApiUrl={"Category/GetSingleData_Category"}
+                        getDataApiUrl={"Project/GetData_Project"}
+                        addApiUrl={"Project/Insert_Project"}
+                        updateApiUrl={"Project/Update_Project"}
+                        deleteApiUrl={"Project/Delete_Project"}
+                        getSingleDataApiUrl={"Project/GetSingleData_Project"}
 
-                        listCode={"CategoryCode"}
-                        listId={"CategoryID"}
+                        listCode={"ProjectCode"}
+                        listId={"ProjectID"}
                       />
                     )
                       // :
