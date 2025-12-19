@@ -19,12 +19,14 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
         { path: "/admin/dashboard", icon: <BiHome />, label: "Dashboard" },
         { path: "/admin/bank", icon: <BiBuildingHouse />, label: "Banks" },
         { path: "/admin/DemandDraftAmount", icon: <BiBuildingHouse />, label: "Demand Draft Amount" },
+        { path: "/admin/Annual-Income", icon: <BiBuildingHouse />, label: "Annual Income" },
+        { path: "/admin/Category", icon: <BiBuildingHouse />, label: "Category" },
         { path: "/admin/caste", icon: <BiUser />, label: "Castes" },
 
         { path: "/admin/city", icon: <BiUser />, label: "Cities" },
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },
-        { path: "/admin/application", icon: <BiFolder />, label: "Applications" },
+        // { path: "/admin/application", icon: <BiFolder />, label: "Applications" },
         { path: "/admin/bank-details", icon: <BiCreditCard />, label: "Bank Details" },
     ];
 

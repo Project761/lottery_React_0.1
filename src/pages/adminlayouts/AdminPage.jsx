@@ -37,75 +37,89 @@ const AdminPage = ({ page: propPage }) => {
             />
           )
             :
-            propPage === "caste" ? (
+            propPage === "Annual-Income" ? (
               <DataTablePage
                 page={propPage}
-                getDataApiUrl={"Cast/GetData_Cast"}
-                addApiUrl={"Cast/Insert_Cast"}
-                updateApiUrl={"Cast/Update_Cast"}
-                deleteApiUrl={"Cast/Delete_Cast"}
-                getSingleDataApiUrl={"Cast/GetSingleData_Cast"}
+                getDataApiUrl={"AnnualIncome/GetData_AnnualIncome"}
+                updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
+                deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
+                addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
+                getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
 
-                listCode={"CastCode"}
-                listId={"CastID"}
+                listCode={"AnnualIncomeCode"}
+                listId={"AnnualIncomeID"}
               />
             )
               :
-              propPage === "City" ? (
+              propPage === "Category" ? (
                 <DataTablePage
                   page={propPage}
-                  getDataApiUrl={"City/GetData_City"}
-                  addApiUrl={"City/Insert_City"}
-                  updateApiUrl={"City/Update_City"}
-                  deleteApiUrl={"City/Delete_City"}
-                  getSingleDataApiUrl={"City/GetSingleData_City"}
+                  getDataApiUrl={"Category/GetData_Category"}
+                  updateApiUrl={"Category/Update_Category"}
+                  deleteApiUrl={"Category/Delete_Category"}
+                  addApiUrl={"Category/Insert_Category"}
+                  getSingleDataApiUrl={"Category/GetSingleData_Category"}
 
-                  listCode={"CityCode"}
-                  listId={"CityID"}
+                  listCode={"CategoryCode"}
+                  listId={"CategoryID"}
                 />
               )
                 :
-                propPage === "project" ? (
+                propPage === "caste" ? (
                   <DataTablePage
                     page={propPage}
-                    getDataApiUrl={"Project/GetData_Project"}
-                    addApiUrl={"Project/Insert_Project"}
-                    updateApiUrl={"Project/Update_Project"}
-                    deleteApiUrl={"Project/Delete_Project"}
-                    getSingleDataApiUrl={"Project/GetSingleData_Project"}
+                    getDataApiUrl={"Cast/GetData_Cast"}
+                    addApiUrl={"Cast/Insert_Cast"}
+                    updateApiUrl={"Cast/Update_Cast"}
+                    deleteApiUrl={"Cast/Delete_Cast"}
+                    getSingleDataApiUrl={"Cast/GetSingleData_Cast"}
 
-                    listCode={"ProjectCode"}
-                    listId={"ProjectID"}
+                    listCode={"CastCode"}
+                    listId={"CastID"}
                   />
                 )
                   :
-                  propPage === "plot" ? (
+                  propPage === "City" ? (
                     <DataTablePage
                       page={propPage}
-                      getDataApiUrl={"Category/GetDataDropDown_Category"}
-                      addApiUrl={"Category/Insert_Category"}
-                      updateApiUrl={"Category/Update_Category"}
-                      deleteApiUrl={"Category/Delete_Category"}
-                      getSingleDataApiUrl={"Category/GetSingleData_Category"}
+                      getDataApiUrl={"City/GetData_City"}
+                      addApiUrl={"City/Insert_City"}
+                      updateApiUrl={"City/Update_City"}
+                      deleteApiUrl={"City/Delete_City"}
+                      getSingleDataApiUrl={"City/GetSingleData_City"}
 
-                      listCode={"CategoryCode"}
-                      listId={"CategoryID"}
+                      listCode={"CityCode"}
+                      listId={"CityID"}
                     />
                   )
                     :
-                    propPage === "application" ? (
+                    propPage === "project" ? (
                       <DataTablePage
                         page={propPage}
-                        getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
-                        addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
-                        updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
-                        deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
-                        getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
+                        getDataApiUrl={"Project/GetData_Project"}
+                        addApiUrl={"Project/Insert_Project"}
+                        updateApiUrl={"Project/Update_Project"}
+                        deleteApiUrl={"Project/Delete_Project"}
+                        getSingleDataApiUrl={"Project/GetSingleData_Project"}
 
-                        listCode={"AnnualIncomeCode"}
-                        listId={"AnnualIncomeID"}
+                        listCode={"ProjectCode"}
+                        listId={"ProjectID"}
                       />
                     )
+                      // :
+                      // propPage === "application" ? (
+                      //   <DataTablePage
+                      //     page={propPage}
+                      //     getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
+                      //     addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
+                      //     updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
+                      //     deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
+                      //     getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
+
+                      //     listCode={"AnnualIncomeCode"}
+                      //     listId={"AnnualIncomeID"}
+                      //   />
+                      // )
                       :
                       propPage === "bank-details" ? (
                         <DataTablePage

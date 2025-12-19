@@ -25,7 +25,7 @@ export default function ButtonChange() {
     }
 
 
-    const handleSave = async (file,  buttonName) => {
+    const handleSave = async (file, buttonName) => {
 
         const formData = new FormData();
         formData.append("file", file);
@@ -116,7 +116,6 @@ export default function ButtonChange() {
                             {/* Image */}
                             <div
                                 className="bg-light d-flex align-items-center justify-content-center"
-                                style={{ height: 200 }}
                             >
                                 <img
                                     src={img.FilePath}
@@ -125,7 +124,10 @@ export default function ButtonChange() {
                                     style={{ maxHeight: "100%" }}
                                 />
                             </div>
-                            <p className="small text-center">{img.ButtonDetails}</p>
+                            <div className="text-center fw-semibold text-dark"
+                                style={{ backgroundColor: "#e5e5e5", padding: "6px 8px", fontSize: "0.8rem", borderBottom: "1px solid #d0d0d0", }}>
+                                {img.ButtonDetails}
+                            </div>
 
                             {/* Bottom bar */}
                             <div className="p-1">

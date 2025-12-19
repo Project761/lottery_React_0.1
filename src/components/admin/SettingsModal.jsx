@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { showSuccess } from "../../utils/toast";
 
 const SettingsModal = ({
     show,
     onClose,
     onSave,
     title,
-    showButtonName = false,   
+    showButtonName = false,
 }) => {
     const [file, setFile] = useState(null);
     const [buttonName, setButtonName] = useState("");
@@ -14,15 +15,12 @@ const SettingsModal = ({
     const handleSave = () => {
         if (showButtonName && !buttonName.trim())
             return alert("Please enter Button Name");
-
         if (!file) return alert("Please select an image");
-
         onSave(file, buttonName);
-
+        showSuccess("Saved Image successfully");
         setFile(null);
         setButtonName("");
     };
-
     return (
         <Modal show={show} onHide={onClose} centered size="md" backdrop="static">
             <Modal.Header closeButton className="py-2">
