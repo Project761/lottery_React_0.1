@@ -9,7 +9,7 @@ export default function Note() {
     const CompanyID = localStorage.getItem('companyID') ?? 1
     const [value, setValue] = useState({
         "CompanyID": localStorage.getItem('companyID') || 1,
-        'ButtonType': 'PAPER CUT IMAGE',
+        'ButtonType': 'Note',
         'ButtonDetail': '',
         'TextColor': '',
     });
@@ -22,7 +22,7 @@ export default function Note() {
     const getPaperImage = async () => {
         const response = await fetchPostData("ButtonDetails/GETALL_ButtonDetails", {
             "IsActive": true,
-            "ButtonType": "PAPER CUT IMAGE",
+            "ButtonType": "Note",
             "CompanyID": localStorage.getItem('companyID') || 1,
         });
 
