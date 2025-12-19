@@ -44,7 +44,7 @@ export default function ReceiptAddress() {
             'Address': Address,
             'CompanyID': localStorage.getItem('companyID') || 1,
         }
-        AddDeleteUpdateData('Company/Update_CompanyContact', val).then((response) => {
+        AddDeleteUpdateData('Company/Update_Company', val).then((response) => {
             console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully")
