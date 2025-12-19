@@ -47,7 +47,7 @@ export default function PaperImage() {
         // ]);
 
         const response = await axios.post("ButtonDetails/Insert_ButtonDetails", formData);
-        console.log("🚀 ~ handleSave ~ response:", response)
+        // console.log("🚀 ~ handleSave ~ response:", response)
 
         setOpen(false);
         // get Image
