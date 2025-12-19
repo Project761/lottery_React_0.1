@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { Form, Button, Card, Spinner } from "react-bootstrap";
+import { Form, Button, Card, Spinner, InputGroup } from "react-bootstrap";
+import { FiLock } from "react-icons/fi";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { showSuccess, showError, showWarning } from "../../utils/toast";
 
 // Set your base URL
@@ -15,7 +17,8 @@ const Login = (props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [remember, setRemember] = useState(false);
+    // const [remember, setRemember] = useState(false);
+    const [show, setShow] = useState(false);
     // Toast notification functions are imported from utils/toast.js
 
     const handleSubmit = async (e) => {
@@ -89,16 +92,32 @@ const Login = (props) => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
+                            <InputGroup>
+                                <Form.Control
+                                    type={show ? "text" : "password"}
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+
+                                {/* Eye Icon */}
+                                <InputGroup.Text
+                                    onClick={() => setShow(!show)}
+                                    style={{
+                                        cursor: "pointer",
+                                        background: "#eef4ff",
+                                        color: "#6b7280",
+                                        border: "1px solid #ced4da",
+                                    }}
+                                >
+                                    {show ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                                </InputGroup.Text>
+                            </InputGroup>
                         </Form.Group>
-                        <div className="d-flex align-items-center mb-3">
-                            <Form.Check type="switch" id="remember" label="Remember me" checked={remember} onChange={() => setRemember(!remember)} /> </div>
+
+                        {/* <div className="d-flex align-items-center mb-3">
+                            <Form.Check type="switch" id="remember" label="Remember me" checked={remember} onChange={() => setRemember(!remember)} /> </div> */}
 
                         <Button
                             variant="danger"
