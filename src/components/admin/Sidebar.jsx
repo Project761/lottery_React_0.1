@@ -25,7 +25,7 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
         { path: "/admin/city", icon: <BiUser />, label: "Cities" },
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },
-        { path: "/admin/application", icon: <BiFolder />, label: "Applications" },
+        // { path: "/admin/application", icon: <BiFolder />, label: "Applications" },
         { path: "/admin/bank-details", icon: <BiCreditCard />, label: "Bank Details" },
     ];
 

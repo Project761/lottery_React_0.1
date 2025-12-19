@@ -106,45 +106,45 @@ const AdminPage = ({ page: propPage }) => {
                         listId={"CategoryID"}
                       />
                     )
+                      // :
+                      // propPage === "application" ? (
+                      //   <DataTablePage
+                      //     page={propPage}
+                      //     getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
+                      //     addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
+                      //     updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
+                      //     deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
+                      //     getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
+
+                      //     listCode={"AnnualIncomeCode"}
+                      //     listId={"AnnualIncomeID"}
+                      //   />
+                      // )
                       :
-                      propPage === "application" ? (
+                      propPage === "bank-details" ? (
                         <DataTablePage
                           page={propPage}
-                          getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
-                          addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
-                          updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
-                          deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
-                          getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
+                          getDataApiUrl={"BankDetails/GetData_BankDetails"}
+                          addApiUrl={"BankDetails/Insert_BankDetails"}
+                          updateApiUrl={"BankDetails/Update_BankDetails"}
+                          deleteApiUrl={"BankDetails/Delete_BankDetails"}
+                          getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
 
-                          listCode={"AnnualIncomeCode"}
-                          listId={"AnnualIncomeID"}
+                          listCode={"BankDetailsCode"}
+                          listId={"BankDetailsID"}
                         />
                       )
                         :
-                        propPage === "bank-details" ? (
+                        (
                           <DataTablePage
                             page={propPage}
-                            getDataApiUrl={"BankDetails/GetData_BankDetails"}
-                            addApiUrl={"BankDetails/Insert_BankDetails"}
-                            updateApiUrl={"BankDetails/Update_BankDetails"}
-                            deleteApiUrl={"BankDetails/Delete_BankDetails"}
-                            getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
-
-                            listCode={"BankDetailsCode"}
-                            listId={"BankDetailsID"}
+                            getDataApiUrl={""}
+                            updateApiUrl={""}
+                            deleteApiUrl={""}
+                            addApiUrl={""}
+                            getSingleDataApiUrl={""}
                           />
                         )
-                          :
-                          (
-                            <DataTablePage
-                              page={propPage}
-                              getDataApiUrl={""}
-                              updateApiUrl={""}
-                              deleteApiUrl={""}
-                              addApiUrl={""}
-                              getSingleDataApiUrl={""}
-                            />
-                          )
       }
     </div>
   );
