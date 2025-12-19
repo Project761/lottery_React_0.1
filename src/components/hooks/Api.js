@@ -94,15 +94,15 @@ export const fetchPostData = async (url, postData) => {
             if (IsEncDec) {
                 // console.log(IsEncDec);
                 const EncPostData = await Aes256Encrypt(JSON.stringify(postData));
-                console.log(EncPostData)
+                // console.log(EncPostData)
                 const DecPostData = { 'EDpostData': EncPostData }
-                console.log(DecPostData)
+                // console.log(DecPostData)
                 const res = await axios.post(url, DecPostData);
-                console.log("Hurray " + res);
+                // console.log("Hurray " + res);
                 const EncryptedData = res?.data?.data;
-                console.log(EncryptedData)
+                // console.log(EncryptedData)
                 const decryptedData = await Aes256Decrypt(EncryptedData);
-                console.log(decryptedData)
+                // console.log(decryptedData)
                 const TextData = JSON.parse(decryptedData)
                 return TextData?.Table
             } else {
@@ -174,6 +174,25 @@ export const AddDeleteUpdateData = async (url, postData) => {
     return await res.data;
 }
 
+export const fetchPostFormData = async (url, formData) => {
+    try {
+        const ipAddress = sessionStorage.getItem("IPAddress");
+        if (ipAddress) {
+            formData.append("IPAddress", ipAddress);
+        }
+
+        // IMPORTANT: do NOT set headers manually
+        const res = await axios.post(url, formData);
+
+        // backend already returns encrypted string
+        const TextData = JSON.parse(res?.data?.data);
+        return TextData?.Table;
+
+    } catch (error) {
+        console.log( "%c🚀 FORM-DATA ERROR:", "color:red;font-weight:bold",error?.response?.request?.responseURL, error?.response?.data);
+        throw error;
+    }
+};
 
 
 export const AddDelete_Img = async (url, FormData) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
-import { ChangeArrayFormat, onChangeDropdown,selectValue } from "../../utils/Comman.js";
+import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Comman.js";
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
@@ -46,10 +46,10 @@ const DemandDraftDetails = () => {
 
             if (response && Array.isArray(response)) {
                 setAmount(response);
-            }else {
+            } else {
                 setAmount([]);
             }
-        }catch {
+        } catch {
             showError('Error fetching Amount Details');
         }
     }
@@ -128,7 +128,7 @@ const DemandDraftDetails = () => {
                             <label className="form-label fw-semibold mb-1">
                                 Demand Draft / Payment Transfer Number <span className="text-danger">*</span>
                             </label>
-                            <input type="number" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({...formData, PaymentTrasnum: e.target.value})}/>
+                            <input type="number" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({ ...formData, PaymentTrasnum: e.target.value })} />
                         </div>
 
                         {/* Demand Draft / Online Payment Date */}
@@ -136,13 +136,13 @@ const DemandDraftDetails = () => {
                             <label className="form-label fw-semibold mb-1">
                                 Demand Draft / Online Payment Date <span className="text-danger">*</span>
                             </label>
-                            <input 
-                              type="date" 
-                              autoComplete="off"
-                              className="form-control" 
-                              value={formData.PaymentDate ? new Date(formData.PaymentDate).toISOString().split('T')[0] : ''} 
-                              onChange={(e) => setFormData({...formData, PaymentDate: e.target.value})}
-                              max={new Date().toISOString().split('T')[0]}
+                            <input
+                                type="date"
+                                autoComplete="off"
+                                className="form-control"
+                                value={formData.PaymentDate ? new Date(formData.PaymentDate).toISOString().split('T')[0] : ''}
+                                onChange={(e) => setFormData({ ...formData, PaymentDate: e.target.value })}
+                                max={new Date().toISOString().split('T')[0]}
                             />
                         </div>
 
@@ -159,7 +159,7 @@ const DemandDraftDetails = () => {
                                 //         label: bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank))?.Description || ''
                                 //     } : null
                                 // }
-                                value = { selectValue(bankDetails, 'BankID', formData.PaymentBank, 'Description')}
+                                value={selectValue(bankDetails, 'BankID', formData.PaymentBank, 'Description')}
                                 className="w-full"
                                 placeholder="Select Bank"
                                 // options={bankDetails.map((b) => ({
@@ -183,25 +183,25 @@ const DemandDraftDetails = () => {
                             <label className="form-label fw-semibold">
                                 Select Amount <span className="text-danger">*</span>
                             </label>
-                            <Select 
-                            //   value = {amount.find((a) => String(a.AmountID) === String(formData.BankAmount)) ?
-                            //     {
-                            //         value: String(formData.BankAmount),
-                            //         label: amount.find((a) => String(a.AmountID) === String(formData.BankAmount))?.Description || ''
-                            //     } : null
-                            //   }
-                              value={ selectValue(amount, 'AmountID', formData.BankAmount, 'Description')}
-                              className="w-full"
-                              placeholder="Select Amount"
-                            //   options={amount.map((a) => ({
-                            //     value: a.AmountID,
-                            //     label: a.Description
-                            //   }))}
-                              options = {ChangeArrayFormat(amount, 'AmountID', 'Description')}
-                              onChange = {(event) => {
-                                onChangeDropdown(event, setFormData, formData, 'BankAmount');
-                              }}
-                              styles={{
+                            <Select
+                                //   value = {amount.find((a) => String(a.AmountID) === String(formData.BankAmount)) ?
+                                //     {
+                                //         value: String(formData.BankAmount),
+                                //         label: amount.find((a) => String(a.AmountID) === String(formData.BankAmount))?.Description || ''
+                                //     } : null
+                                //   }
+                                value={selectValue(amount, 'AmountID', formData.BankAmount, 'Description')}
+                                className="w-full"
+                                placeholder="Select Amount"
+                                //   options={amount.map((a) => ({
+                                //     value: a.AmountID,
+                                //     label: a.Description
+                                //   }))}
+                                options={ChangeArrayFormat(amount, 'AmountID', 'Description')}
+                                onChange={(event) => {
+                                    onChangeDropdown(event, setFormData, formData, 'BankAmount');
+                                }}
+                                styles={{
                                     control: (base) => ({
                                         ...base,
                                         minHeight: '38px',
@@ -214,17 +214,18 @@ const DemandDraftDetails = () => {
                         {/* Attachment */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold">Attachment</label>
-                            <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf" onChange={(e) => {
-                                const file = e.target.files[0];
-                                if(file){
-                                    setFormData({...formData, PaymentAttachement: file.name})
-                                    setFileObject(file);
-                                } 
-                            }}/>
+                            <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        setFormData({ ...formData, PaymentAttachement: file.name })
+                                        setFileObject(file);
+                                    }
+                                }} />
                             {
                                 formData.PaymentAttachement && (
                                     <span>
-                                       Uploaded file: <span>{formData.PaymentAttachement}</span>
+                                        Uploaded file: <span>{formData.PaymentAttachement}</span>
                                     </span>
                                 )
                             }

@@ -44,7 +44,7 @@ export const defaultFormStructure = {
   PolicyName: '',
 
   Status: 'Active',
-  CreatedByUser: 'Admin',
+  // CreatedByUser: 'Admin',
   ApplicantNumber: '',
   CompanyID: 1
 };
