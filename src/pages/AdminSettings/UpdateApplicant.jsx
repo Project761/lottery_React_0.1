@@ -35,26 +35,26 @@ export default function UpdateApplicant() {
             "CompanyID": localStorage.getItem('companyID') ?? 1
         });
         setColumnName(response)
-        console.log("🚀 ~ getPaperImage ~ response:", response);
+        // console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
     const handleSave = async () => {
-        console.log(value);
+        // console.log(value);
 
         let error = false;
 
         if (!value?.ApplicantNumber) {
-            toast.error(`ButtonDetail is required`);
+            toast.error(`ApplicantNumber is required`);
             error = true;
         }
 
         if (!value?.ColumnName) {
-            toast.error(`TextColor is required`);
+            toast.error(`ColumnName is required`);
             error = true;
         }
 
         if (!value?.ColumnValue) {
-            toast.error(`TextColor is required`);
+            toast.error(`ColumnValue is required`);
             error = true;
         }
 
@@ -70,11 +70,12 @@ export default function UpdateApplicant() {
             'ColumnName': ColumnName,
             'ColumnValue': ColumnValue,
         }
-        console.log("🚀 ~ handleSave ~ val:", val)
-        AddDeleteUpdateData('AppUser/Update_AppUser', val).then((response) => {
+
+        AddDeleteUpdateData('Button/Update_RegColumn', val).then((response) => {
             console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
-                showSuccess("Update Successfully")
+                showSuccess("Update Successfully");
+                Reset()
             }
         })
     };
@@ -82,7 +83,16 @@ export default function UpdateApplicant() {
     const handleChangeColumnName = (e) => {
         // console.log(e.target.name);
         // console.log(e.target.value);
-        setValue({ ...value, 'ButtonDetail': e.target.value, })
+        setValue({ ...value, 'ColumnName': e.target.value, })
+    }
+
+    const Reset = (e) => {
+        setValue({
+            ...value,
+            'ApplicantNumber': '',
+            'ColumnName': '',
+            'ColumnValue': '',
+        })
     }
 
     return (
