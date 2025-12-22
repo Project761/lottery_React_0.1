@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataTablePage from "./DataTablePage";
+import Application from "./Application";
+import Plots from "./plots";
+// import Application from "./Application";
 
 
 const AdminPage = ({ page: propPage }) => {
@@ -106,45 +109,44 @@ const AdminPage = ({ page: propPage }) => {
                         listId={"ProjectID"}
                       />
                     )
-                      // :
-                      // propPage === "application" ? (
-                      //   <DataTablePage
-                      //     page={propPage}
-                      //     getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
-                      //     addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
-                      //     updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
-                      //     deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
-                      //     getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
-
-                      //     listCode={"AnnualIncomeCode"}
-                      //     listId={"AnnualIncomeID"}
-                      //   />
-                      // )
                       :
-                      propPage === "bank-details" ? (
-                        <DataTablePage
-                          page={propPage}
-                          getDataApiUrl={"BankDetails/GetData_BankDetails"}
-                          addApiUrl={"BankDetails/Insert_BankDetails"}
-                          updateApiUrl={"BankDetails/Update_BankDetails"}
-                          deleteApiUrl={"BankDetails/Delete_BankDetails"}
-                          getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
-
-                          listCode={"BankDetailsCode"}
-                          listId={"BankDetailsID"}
-                        />
+                      propPage === "Application" ? (
+                        <>
+                          <Application />
+                        </>
                       )
+
                         :
-                        (
-                          <DataTablePage
-                            page={propPage}
-                            getDataApiUrl={""}
-                            updateApiUrl={""}
-                            deleteApiUrl={""}
-                            addApiUrl={""}
-                            getSingleDataApiUrl={""}
-                          />
+                        propPage === "plot" ? (
+                          <>
+                            <Plots />
+                          </>
                         )
+                          :
+                          propPage === "bank-details" ? (
+                            <DataTablePage
+                              page={propPage}
+                              getDataApiUrl={"BankDetails/GetData_BankDetails"}
+                              addApiUrl={"BankDetails/Insert_BankDetails"}
+                              updateApiUrl={"BankDetails/Update_BankDetails"}
+                              deleteApiUrl={"BankDetails/Delete_BankDetails"}
+                              getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
+
+                              listCode={"BankDetailsCode"}
+                              listId={"BankDetailsID"}
+                            />
+                          )
+                            :
+                            (
+                              <DataTablePage
+                                page={propPage}
+                                getDataApiUrl={""}
+                                updateApiUrl={""}
+                                deleteApiUrl={""}
+                                addApiUrl={""}
+                                getSingleDataApiUrl={""}
+                              />
+                            )
       }
     </div>
   );
