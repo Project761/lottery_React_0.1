@@ -10,7 +10,7 @@ const AdminPage = ({ page: propPage }) => {
   // console.log("🚀 ~ AdminPage ~ propPage:", propPage)
 
   return (
-    <div className="container py-4 pb-2">
+    <div className="py-4 pb-2">
       {
         propPage === "DemandDraftAmount" ? (
           <DataTablePage
