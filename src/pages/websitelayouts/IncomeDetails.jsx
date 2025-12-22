@@ -21,9 +21,15 @@ const IncomeDetails = () => {
   };
 
   const { formData, setFormData } = useFormData();
+  // useEffect(() => {
+  //   localStorage.setItem("applicationFormData", JSON.stringify(formData));
+  // }, [formData]);
   useEffect(() => {
-    localStorage.setItem("applicationFormData", JSON.stringify(formData));
+    const copy = { ...formData };
+    delete copy.PaymentAttachement;
+    localStorage.setItem("applicationFormData", JSON.stringify(copy));
   }, [formData]);
+
   // setFormData({...formData, Country: 'INDIA', CompanyID: 1});
 
   //---------------------- Dropdowns -----------------------
@@ -103,10 +109,7 @@ const IncomeDetails = () => {
     try {
       const payload = buildFormData(formData, formData.PaymentAttachement);
 
-      const response = await fetchPostFormData(
-        "User/Insert_User",
-        payload
-      );
+      const response = await fetchPostFormData("User/Insert_User", payload);
 
       localStorage.setItem("ApplicantNumber", response[0].ApplicantNumber);
       showSuccess("Application submitted successfully!");
@@ -120,55 +123,88 @@ const IncomeDetails = () => {
     }
   };
 
+  // const updateFormData = async () => {
+  //   try {
+  //     // console.log(formData);
+  //     const num = formData.PaymentAttachement;
+  //     // console.log(num);
+  //     const response = await fetchPostData("User/Update_User", formData);
+
+  //     if (response) {
+  //       showSuccess("Application Updated successfully!");
+  //       // if(num !== ){
+
+  //       // }
+  //       localStorage.removeItem("applicationFormData");
+  //       localStorage.removeItem("UserId");
+  //       localStorage.removeItem("sameAddress");
+  //       setFormData({});
+
+  //       setTimeout(() => navigate("/"), 1000);
+  //     } else {
+  //       showError(
+  //         response?.Message || "Something went wrong while submitting!"
+  //       );
+  //     }
+  //   } catch (error) {
+  //     showError("Error submitting form. Please try again!");
+  //     // console.error("Submit Error:", error);
+  //   }
+  // };
+
   const updateFormData = async () => {
     try {
-      const response = await fetchPostData("User/Update_User", formData);
-      // console.log(response[0].ApplicantNumber);
-      // localStorage.setItem('ApplicantNumber', response[0].ApplicantNumber);
+      const userID = localStorage.getItem("UserID");
+
+      // 1️⃣ If attachment changed → upload separately
+      if (
+        isPaymentAttachmentChanged &&
+        formData.PaymentAttachement instanceof File
+      ) {
+        const fd = new FormData();
+        fd.append("UserID", userID);
+        fd.append("Files", formData.PaymentAttachement);
+
+        await fetchPostFormData(
+          "User/Update_PaymentAttachement",
+          fd
+        );
+
+        // 🔥 Clear file from main formData
+        setFormData((prev) => ({
+          ...prev,
+          PaymentAttachement: "",
+        }));
+      }
+
+      // 2️⃣ Update remaining data (NO FILE HERE)
+      const payload = { ...formData };
+      delete payload.PaymentAttachement;
+
+      const response = await fetchPostData( "User/Update_User", payload);
 
       if (response) {
         showSuccess("Application Updated successfully!");
+
         localStorage.removeItem("applicationFormData");
-        localStorage.removeItem("UserId");
+        localStorage.removeItem("UserID");
         localStorage.removeItem("sameAddress");
         setFormData({});
 
         setTimeout(() => navigate("/"), 1000);
       } else {
-        showError(
-          response?.Message || "Something went wrong while submitting!"
-        );
+        showError(response?.Message || "Something went wrong!");
       }
     } catch (error) {
       showError("Error submitting form. Please try again!");
-      // console.error("Submit Error:", error);
     }
   };
+
+
 
   const onBack = () => {
     navigate("/dd-details");
   }
-// 1004. Max Consecutive Ones III
-// Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
-
-// Example 1:
-
-// Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
-// Output: 6
-// Explanation: [1,1,1,0,0,1,1,1,1,1,1]
-// Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
-// Example 2:
-
-// Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
-// Output: 10
-// Explanation: [0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
-// Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
- 
-// Constraints:
-
-// 1 <= nums.length <= 105
-// nums[i] is either 0 or 1.
-// 0 <= k <= nums.length
 
   return (
     <div className="container px-0 ">
@@ -204,12 +240,6 @@ const IncomeDetails = () => {
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1">Annual Income<span className="text-danger">*</span></label>
             <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
-              // value={ income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome)) ?
-              //   {
-              //     value: String(formData.AnnualIncome),
-              //     label: income.find((i) => String(i.AnnualIncomeID) === String(formData.AnnualIncome))?.Description
-              //   } : null
-              // }
               value={selectValue(income, 'AnnualIncomeID', formData.AnnualIncome, 'Description')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "AnnualIncome")}
               options={ChangeArrayFormat(income, 'AnnualIncomeID', 'Description')}
