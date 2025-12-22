@@ -45,8 +45,11 @@ const Login = (props) => {
             // ✅ Successful login check
             if (data && data.access_token) {
                 // Save important info in localStorage
+
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('FullName', response.data.FullName);
+
+                localStorage.setItem('AdminUserID', response.data.UserID);
                 localStorage.setItem('CompanyID', response.data.CompanyID);
                 showSuccess('Login successful!');
 

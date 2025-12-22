@@ -3,6 +3,7 @@ import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import { showSuccess, showError } from "../../utils/toast";
 
 export default function Logo() {
+
     const CompanyID = localStorage.getItem("companyID") || 1;
     const [logo, setLogo] = useState("");
 
@@ -12,14 +13,11 @@ export default function Logo() {
 
     const getPaperImage = async () => {
         try {
-            const response = await fetchPostData(
-                "Company/GetSingleData_Company",
-                { CompanyID }
-            );
+            const response = await fetchPostData("Company/GetSingleData_Company", { CompanyID });
             console.log("🚀 ~ getPaperImage ~ response:", response);
 
             if (response?.length > 0) {
-                setLogo(response[0]?.Address || "");
+                setLogo(response[0]?.Logo || "");
             } else {
                 setLogo("");
             }
@@ -33,20 +31,17 @@ export default function Logo() {
             showError("Address is required");
             return;
         }
-
         const payload = {
-            Address: logo,
-            CompanyID,
+            'Logo': logo,
+            'CompanyID': localStorage.getItem('companyID') || 1,
         };
-
-        AddDeleteUpdateData(
-            "Company/Update_CompanyContact",
-            payload
-        ).then((response) => {
+        AddDeleteUpdateData("Company/Update_Company", payload).then((response) => {
             if (response?.success) {
                 showSuccess("Update Successfully");
+                getPaperImage();
             }
         });
+
     };
 
     return (

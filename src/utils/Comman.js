@@ -6,6 +6,13 @@ export const ChangeArrayFormat = (data, value, Lable) => {
   return formattedArray;
 }
 
+export const threeColVictimOffenseArray = (data, Id, Code, col3) => {
+  const result = data?.map((sponsor) =>
+    ({ value: sponsor[Id], label: sponsor[Code], id: sponsor[col3] })
+  )
+  return result
+}
+
 // export const onChangeDropdown = (event, setFormData, formData, fieldName) => {
 //     // console.log(event);
 //     if (event && event.value) {
