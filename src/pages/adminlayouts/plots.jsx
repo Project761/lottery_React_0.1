@@ -3,6 +3,25 @@ import DataTable from "react-data-table-component";
 import { showError } from "../../utils/toast";
 import { fetchPostData } from "../../components/hooks/Api";
 import Select from "react-select";
+function useTableHeight() {
+    const getHeight = () => {
+        const w = window.innerWidth;
+        if (w >= 1400) return "500px"; // xxl
+        if (w >= 1200) return "400px"; // xl
+        if (w >= 992) return "250px"; // lg
+        return "200px";               // md & below
+    };
+
+    const [height, setHeight] = useState(getHeight());
+
+    useEffect(() => {
+        const onResize = () => setHeight(getHeight());
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
+
+    return height;
+}
 
 const Plots = () => {
 
@@ -182,6 +201,10 @@ const Plots = () => {
     };
 
 
+    const tableHeight = useTableHeight();
+
+
+
 
     return (
         <div className="container-fluid">
@@ -300,7 +323,7 @@ const Plots = () => {
                         customStyles={customStyles}
                         highlightOnHover
                         fixedHeader
-                        fixedHeaderScrollHeight="250px"
+                        fixedHeaderScrollHeight={tableHeight}
                         pointerOnHover
                         responsive
                         noDataComponent={
