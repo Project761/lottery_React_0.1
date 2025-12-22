@@ -5,44 +5,42 @@ import { fetchPostData } from "../../components/hooks/Api";
 import Select from "react-select";
 
 const Plots = () => {
+
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [projectName, setProjectName] = useState(null);
-    const [projectType, setProjectType] = useState(null);
+    const [plotAreaUnit, setPlotAreaUnit] = useState("Yard");
+    const [value, setValue] = useState({
+        'CompanyID': localStorage.getItem('companyID') ?? 1,
+        'ApplicantNumber': '',
+        'ColumnName': '',
+        'ColumnValue': '',
+    });
+
 
     const CompanyID = Number(localStorage.getItem("companyID") || 1);
-
-    const fetchApplications = async () => {
-        try {
-            setLoading(true);
-
-            const response = await fetchPostData("User/GetData_User", {
-                CompanyID,
-                IsActive: true,
-            });
-
-            console.log("response:", response);
-
-            const list =
-                Array.isArray(response) ? response :
-                    Array.isArray(response?.data) ? response.data :
-                        Array.isArray(response?.data?.data) ? response.data.data :
-                            Array.isArray(response?.data?.Data) ? response.data.Data :
-                                [];
-
-            setApplications(list);
-        } catch (error) {
-            showError("Failed to fetch applications");
-            console.error("Error fetching applications:", error);
-            setApplications([]);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
         fetchApplications();
     }, []);
+
+    const fetchApplications = async () => {
+        try {
+            setLoading(true);
+            const response = await fetchPostData("User/GetData_User", { IsActive: true, });
+            setApplications([])
+            // Reset Fields
+            resetForm()
+        } catch (error) {
+            showError("Failed to fetch applications");
+            setLoading(false);
+            console.error("Error fetching applications:", error);
+
+        } finally {
+            setLoading(false);
+
+        }
+    };
+
 
     const columns = [
         {
@@ -92,6 +90,32 @@ const Plots = () => {
         },
     ];
 
+    const OnChangeDropDown = (e, name) => {
+        // console.log(e);
+        // console.log(name);
+        // console.log(e.target.value);
+        if (e) {
+            setValue({ ...value, name: e.target.value, })
+
+        } else {
+            setValue({ ...value, name: null, })
+        }
+    }
+
+    const handleChange = (e) => {
+        setPlotAreaUnit(e.target.value);
+    };
+
+    const resetForm = () => {
+        setValue({
+            ...value,
+            'ApplicantNumber': '',
+            'ColumnName': '',
+            'ColumnValue': '',
+        });
+        setPlotAreaUnit("Yard")
+    }
+
     const customStyles = {
         headCells: {
             style: {
@@ -110,11 +134,6 @@ const Plots = () => {
             },
         },
     };
-
-
-
-
-
 
     const options = [
         { value: "", label: "--SELECT PROJECT NAME--" },
@@ -162,6 +181,8 @@ const Plots = () => {
         }),
     };
 
+
+
     return (
         <div className="container-fluid">
             <div className="card">
@@ -170,12 +191,15 @@ const Plots = () => {
                     <div className="col-12 col-md-3">
                         <label className="form-label small text-muted mb-1">Project Name</label>
                         <Select
-                            value={projectName}
-                            onChange={setProjectName}
-                            options={options.slice(1)}
+                            name="ProjectName"
+                            value={value?.ProjectName}
+                            onChange={(e) => { OnChangeDropDown(e, 'ProjectName') }}
+                            options={[]}
+
                             placeholder="--SELECT PROJECT NAME--"
                             isClearable
                             styles={selectStyles}
+
                         />
                     </div>
 
@@ -183,9 +207,11 @@ const Plots = () => {
                     <div className="col-12 col-md-3">
                         <label className="form-label small text-muted mb-1">Project Type</label>
                         <Select
-                            value={projectType}
-                            onChange={setProjectType}
-                            options={options2}
+                            name="ProjectName"
+                            value={value?.ProjectName}
+                            onChange={(e) => { OnChangeDropDown(e, 'ProjectName') }}
+                            options={[]}
+
                             placeholder="--SELECT PROJECT TYPE--"
                             isClearable
                             styles={selectStyles}
@@ -198,6 +224,10 @@ const Plots = () => {
                         <input
                             className="form-control form-control-sm"
                             placeholder="Enter Plot Number"
+
+                            name="ApplicantNumber"
+                            value={value?.ApplicantNumber}
+                            onChange={(e) => { setValue({ ...value, 'ApplicantNumber': e.target.value }) }}
                         />
                     </div>
 
@@ -207,6 +237,10 @@ const Plots = () => {
                         <input
                             className="form-control form-control-sm"
                             placeholder="Enter Plot Size"
+
+                            name="ApplicantNumber"
+                            value={value?.ApplicantNumber}
+                            onChange={(e) => { setValue({ ...value, 'ApplicantNumber': e.target.value }) }}
                         />
                     </div>
 
@@ -216,19 +250,35 @@ const Plots = () => {
                             <span className="plot-label">Plot Area</span>
 
                             <label className="radio-wrap">
-                                <input type="radio" name="plotAreaUnit" defaultChecked />
+
+                                <input
+                                    type="radio"
+                                    name="plotAreaUnit"
+                                    value="Yard"
+                                    checked={plotAreaUnit === "Yard"}
+                                    onChange={handleChange}
+                                    defaultChecked
+                                />
+
                                 <span className="custom-radio"></span>
                                 <span className="radio-text">Yard</span>
                             </label>
 
                             <label className="radio-wrap">
-                                <input type="radio" name="plotAreaUnit" />
+
+                                <input
+                                    type="radio"
+                                    name="plotAreaUnit"
+                                    value="Meter"
+                                    checked={plotAreaUnit === "Meter"}
+                                    onChange={handleChange}
+                                />
+
                                 <span className="custom-radio"></span>
                                 <span className="radio-text">Meter</span>
                             </label>
                         </div>
                     </div>
-
 
                     {/* Add Plot Button (right side like screenshot) */}
                     <div className="col-12 col-md-6 d-flex justify-content-end">
