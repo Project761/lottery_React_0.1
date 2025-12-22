@@ -3,6 +3,26 @@ import DataTable from "react-data-table-component";
 import { showError } from "../../utils/toast";
 import { fetchPostData } from "../../components/hooks/Api";
 
+function useTableHeight() {
+    const getHeight = () => {
+        const w = window.innerWidth;
+        if (w >= 1400) return "500px"; // xxl
+        if (w >= 1200) return "400px"; // xl
+        if (w >= 992) return "250px"; // lg
+        return "200px";               // md & below
+    };
+
+    const [height, setHeight] = useState(getHeight());
+
+    useEffect(() => {
+        const onResize = () => setHeight(getHeight());
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
+
+    return height;
+}
+
 const Application = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -123,6 +143,10 @@ const Application = () => {
         },
     };
 
+
+    const tableHeight = useTableHeight();
+
+
     return (
         <div className="container-fluid py-3">
             <div className="card">
@@ -140,7 +164,7 @@ const Application = () => {
                         customStyles={customStyles}
                         highlightOnHover
                         fixedHeader
-                        fixedHeaderScrollHeight="calc(100vh - 250px)"
+                        fixedHeaderScrollHeight={tableHeight}
                         pointerOnHover
                         responsive
                         noDataComponent={
