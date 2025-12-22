@@ -124,39 +124,34 @@ const Application = () => {
     };
 
     return (
-        <>
-            <div>
-                <div className="container-fluid">
-                    <div className="card">
-                        <div className="card-header bg-white py-3">
-                            <h5 className="mb-0">Applications</h5>
-                        </div>
-
-                        <div className="card-body p-0">
-                            <DataTable
-                                columns={columns}
-                                data={applications}
-                                progressPending={loading}
-                                pagination
-                                paginationPerPage={10}
-                                paginationRowsPerPageOptions={[10, 25, 50, 100]}
-                                customStyles={customStyles}
-                                highlightOnHover
-                                fixedHeader
-                                fixedHeaderScrollHeight="300px"
-                                pointerOnHover
-                                responsive
-                                noDataComponent={
-                                    <div className="p-4 text-center">
-                                        {loading ? "Loading..." : "No applications found"}
-                                    </div>
-                                }
-                            />
-                        </div>
-                    </div>
+        <div className="container-fluid py-3">
+            <div className="card">
+                <div className="card-header bg-white py-3">
+                    <h5 className="mb-0">Applications</h5>
+                </div>
+                <div className="card-body p-0">
+                    <DataTable
+                        columns={columns}
+                        data={applications}
+                        progressPending={loading}
+                        pagination
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                        customStyles={customStyles}
+                        highlightOnHover
+                        fixedHeader
+                        fixedHeaderScrollHeight="calc(100vh - 250px)"
+                        pointerOnHover
+                        responsive
+                        noDataComponent={
+                            <div className="p-4 text-center">
+                                {loading ? "Loading..." : "No applications found"}
+                            </div>
+                        }
+                    />
                 </div>
             </div>
-        </>
+        </div>
 
     );
 };
