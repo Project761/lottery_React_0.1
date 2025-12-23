@@ -25,6 +25,10 @@ const DemandDraftDetails = () => {
         localStorage.setItem("applicationFormData", JSON.stringify(copy));
     }, [formData]);
 
+    useEffect(() => {
+        localStorage.setItem("IsPaymentAttachmentChanged", isPaymentAttachmentChanged.toString());
+    }, [isPaymentAttachmentChanged]);
+
 
     //---------------------- Dropdowns -----------------------
     const fetchBankDetails = async () => {
@@ -224,8 +228,10 @@ const DemandDraftDetails = () => {
                             <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
                                 onChange={(e) => {
                                     const file = e.target.files[0];
+                                    console.log(file);
+                                    alert("Hello");
                                     if (file) {
-                                        setFormData({ ...formData, PaymentAttachement: file })
+                                        setFormData({ ...formData, PaymentAttachement: file})
                                         setFileObject(file);
                                         setIsPaymentAttachmentChanged(true);
                                     }
