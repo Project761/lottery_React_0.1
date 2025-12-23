@@ -36,12 +36,14 @@ const DataTablePage = (props) => {
       selector: row => row[listCode],
       sortable: true,
       omit: page === 'project', // This column will be visible
+      center: true,
     },
 
     {
       name: page === 'project' ? 'Project Name' : 'Description',
       selector: row => row.Description,
       sortable: true,
+      center: true,
     },
     {
       name: 'Action',
@@ -63,6 +65,7 @@ const DataTablePage = (props) => {
           </Button>
         </div>
       ),
+      center: true,
     },
   ];
 
@@ -238,18 +241,19 @@ const DataTablePage = (props) => {
         background: '#0d6efd',
         color: '#fff',
         fontWeight: '600',
+        minHeight: 40,
+        height: 40,
         fontSize: '14px',
         position: "sticky",
         top: 0,
         zIndex: 2,
       },
-      rows: {
-        style: {
-          padding: '10px',
-        },
+    },
+    cells: {
+      style: {
+        fontSize: "14px",
       },
     },
-
   };
 
 
