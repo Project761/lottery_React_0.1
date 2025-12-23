@@ -58,18 +58,21 @@ const Login = (props) => {
                     props.onLogin();
                 }
 
-                navigate(from, { replace: true });
+                // navigate(from, { replace: true });
+                navigate("/admin/dashboard");
+
             } else {
                 showError(data.error_description || 'Invalid credentials!');
+
             }
         } catch (error) {
             console.error("Login error:", error);
             if (error.response) {
-                showError(
-                    `Login failed: ${error.response.data.error_description || 'Invalid credentials'}`
-                );
+                showError(`Login failed: ${error.response.data.error_description || 'Invalid credentials'}`);
+
             } else {
                 showError('Unable to connect to the server. Please check the API or network.');
+
             }
         } finally {
             setLoading(false);

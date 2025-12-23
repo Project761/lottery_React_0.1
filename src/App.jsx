@@ -87,6 +87,7 @@ function App() {
 
 
 function AppContent() {
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('isAuthenticated') === 'true'
   );
@@ -98,6 +99,7 @@ function AppContent() {
 
   const handleLogout = useCallback(() => {
     localStorage.clear();
+    sessionStorage.clear();
     setIsAuthenticated(false);
     setTimeout(() => {
       window.location.href = '/admin/login';

@@ -24,6 +24,8 @@ function useTableHeight() {
 }
 
 const Plots = () => {
+
+    const CompanyID = Number(localStorage.getItem("companyID") || 1);
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [plotAreaUnit, setPlotAreaUnit] = useState("Yard");
@@ -35,7 +37,6 @@ const Plots = () => {
     });
 
 
-    const CompanyID = Number(localStorage.getItem("companyID") || 1);
 
     useEffect(() => {
         fetchApplications();
@@ -330,6 +331,8 @@ const Plots = () => {
                                 {loading ? "Loading..." : "No applications found"}
                             </div>
                         }
+
+                        persistTableHead={true}
                     />
                 </div>
             </div>

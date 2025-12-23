@@ -9,6 +9,34 @@ import Plots from "./plots";
 const AdminPage = ({ page: propPage }) => {
   // console.log("🚀 ~ AdminPage ~ propPage:", propPage)
 
+  // api/Project/GetData_Project
+  // IsActive
+  // CompanyID
+
+  // api/Project/Insert_Project
+  // Description
+  // ProjectCode
+  // CreatedByUser
+  // CompanyID
+
+  // api/Project/Update_Project
+  // Description
+  // ProjectCode
+  // ProjectID
+  // ModifiedByUser
+  // CompanyID
+
+  // api/Project/Delete_Project
+  // ProjectID
+  // DeleteByUser
+  // IsActive
+
+  // api/Project/GetSingleData_Project
+  // ProjectID
+
+  // api/Project/GetDataDropDown_Project
+  // CompanyID
+
   return (
     <div className="py-4 pb-2">
       {
@@ -110,31 +138,30 @@ const AdminPage = ({ page: propPage }) => {
                       />
                     )
                       :
-                      propPage === "Application" ? (
-                        <>
-                          <Application />
-                        </>
-                      )
+                      propPage === "bank-details" ? (
+                        <DataTablePage
+                          page={propPage}
+                          getDataApiUrl={"BankDetails/GetData_BankDetails"}
+                          addApiUrl={"BankDetails/Insert_BankDetails"}
+                          updateApiUrl={"BankDetails/Update_BankDetails"}
+                          deleteApiUrl={"BankDetails/Delete_BankDetails"}
+                          getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
 
+                          listCode={"BankDetailsCode"}
+                          listId={"BankDetailsID"}
+                        />
+                      )
                         :
-                        propPage === "plot" ? (
+                        propPage === "Application" ? (
                           <>
-                            <Plots />
+                            <Application />
                           </>
                         )
                           :
-                          propPage === "bank-details" ? (
-                            <DataTablePage
-                              page={propPage}
-                              getDataApiUrl={"BankDetails/GetData_BankDetails"}
-                              addApiUrl={"BankDetails/Insert_BankDetails"}
-                              updateApiUrl={"BankDetails/Update_BankDetails"}
-                              deleteApiUrl={"BankDetails/Delete_BankDetails"}
-                              getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
-
-                              listCode={"BankDetailsCode"}
-                              listId={"BankDetailsID"}
-                            />
+                          propPage === "plot" ? (
+                            <>
+                              <Plots />
+                            </>
                           )
                             :
                             (
