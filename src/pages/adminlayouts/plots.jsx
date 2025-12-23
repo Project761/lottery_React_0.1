@@ -24,7 +24,6 @@ function useTableHeight() {
 }
 
 const Plots = () => {
-
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [plotAreaUnit, setPlotAreaUnit] = useState("Yard");
