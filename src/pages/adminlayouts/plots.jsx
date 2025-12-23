@@ -4,6 +4,7 @@ import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import Select from "react-select";
 import { ChangeArrayFormat } from "../../utils/Comman";
 import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 
 function useTableHeight() {
@@ -38,6 +39,7 @@ const Plots = () => {
 
     const CompanyID = Number(localStorage.getItem("companyID") || 1);
     const [applications, setApplications] = useState([]);
+    console.log("🚀 ~ Plots ~ applications:", applications)
     const [editMode, setEditMode] = useState(false)
     const [projectNameDrpData, setProjectNameDrpData] = useState([])
     const [loading, setLoading] = useState(true);
@@ -131,15 +133,15 @@ const Plots = () => {
         },
         {
             name: "Plot Area",
-            selector: (row) => row?.PlotArea ?? "",
+            selector: (row) => row?.PlotAreaUnit ?? "",
             sortable: true,
         },
         {
             name: "Action",
             cell: (row) => (
                 <div className="d-flex gap-2">
-                    <button onClick={() => { edit_Plot_Data(row) }} className="btn btn-sm btn-outline-primary">Edit</button>
-                    <button onClick={() => { handleDelete(row?.PlotID) }} className="btn btn-sm btn-outline-danger">Delete</button>
+                    <button onClick={() => { edit_Plot_Data(row) }} className="btn btn-sm btn-outline-primary"> <FaEdit /></button>
+                    <button onClick={() => { handleDelete(row?.PlotID) }} className="btn btn-sm btn-outline-danger"><FaTrash /></button>
                 </div>
             ),
             ignoreRowClick: true,
@@ -345,6 +347,8 @@ const Plots = () => {
                 background: '#0d6efd',
                 color: '#fff',
                 fontWeight: '600',
+                minHeight: 40,
+                height: 40,
                 fontSize: '14px',
                 position: "sticky",
                 top: 0,
@@ -492,21 +496,22 @@ const Plots = () => {
                     </div>
 
                     {/* Add Plot Button (right side like screenshot) */}
-                    <div className="col-12 col-md-6 d-flex justify-content-end">
-                        <button onClick={insert_NewPlot} className="btn btn-primary btn-sm px-3 ml-2">
+                    <div className="col-12 col-md-6 d-flex justify-content-end gap-2">
+                        <button onClick={insert_NewPlot} className="btn btn-primary btn-sm px-3">
                             New
                         </button>
-                        {
-                            editMode ?
-                                <button onClick={handleUpdate} className="btn btn-primary btn-sm px-3">
-                                    Update PLOT
-                                </button>
-                                :
-                                <button onClick={handleSave} className="btn btn-primary btn-sm px-3">
-                                    ADD PLOT
-                                </button>
-                        }
+
+                        {editMode ? (
+                            <button onClick={handleUpdate} className="btn btn-primary btn-sm px-3">
+                                Update Plot
+                            </button>
+                        ) : (
+                            <button onClick={handleSave} className="btn btn-primary btn-sm px-3">
+                                Add Plot
+                            </button>
+                        )}
                     </div>
+
                 </div>
 
                 {/* Table */}
