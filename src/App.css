@@ -362,6 +362,9 @@ footer {
 
 
 /*  */
+.react-select__option { color: #000 !important; }
+.react-select__single-value { color: #000 !important; }
+.react-select__placeholder { color: #6c757d !important; }
 
 
 
