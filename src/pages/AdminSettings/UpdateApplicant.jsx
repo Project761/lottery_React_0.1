@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
+import Select from "react-select";
 
 
 export default function UpdateApplicant() {
@@ -17,7 +18,7 @@ export default function UpdateApplicant() {
 
 
     const CompanyID = localStorage.getItem('companyID') ?? 1
-
+    const [selectedColumn, setSelectedColumn] = useState("");
     const [columnName, setColumnName] = useState([])
     const [value, setValue] = useState({
         'CompanyID': localStorage.getItem('companyID') ?? 1,
@@ -25,11 +26,12 @@ export default function UpdateApplicant() {
         'ColumnName': '',
         'ColumnValue': '',
     });
+    console.log(columnName);
 
     useEffect(() => {
         getColumnNameDrp();
     }, [CompanyID]);
-
+d
     const getColumnNameDrp = async () => {
         const response = await fetchPostData("Button/RegColumn", {
             "CompanyID": localStorage.getItem('companyID') ?? 1
@@ -82,9 +84,13 @@ export default function UpdateApplicant() {
     };
 
     const handleChangeColumnName = (e) => {
-        // console.log(e.target.name);
-        // console.log(e.target.value);
-        setValue({ ...value, 'ColumnName': e.target.value, })
+        if (e) {
+            setValue({ ...value, ['ColumnName']: e?.value, })
+
+        } else {
+            setValue({ ...value, ['ColumnName']: null, })
+
+        }
     }
 
     const Reset = (e) => {
@@ -102,7 +108,6 @@ export default function UpdateApplicant() {
             label: item.ColumnName
         }));
     }
-
 
     return (
         <div className="card border">
@@ -130,20 +135,42 @@ export default function UpdateApplicant() {
                     />
 
                     {/* Select Column */}
-                    <select
-                        className="form-select form-select-sm"
-                        style={{ maxWidth: 300 }}
+                    <Select
+                        options={columnName}
                         name="columnName"
+                        value={columnName?.filter((obj) => obj?.value === value?.ColumnName) || null}
                         onChange={handleChangeColumnName}
-                    >
-                        {
-                            columnName?.map((item) => {
-                                return <>
-                                    <option value={item?.ColumnName}>{item?.ColumnName}</option>
-                                </>
-                            })
-                        }
-                    </select>
+                        placeholder="Select Column"
+                        classNamePrefix="react-select"
+                        menuPlacement="auto"
+                        menuPosition="fixed"
+                        styles={{
+                            container: (base) => ({ ...base, maxWidth: 300, width: 300 }),
+
+                            control: (base) => ({
+                                ...base,
+                                minHeight: "32px",
+                                height: "32px",
+                                fontSize: "13px",
+                            }),
+
+                            valueContainer: (base) => ({ ...base, padding: "0 8px" }),
+                            indicatorsContainer: (base) => ({ ...base, height: "32px" }),
+
+                            menu: (base) => ({ ...base, zIndex: 9999 }),
+                            menuList: (base) => ({ ...base, maxHeight: "180px", overflowY: "auto" }),
+
+                            // ✅ ADD THESE (text visible)
+                            option: (base, state) => ({
+                                ...base,
+                                color: "#000",
+                                backgroundColor: state.isFocused ? "#e9f2ff" : "#fff",
+                            }),
+                            singleValue: (base) => ({ ...base, color: "#000" }),
+                            placeholder: (base) => ({ ...base, color: "#6c757d" }),
+                        }}
+                    />
+
 
                     {/* What you update */}
                     <input
