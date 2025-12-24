@@ -34,8 +34,9 @@ export default function UpdateApplicant() {
         const response = await fetchPostData("Button/RegColumn", {
             "CompanyID": localStorage.getItem('companyID') ?? 1
         });
-        setColumnName(response)
-        // console.log("🚀 ~ getPaperImage ~ response:", response);
+
+        setColumnName(convertToValueLabel(response));
+        console.log("🚀 ~ getColumnNameDrp ~ convertToValueLabel(response):", convertToValueLabel(response))
     }
 
     const handleSave = async () => {
@@ -95,6 +96,14 @@ export default function UpdateApplicant() {
         })
     }
 
+    function convertToValueLabel(arr) {
+        return arr.map(item => ({
+            value: item.ColumnName,
+            label: item.ColumnName
+        }));
+    }
+
+
     return (
         <div className="card border">
             <div className="card-body px-3 py-2">
@@ -134,10 +143,6 @@ export default function UpdateApplicant() {
                                 </>
                             })
                         }
-                        {/* <option>-- SELECT COLUMN --</option>
-                        <option value="reg_id">reg_id</option>
-                        <option value="profile_photo">profile_photo</option>
-                        <option value="full_name">full_name</option> */}
                     </select>
 
                     {/* What you update */}
