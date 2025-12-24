@@ -1,10 +1,13 @@
 export const buildFormData = (data, file) => {
     const fd = new FormData();
 
-    fd.append("Data", JSON.stringify(data));
+    const payload = { ...data };
+    delete payload.PaymentAttachement;
+
+    fd.append("Data", JSON.stringify(payload));
 
     if(file instanceof File){
-        fd.append("files", file);
+        fd.append("Files", file);
     }
     return fd;
 };

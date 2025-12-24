@@ -34,11 +34,11 @@ const verifyMobileOtp = async (MobileNumber, otp) => {
             const table = response[0];
             if (table?.IsValid === 1) {
                 return true;
-            }else if(table?.Message === "OTP expired"){
+            } else if (table?.Message === "OTP expired") {
                 showError("Your OTP Expired. Please try again.");
                 return false;
             }
-             else {
+            else {
                 showError('Invalid OTP. Please try again.');
                 return false;
             }
@@ -64,18 +64,18 @@ const PersonalDetailsForm = () => {
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
     const [sameAddress, setSameAddress] = useState(() => {
-        try{
+        try {
             const saved = localStorage.getItem("sameAddress");
-            if(saved === null || saved == "undefined") return false;
+            if (saved === null || saved == "undefined") return false;
             return JSON.parse(saved);
-        }catch{
+        } catch {
             return false;
-        }}
+        }
+    }
     );
     const [originalMobile, setOriginalMobile] = useState("");
     const [isExistingUser, setIsExistingUser] = useState(false);
     const [isMobileVerified, setIsMobileVerified] = useState(false);
-
 
     const { formData, setFormData } = useFormData();
     useEffect(() => {
@@ -221,9 +221,9 @@ const PersonalDetailsForm = () => {
         // }
 
         if (isMobileVerified && formData.MobileNumber === originalMobile) {
-        //   setActiveTab("bank");
-          Navigate('/bank-details');
-          return;
+            //   setActiveTab("bank");
+            Navigate('/bank-details');
+            return;
         }
 
         //New user (Insert)
@@ -267,7 +267,7 @@ const PersonalDetailsForm = () => {
                 // setActiveTab('bank');
                 Navigate('/bank-details')
                 setShowOtp(false);
-                setIsMobileVerified(true); 
+                setIsMobileVerified(true);
                 setOriginalMobile(formData.MobileNumber);
                 localStorage.setItem("verifiedMobile", formData.MobileNumber);
                 showSuccess('Mobile number verified successfully');
@@ -294,8 +294,11 @@ const PersonalDetailsForm = () => {
         try {
             const userID = localStorage.getItem("UserID");
             const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
+            // console.log("response", response);
             if (response) {
+                // console.log(defaultFormStructure);
                 const normalizedData = { ...defaultFormStructure, ...response[0] };
+                // console.log(normalizedData.PaymentAttachement);
                 setFormData(normalizedData);
                 localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
                 setOriginalMobile(response[0].MobileNumber || "");
@@ -330,11 +333,11 @@ const PersonalDetailsForm = () => {
     }, [formData.State]);
 
     useEffect(() => {
-      const verifiedMobile = localStorage.getItem("verifiedMobile");
-      if (verifiedMobile) {
-        setIsMobileVerified(true);
-        setOriginalMobile(verifiedMobile);
-      }
+        const verifiedMobile = localStorage.getItem("verifiedMobile");
+        if (verifiedMobile) {
+            setIsMobileVerified(true);
+            setOriginalMobile(verifiedMobile);
+        }
     }, []);
 
     return (
@@ -519,11 +522,11 @@ const PersonalDetailsForm = () => {
                             {/* Aadhaar-No */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Aadhaar Number <span className="text-danger">*</span></label>
-                                <input type="text" autoComplete="off" placeholder="Enter Aadhaar No" className="form-control" value={formData.AadharNumber} 
-                                onChange={(e) => {
-                                    const formatted = formatTextwithSpace(e.target.value);
-                                    setFormData({ ...formData, AadharNumber: formatted })
-                                }} maxLength="14"/>
+                                <input type="text" autoComplete="off" placeholder="Enter Aadhaar No" className="form-control" value={formData.AadharNumber}
+                                    onChange={(e) => {
+                                        const formatted = formatTextwithSpace(e.target.value);
+                                        setFormData({ ...formData, AadharNumber: formatted })
+                                    }} maxLength="14" />
                             </div>
 
                             {/* Select-Cast */}
@@ -565,8 +568,9 @@ const PersonalDetailsForm = () => {
                                     placeholder="Enter Mobile No"
                                     value={formData.MobileNumber}
                                     onChange={(e) => {
-                                         const formattedMobile = mobileNoValidation(e.target.value);
-                                         setFormData({ ...formData, MobileNumber: formattedMobile })}}
+                                        const formattedMobile = mobileNoValidation(e.target.value);
+                                        setFormData({ ...formData, MobileNumber: formattedMobile })
+                                    }}
                                     maxLength="10"
                                 />
                                 {errors.MobileNumber && <div className="invalid-feedback">{errors.MobileNumber}</div>}
@@ -658,7 +662,7 @@ const PersonalDetailsForm = () => {
                                         onChange={(e) => {
                                             const checked = e.target.checked;
                                             setSameAddress(checked);
-                                            if(checked) setFormData((prev) => ({
+                                            if (checked) setFormData((prev) => ({
                                                 ...prev,
                                                 Posaddress: prev.Paraddress
                                             }))
@@ -700,12 +704,11 @@ const PersonalDetailsForm = () => {
                         {formData.MobileNumber && showOtp && (
                             <div className="text-center">
                                 <p className="mb-3">We've sent a 6-digit OTP to {formData.MobileNumber}</p>
-                                <OtpVerify  onBack={() => setShowOtp(false)} onVerify={handleOtpVerify}  MobileNumber={formData.MobileNumber}  isSubmitting={isSubmitting} onResendOtp={() => sendOtpToMobile(formData.MobileNumber)} />
+                                <OtpVerify onBack={() => setShowOtp(false)} onVerify={handleOtpVerify} MobileNumber={formData.MobileNumber} isSubmitting={isSubmitting} onResendOtp={() => sendOtpToMobile(formData.MobileNumber)} />
                             </div>
                         )}
                     </form>
-                )
-                }
+                )}
             </div>
             {
                 activeTab === "bank" && (
