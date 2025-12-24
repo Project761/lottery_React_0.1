@@ -10,9 +10,9 @@ const AddEditModal = ({
     onInputChange,
     onSubmit,
     submitButtonText = 'Save Changes',
-    size = 'md'
+    size = 'md',
+    openPage = ''
 }) => {
- 
 
 
     return (
@@ -24,15 +24,20 @@ const AddEditModal = ({
                 <Form onSubmit={onSubmit}>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>{listCode}</Form.Label>
-                        <Form.Control
-                            type={"text"}
-                            name={listCode}
-                            value={formData[listCode] || ''}
-                            onChange={onInputChange}
-                            placeholder={listCode || `Enter ${listCode?.toLowerCase()}`}
-                        />
-                        <Form.Label>{"Description"}</Form.Label>
+                        {
+                            openPage != 'project' && <>
+                                <Form.Label>{listCode}</Form.Label>
+                                <Form.Control
+                                    type={"text"}
+                                    name={listCode}
+                                    value={formData[listCode] || ''}
+                                    onChange={onInputChange}
+                                    placeholder={listCode || `Enter ${listCode?.toLowerCase()}`}
+                                />
+                            </>
+                        }
+
+                        <Form.Label> {openPage === 'project' ? 'Project Name' : "Description"}</Form.Label>
                         <Form.Control
                             type={"text"}
                             name={"Description"}
@@ -40,10 +45,8 @@ const AddEditModal = ({
                             onChange={onInputChange}
                             placeholder={"Description" || `Enter ${"Description"?.toLowerCase()}`}
                         />
+
                     </Form.Group>
-
-
-                   
 
                     <div className="text-end">
                         <Button variant="secondary" onClick={onHide} className="me-2">

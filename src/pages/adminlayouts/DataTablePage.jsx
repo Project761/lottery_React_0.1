@@ -22,7 +22,7 @@ const DataTablePage = (props) => {
     [listCode]: '',
     [listId]: '',
     Description: '',
-    // CompanyID: companyID,
+    CompanyID: companyID,
     IsActive: true,
     CreatedByUser: '',
     ModifiedByUser: '',
@@ -35,12 +35,15 @@ const DataTablePage = (props) => {
       name: listCode ? `${listCode.replace(/([a-z])([A-Z])/g, "$1 $2")}` : "Code",
       selector: row => row[listCode],
       sortable: true,
+      omit: page === 'project', // This column will be visible
+      center: true,
     },
 
     {
-      name: 'Description',
+      name: page === 'project' ? 'Project Name' : 'Description',
       selector: row => row.Description,
       sortable: true,
+      center: true,
     },
     {
       name: 'Action',
@@ -62,6 +65,7 @@ const DataTablePage = (props) => {
           </Button>
         </div>
       ),
+      center: true,
     },
   ];
 
@@ -72,7 +76,7 @@ const DataTablePage = (props) => {
 
   const getData = async (companyID) => {
     try {
-      const response = await fetchPostData(getDataApiUrl, { IsActive: true });
+      const response = await fetchPostData(getDataApiUrl, { IsActive: true, CompanyID: companyID });
       // setData(response.data);
       console.log(response);
       if (response.length > 0) {
@@ -123,7 +127,7 @@ const DataTablePage = (props) => {
       [listCode]: row[listCode],
       [listId]: row[listId],
       Description: row.Description,
-      // CompanyID: companyID,
+      CompanyID: companyID,
       IsActive: true,
       CreatedByUser: '',
       ModifiedByUser: '',
@@ -161,7 +165,7 @@ const DataTablePage = (props) => {
 
     let error = false;
 
-    if (!formData[listCode]) {
+    if (!formData[listCode] && page != 'project') {
       toast.error(`${listCode} is required`);
       error = true;
     }
@@ -202,7 +206,7 @@ const DataTablePage = (props) => {
       [listCode]: '',
       [listId]: '',
       Description: '',
-      // CompanyID: companyID,
+      CompanyID: companyID,
       IsActive: true,
       CreatedByUser: '',
       ModifiedByUser: '',
@@ -225,7 +229,6 @@ const DataTablePage = (props) => {
     });
   };
 
-
   const filteredData = data.filter(item => {
     return Object.values(item).some(value =>
       String(value).toLowerCase().includes(searchTerm.toLowerCase())
@@ -238,19 +241,21 @@ const DataTablePage = (props) => {
         background: '#0d6efd',
         color: '#fff',
         fontWeight: '600',
+        minHeight: 40,
+        height: 40,
         fontSize: '14px',
         position: "sticky",
         top: 0,
         zIndex: 2,
       },
-      rows: {
-        style: {
-          padding: '10px',
-        },
+    },
+    cells: {
+      style: {
+        fontSize: "14px",
       },
     },
-
   };
+
 
   return (
     <div className="container-fluid">
@@ -296,9 +301,9 @@ const DataTablePage = (props) => {
                 customStyles={customStyles}
                 fixedHeader
                 fixedHeaderScrollHeight="325px"
+
+                persistTableHead={true}
               />
-
-
             </Table>
           </div>
         </Card.Body>
@@ -316,6 +321,7 @@ const DataTablePage = (props) => {
         onSubmit={handleSubmit}
         loading={loading}
         submitButtonText={isEditing ? 'Update' : 'Add'}
+        openPage={page ? page : ''}
       />
     </div>
   );

@@ -43,13 +43,13 @@ export default function ApplicantPermission() {
             if (response?.success) {
                 showSuccess("Update Successfully")
             }
-            // const parseData = JSON.parse(response?.data)
-            // console.log("🚀 ~ handleCheckBox ~ parseData:", parseData?.Table[0]?.Message)
+            // const parseData = JSON.parse(response?.data);
+            // console.log("🚀 ~ handleCheckBox ~ parseData:", parseData?.Table[0]?.Message);
 
         })
     }
 
-
+ 
 
     return (
         <div className="card border">
@@ -67,13 +67,11 @@ export default function ApplicantPermission() {
                     type="checkbox"
                     className="form-check-input m-0"
                     style={{ cursor: "pointer" }}
-
                     name='AppRegPermission'
                     value={isAllowRegister}
                     checked={isAllowRegister}
                     onChange={handleCheckBox}
                     id="flexCheckDefault1"
-
                 />
             </div>
         </div>

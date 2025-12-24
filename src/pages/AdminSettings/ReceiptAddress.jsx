@@ -30,7 +30,7 @@ export default function ReceiptAddress() {
     }
 
     const UpdateContactInfo = (e) => {
-        let error = false;
+        let error = false;  
 
         if (!Address) {
             toast.error(`Address is required`);
@@ -69,8 +69,8 @@ export default function ReceiptAddress() {
                 <textarea
                     className="form-control mb-2"
                     placeholder=""
-                    name="ButtonDetail"
                     rows={3}
+                    name="ButtonDetail"
                     value={Address}
                     onChange={(e) => { setAddress(e.target.value) }}
                 />

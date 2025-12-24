@@ -87,6 +87,7 @@ function App() {
 
 
 function AppContent() {
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('isAuthenticated') === 'true'
   );
@@ -98,6 +99,7 @@ function AppContent() {
 
   const handleLogout = useCallback(() => {
     localStorage.clear();
+    sessionStorage.clear();
     setIsAuthenticated(false);
     setTimeout(() => {
       window.location.href = '/admin/login';
@@ -149,7 +151,7 @@ function AppContent() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="settings" element={<AdminSettings />} />
-          {["project", "plot", "bank-details", "bank", "caste", "DemandDraftAmount", "City", "Annual-Income", "Category"].map(
+          {["project", "plot", "bank-details", "bank", "caste", "DemandDraftAmount", "City", "Annual-Income", "Category", "Application"].map(
             (pageName) => (
               <Route key={pageName} path={pageName} element={<AdminPage page={pageName} />} />
             ))}

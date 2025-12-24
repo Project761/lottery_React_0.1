@@ -1,13 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataTablePage from "./DataTablePage";
+import Application from "./Application";
+import Plots from "./plots";
+// import Application from "./Application";
 
 
 const AdminPage = ({ page: propPage }) => {
   // console.log("🚀 ~ AdminPage ~ propPage:", propPage)
 
+  // api/Project/GetData_Project
+  // IsActive
+  // CompanyID
+
+  // api/Project/Insert_Project
+  // Description
+  // ProjectCode
+  // CreatedByUser
+  // CompanyID
+
+  // api/Project/Update_Project
+  // Description
+  // ProjectCode
+  // ProjectID
+  // ModifiedByUser
+  // CompanyID
+
+  // api/Project/Delete_Project
+  // ProjectID
+  // DeleteByUser
+  // IsActive
+
+  // api/Project/GetSingleData_Project
+  // ProjectID
+
+  // api/Project/GetDataDropDown_Project
+  // CompanyID
+
   return (
-    <div className="container py-4 pb-2">
+    <div className="py-4 pb-2">
       {
         propPage === "DemandDraftAmount" ? (
           <DataTablePage
@@ -106,20 +137,6 @@ const AdminPage = ({ page: propPage }) => {
                         listId={"ProjectID"}
                       />
                     )
-                      // :
-                      // propPage === "application" ? (
-                      //   <DataTablePage
-                      //     page={propPage}
-                      //     getDataApiUrl={"AnnualIncome/GetDataDropDown_AnnualIncome"}
-                      //     addApiUrl={"AnnualIncome/Insert_AnnualIncome"}
-                      //     updateApiUrl={"AnnualIncome/Update_AnnualIncome"}
-                      //     deleteApiUrl={"AnnualIncome/Delete_AnnualIncome"}
-                      //     getSingleDataApiUrl={"AnnualIncome/GetSingleData_AnnualIncome"}
-
-                      //     listCode={"AnnualIncomeCode"}
-                      //     listId={"AnnualIncomeID"}
-                      //   />
-                      // )
                       :
                       propPage === "bank-details" ? (
                         <DataTablePage
@@ -135,16 +152,28 @@ const AdminPage = ({ page: propPage }) => {
                         />
                       )
                         :
-                        (
-                          <DataTablePage
-                            page={propPage}
-                            getDataApiUrl={""}
-                            updateApiUrl={""}
-                            deleteApiUrl={""}
-                            addApiUrl={""}
-                            getSingleDataApiUrl={""}
-                          />
+                        propPage === "Application" ? (
+                          <>
+                            <Application />
+                          </>
                         )
+                          :
+                          propPage === "plot" ? (
+                            <>
+                              <Plots />
+                            </>
+                          )
+                            :
+                            (
+                              <DataTablePage
+                                page={propPage}
+                                getDataApiUrl={""}
+                                updateApiUrl={""}
+                                deleteApiUrl={""}
+                                addApiUrl={""}
+                                getSingleDataApiUrl={""}
+                              />
+                            )
       }
     </div>
   );

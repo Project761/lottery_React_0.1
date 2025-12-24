@@ -45,8 +45,11 @@ const Login = (props) => {
             // ✅ Successful login check
             if (data && data.access_token) {
                 // Save important info in localStorage
+
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('FullName', response.data.FullName);
+
+                localStorage.setItem('AdminUserID', response.data.UserID);
                 localStorage.setItem('CompanyID', response.data.CompanyID);
                 showSuccess('Login successful!');
 
@@ -55,18 +58,21 @@ const Login = (props) => {
                     props.onLogin();
                 }
 
-                navigate(from, { replace: true });
+                // navigate(from, { replace: true });
+                navigate("/admin/dashboard");
+
             } else {
                 showError(data.error_description || 'Invalid credentials!');
+
             }
         } catch (error) {
             console.error("Login error:", error);
             if (error.response) {
-                showError(
-                    `Login failed: ${error.response.data.error_description || 'Invalid credentials'}`
-                );
+                showError(`Login failed: ${error.response.data.error_description || 'Invalid credentials'}`);
+
             } else {
                 showError('Unable to connect to the server. Please check the API or network.');
+
             }
         } finally {
             setLoading(false);

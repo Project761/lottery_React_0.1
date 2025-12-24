@@ -22,7 +22,7 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
         { path: "/admin/Annual-Income", icon: <BiBuildingHouse />, label: "Annual Income" },
         { path: "/admin/Category", icon: <BiBuildingHouse />, label: "Category" },
         { path: "/admin/caste", icon: <BiUser />, label: "Castes" },
-
+        { path: "/admin/Application", icon: <BiUser />, label: "Application" },
         { path: "/admin/city", icon: <BiUser />, label: "Cities" },
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },
