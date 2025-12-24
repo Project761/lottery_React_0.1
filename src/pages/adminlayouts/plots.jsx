@@ -62,7 +62,6 @@ const Plots = () => {
 
     });
 
-
     useEffect(() => {
         fetchApplications(CompanyID);
         getProjectNameDrpData(CompanyID);
@@ -339,7 +338,6 @@ const Plots = () => {
         });
         setPlotAreaUnit('Yard')
     }
-
 
     const customStyles = {
         headCells: {
