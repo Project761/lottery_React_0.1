@@ -131,9 +131,9 @@ export default function PaperImage() {
                             </div>
 
                             {/* Bottom bar */}
-                            <div className="p-1">
+                            {/* <div className="p-1">
                                 <div className="bg-danger" style={{ height: 4 }} />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 ))}
