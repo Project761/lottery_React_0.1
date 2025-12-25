@@ -39,7 +39,7 @@ const Plots = () => {
 
     const CompanyID = Number(localStorage.getItem("companyID") || 1);
     const [applications, setApplications] = useState([]);
-    console.log("🚀 ~ Plots ~ applications:", applications)
+    // console.log("🚀 ~ Plots ~ applications:", applications)
     const [editMode, setEditMode] = useState(false)
     const [projectNameDrpData, setProjectNameDrpData] = useState([])
     const [loading, setLoading] = useState(true);

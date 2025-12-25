@@ -16,22 +16,22 @@ export default function UpdateApplicant() {
     // api/Button/RegColumn
     // CompanyID
 
-
     const CompanyID = localStorage.getItem('companyID') ?? 1
     const [selectedColumn, setSelectedColumn] = useState("");
-    const [columnName, setColumnName] = useState([])
+    const [columnName, setColumnName] = useState([]);
+
     const [value, setValue] = useState({
         'CompanyID': localStorage.getItem('companyID') ?? 1,
         'ApplicantNumber': '',
         'ColumnName': '',
         'ColumnValue': '',
     });
-    console.log(columnName);
+
 
     useEffect(() => {
         getColumnNameDrp();
     }, [CompanyID]);
-d
+
     const getColumnNameDrp = async () => {
         const response = await fetchPostData("Button/RegColumn", {
             "CompanyID": localStorage.getItem('companyID') ?? 1
@@ -75,7 +75,7 @@ d
         }
 
         AddDeleteUpdateData('Button/Update_RegColumn', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully");
                 Reset()
@@ -103,7 +103,7 @@ d
     }
 
     function convertToValueLabel(arr) {
-        return arr.map(item => ({
+        return arr?.map(item => ({
             value: item.ColumnName,
             label: item.ColumnName
         }));
@@ -144,6 +144,7 @@ d
                         classNamePrefix="react-select"
                         menuPlacement="auto"
                         menuPosition="fixed"
+                        isClearable
                         styles={{
                             container: (base) => ({ ...base, maxWidth: 300, width: 300 }),
 
