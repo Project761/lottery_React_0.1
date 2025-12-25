@@ -143,9 +143,9 @@ form {
   scrollbar-width: none; /* Firefox */
 }
 
-.tab-header-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
-}
+/* .tab-header-container::-webkit-scrollbar {
+  display: none; 
+} */
 
 /* Tabs wrapper */
 .tab-header {
@@ -260,5 +260,6 @@ form {
 .kMgreK {
   min-height: auto !important;
 }
+
 
 

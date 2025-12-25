@@ -127,13 +127,18 @@ const Application = () => {
         }
 
     ];
-
     const customStyles = {
         headCells: {
             style: {
-                backgroundColor: "#f8f9fa",
-                fontWeight: "bold",
-                fontSize: "14px",
+                background: '#0d6efd',
+                color: '#fff',
+                fontWeight: '600',
+                minHeight: 40,
+                height: 40,
+                fontSize: '14px',
+                position: "sticky",
+                top: 0,
+                zIndex: 2,
             },
         },
         cells: {
