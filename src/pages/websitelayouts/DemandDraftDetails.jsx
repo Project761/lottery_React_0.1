@@ -7,6 +7,8 @@ import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 const DemandDraftDetails = () => {
+
+    const navigate = useNavigate();
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
     const { formData, setFormData } = useFormData();
@@ -14,11 +16,11 @@ const DemandDraftDetails = () => {
     const [fileObject, setFileObject] = useState(null);
     const [amount, setAmount] = useState([]);
     const [isPaymentAttachmentChanged, setIsPaymentAttachmentChanged] = useState(false);
-    const navigate = useNavigate();
 
     // useEffect(() => {
     //     localStorage.setItem("applicationFormData", JSON.stringify(formData));
     // }, [formData]);
+
     useEffect(() => {
         const copy = { ...formData };
         delete copy.PaymentAttachement;
@@ -231,7 +233,7 @@ const DemandDraftDetails = () => {
                                     console.log(file);
                                     alert("Hello");
                                     if (file) {
-                                        setFormData({ ...formData, PaymentAttachement: file})
+                                        setFormData({ ...formData, PaymentAttachement: file })
                                         setFileObject(file);
                                         setIsPaymentAttachmentChanged(true);
                                     }

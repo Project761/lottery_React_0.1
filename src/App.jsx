@@ -88,6 +88,8 @@ function App() {
 
 function AppContent() {
 
+  const navigate = useNavigate();
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('isAuthenticated') === 'true'
   );
@@ -102,8 +104,9 @@ function AppContent() {
     sessionStorage.clear();
     setIsAuthenticated(false);
     setTimeout(() => {
-      window.location.href = '/admin/login';
-      window.location.reload();
+      navigate('/admin/login')
+      // window.location.href = '/admin/login';
+      // window.location.reload();
     }, 800);
   }, []);
 
