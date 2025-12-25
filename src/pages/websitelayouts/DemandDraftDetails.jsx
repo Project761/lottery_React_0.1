@@ -229,7 +229,7 @@ const DemandDraftDetails = () => {
                                 onChange={(e) => {
                                     const file = e.target.files[0];
                                     console.log(file);
-                                    alert("Hello");
+                                    // alert("Hello");
                                     if (file) {
                                         setFormData({ ...formData, PaymentAttachement: file})
                                         setFileObject(file);

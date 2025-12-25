@@ -40,6 +40,16 @@ export default function ApplicantPermission() {
                 'ButtonID': buttonId,
             }
             const response = await AddDeleteUpdateData('Button/Update_Button', val);
+    const handleCheckBox = (e) => {
+        // console.log(e.target.checked);
+        e.preventDefault();
+        setIsAllowRegister(e.target.checked);
+        const val = {
+            'AppRegPermission': e.target.checked,
+            'ButtonID': buttonId,
+        }
+        AddDeleteUpdateData('Button/Update_Button', val).then((response) => {
+            console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully");
                 getPaperImage();
@@ -101,3 +111,4 @@ export default function ApplicantPermission() {
         </div>
     );
 }
+//In this on first time when I click on checkbox so our page reloaded & our session got out Applicant Register Permission :-
