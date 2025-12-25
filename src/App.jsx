@@ -61,7 +61,7 @@ const WebsiteLayout = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />
-      <div className="container mt-4 mb-4 flex-grow-1">
+      <div className="container mt-2 mb-4 flex-grow-1">
         {activeTab && (
           <TabHeader activeTab={activeTab} onTabChange={(tab) => {
             setActiveTab(tab);
