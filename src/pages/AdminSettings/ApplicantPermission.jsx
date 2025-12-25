@@ -31,7 +31,7 @@ export default function ApplicantPermission() {
         console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
-    const handleCheckBox = async (e) => {
+   const handleCheckBox = async (e) => {
         // e.preventDefault();
         try {
             setIsAllowRegister(e.target.checked);

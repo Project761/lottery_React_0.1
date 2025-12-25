@@ -4,12 +4,16 @@ const HomePreview = ({ images = [] }) => {
   const img1 = images[0]?.FilePath?.replace(/\\/g, "/");
   const img2 = images[1]?.FilePath?.replace(/\\/g, "/");
 
+  const img1Url = img1 ? `https://${img1}` : null;
+  const img2Url = img2 ? `https://${img2}` : null;
+
   const boxStyle = {
     border: "2px solid #cfcfcf",
     borderRadius: 8,
     background: "#fff",
     overflow: "hidden",
     width: "100%",
+    minHeight: 250,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -18,31 +22,34 @@ const HomePreview = ({ images = [] }) => {
   const imgStyle = {
     width: "100%",
     height: "100%",
-    objectFit: "contain", 
+    objectFit: "contain",
     display: "block",
   };
 
+  if (!img1Url && !img2Url) {
+    return (
+      <div className="text-center py-5">
+        <h2 className="text-muted">Paper Cut Coming Soon...</h2>
+      </div>
+    );
+  }
+
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
-
+      
       {/* TOP IMAGE */}
-      <div style={{ ...boxStyle,  marginBottom: 20 }}>
-        {img1 ? (
-          <img src={img1} alt="Top Preview" style={imgStyle} />
-        ) : (
-          <span style={{ color: "#999" }}>No Image</span>
-        )}
-      </div>
+      {img1Url && (
+        <div style={{ ...boxStyle, marginBottom: 20 }}>
+          <img src={img1Url} alt="Top Preview" style={imgStyle} />
+        </div>
+      )}
 
       {/* BOTTOM IMAGE */}
-      <div style={{ ...boxStyle,  }}>
-        {img2 ? (
-          <img src={img2} alt="Bottom Preview" style={imgStyle} />
-        ) : (
-          <span style={{ color: "#999" }}>No Image</span>
-        )}
-      </div>
-
+      {img2Url && (
+        <div style={boxStyle}>
+          <img src={img2Url} alt="Bottom Preview" style={imgStyle} />
+        </div>
+      )}
     </div>
   );
 };
