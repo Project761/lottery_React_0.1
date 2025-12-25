@@ -153,7 +153,7 @@ footer {
   }
 }
 
-/* Scrollbar */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -173,7 +173,7 @@ footer {
 }
 
 
-.card {
+.card { 
   border-radius: 10px;
 }
 
@@ -342,9 +342,9 @@ footer {
   
 }
 
-.sc-jytpVa.sc-pYNGo.ktpgmD.irAvtw{
- display: none !important;   
-}
+  .sc-jytpVa.sc-pYNGo.ktpgmD.irAvtw{
+  display: none !important;   
+  }
 
 .card:hover {
   transform: none !important;
@@ -369,6 +369,17 @@ footer {
 
 
 
+@keyframes floatGift {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 
 
 

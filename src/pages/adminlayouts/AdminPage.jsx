@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import DataTablePage from "./DataTablePage";
 import Application from "./Application";
 import Plots from "./plots";
+import BankDetailsForm from "./BankDetailsForm";
 // import Application from "./Application";
 
 
@@ -139,17 +140,9 @@ const AdminPage = ({ page: propPage }) => {
                     )
                       :
                       propPage === "bank-details" ? (
-                        <DataTablePage
-                          page={propPage}
-                          getDataApiUrl={"BankDetails/GetData_BankDetails"}
-                          addApiUrl={"BankDetails/Insert_BankDetails"}
-                          updateApiUrl={"BankDetails/Update_BankDetails"}
-                          deleteApiUrl={"BankDetails/Delete_BankDetails"}
-                          getSingleDataApiUrl={"BankDetails/GetSingleData_BankDetails"}
-
-                          listCode={"BankDetailsCode"}
-                          listId={"BankDetailsID"}
-                        />
+                        <>
+                          <BankDetailsForm />
+                        </>
                       )
                         :
                         propPage === "Application" ? (

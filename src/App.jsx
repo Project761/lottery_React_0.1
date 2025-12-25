@@ -25,6 +25,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import PersonalDetailsPage from './pages/websitelayouts/PersonalDetailsPage';
 import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
 import AdminSettings from './pages/AdminSettings/AdminSettings';
+import LotteryPage from './pages/adminlayouts/LotteryPage';
 
 // Admin Layout Wrapper
 // const AdminLayout = () => {
@@ -136,6 +137,7 @@ function AppContent() {
   return (
     <FormDataProvider>
       <Routes>
+        <Route path="/admin/lottery" element={<LotteryPage />} />
         {/* Public Routes */}
         {/* <Route path="/admin/login" element={isAuthenticated ? <Navigate to="/admin/dashboard" replace /> : <AdminLogin onLogin={handleLogin} />} /> */}
         <Route path="/admin/login" element={<AdminLogin onLogin={handleLogin} />} />

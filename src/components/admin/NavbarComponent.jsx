@@ -59,7 +59,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
               {localStorage.getItem('FullName') || 'Admin User'}
             </Dropdown.Header>
             <Dropdown.Divider />
-            <Dropdown.Item 
+            <Dropdown.Item
               className="d-flex align-items-center"
               onClick={() => navigate('/admin/settings')}
             >
@@ -77,12 +77,13 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
               className="d-flex align-items-center text-danger"
               onClick={(e) => {
                 e.preventDefault();
-                showSuccess('Logout...');
-                onLogout();
+                showSuccess("Logout Successfully");
+                navigate("/admin/login", { replace: true });
               }}
             >
               <FaSignOutAlt className="me-2" /> Logout
             </Dropdown.Item>
+
           </Dropdown.Menu>
 
         </Dropdown>

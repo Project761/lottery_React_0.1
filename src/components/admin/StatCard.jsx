@@ -1,8 +1,14 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { FaUsers } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const StatCard = ({ title, value, icon, color, showButtons }) => {
+  const navigate = useNavigate();
+
+  const handleRunClick = () => {
+    navigate('/admin/lottery');
+  };
 
   const getIcon = () => {
     switch (icon) {
@@ -38,7 +44,7 @@ const StatCard = ({ title, value, icon, color, showButtons }) => {
           {/* Buttons */}
           {showButtons && (
             <div className="d-flex gap-2 mt-3">
-              <Button variant="success" size="sm">
+              <Button variant="success" size="sm" onClick={handleRunClick}>
                 RUN
               </Button>
               <Button variant="danger" size="sm">
