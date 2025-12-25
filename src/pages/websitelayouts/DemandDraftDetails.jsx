@@ -19,6 +19,7 @@ const DemandDraftDetails = () => {
     // useEffect(() => {
     //     localStorage.setItem("applicationFormData", JSON.stringify(formData));
     // }, [formData]);
+    
     useEffect(() => {
         const copy = { ...formData };
         delete copy.PaymentAttachement;
