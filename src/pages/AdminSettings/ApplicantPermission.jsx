@@ -13,7 +13,7 @@ export default function ApplicantPermission() {
     // CompanyID
 
     const CompanyID = localStorage.getItem('companyID') ?? 1
-    const [isAllowRegister, setIsAllowRegister] = useState(false);
+    const [isAllowRegister, setIsAllowRegister] = useState(false);  
     const [buttonId, setButtonId] = useState('')
 
     useEffect(() => {
@@ -31,14 +31,14 @@ export default function ApplicantPermission() {
         console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
-    const handleCheckBox = (e) => {
-        console.log(e.target.checked);
+    const handleCheckBox = async (e) => {
+        e.preventDefault();
         setIsAllowRegister(e.target.checked);
         const val = {
             'AppRegPermission': e.target.checked,
             'ButtonID': buttonId,
         }
-        AddDeleteUpdateData('Button/Update_Button', val).then((response) => {
+        await AddDeleteUpdateData('Button/Update_Button', val).then((response) => {
             console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully")
@@ -49,7 +49,6 @@ export default function ApplicantPermission() {
         })
     }
 
- 
 
     return (
         <div className="card border">
@@ -70,7 +69,7 @@ export default function ApplicantPermission() {
                     name='AppRegPermission'
                     value={isAllowRegister}
                     checked={isAllowRegister}
-                    onChange={handleCheckBox}
+                    onChange={(e) => handleCheckBox(e)}
                     id="flexCheckDefault1"
                 />
             </div>
