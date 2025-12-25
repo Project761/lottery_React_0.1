@@ -92,11 +92,14 @@ const PersonalDetailsForm = () => {
 
             if (response && Array.isArray(response)) {
                 setCasts(response);
+
             } else {
                 setCasts([]);
+
             }
         } catch {
             showError('Error fetching States');
+            
         }
     }
 

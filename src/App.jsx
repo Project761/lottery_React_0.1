@@ -26,8 +26,6 @@ import PersonalDetailsPage from './pages/websitelayouts/PersonalDetailsPage';
 import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
 import AdminSettings from './pages/AdminSettings/AdminSettings';
 
-
-
 // Admin Layout Wrapper
 // const AdminLayout = () => {
 //   return (
@@ -40,6 +38,7 @@ import AdminSettings from './pages/AdminSettings/AdminSettings';
 // };
 
 // Website Layout Wrapper
+
 const WebsiteLayout = () => {
   const [activeTab, setActiveTab] = useState('');
   const location = useLocation();
@@ -65,7 +64,6 @@ const WebsiteLayout = () => {
         {activeTab && (
           <TabHeader activeTab={activeTab} onTabChange={(tab) => {
             setActiveTab(tab);
-            // You can add navigation logic here if needed
           }} />
         )}
         <main className="flex-grow-1">

@@ -9,6 +9,7 @@ import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Co
 import { buildFormData } from "../../utils/formDataHelper.js";
 
 const IncomeDetails = () => {
+  
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -21,7 +22,7 @@ const IncomeDetails = () => {
   };
 
   const { formData, setFormData } = useFormData();
-
+  
   useEffect(() => {
     const copy = { ...formData };
     delete copy.PaymentAttachement;
@@ -90,6 +91,7 @@ const IncomeDetails = () => {
 
     } catch (error) {
       showError("Error submitting form. Please try again!");
+
     }
   };
 
