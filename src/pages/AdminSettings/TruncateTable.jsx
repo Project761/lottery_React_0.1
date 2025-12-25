@@ -48,25 +48,28 @@ export default function TruncateTable() {
                 <hr className="my-2" />
 
                 {/* Controls */}
-                <div className="d-flex align-items-center gap-2">
-                    <Select
-                        options={tableOptions}
-                        value={selectedTable}
-                        onChange={setSelectedTable}
-                        placeholder="-- SELECT TABLE --"
-                        isClearable
-                        classNamePrefix="react-select"
-                        styles={{
-                            container: (base) => ({ ...base, maxWidth: 220, fontSize: "13px", }),
-                            control: (base) => ({ ...base, minHeight: "30px", height: "30px", }),
-                            valueContainer: (base) => ({ ...base, padding: "0 8px", }),
-                            indicatorsContainer: (base) => ({ ...base, height: "30px", }),
-                        }}
-                    />
-
-                    <button onClick={handleCheckBox} className="btn btn-success btn-sm">
-                        TRUNCATE
-                    </button>
+                <div className="row align-items-center gap-2">
+                    <div className="col-lg-3">
+                        <Select
+                            options={tableOptions}
+                            value={selectedTable}
+                            onChange={setSelectedTable}
+                            placeholder="-- SELECT TABLE --"
+                            isClearable
+                            classNamePrefix="react-select"
+                            styles={{
+                                container: (base) => ({ ...base, fontSize: "13px", }),
+                                control: (base) => ({ ...base, minHeight: "30px", height: "30px", }),
+                                valueContainer: (base) => ({ ...base, padding: "0 8px", }),
+                                indicatorsContainer: (base) => ({ ...base, height: "30px", }),
+                            }}
+                        />
+                    </div>
+                    <div className="col-lg-2">
+                        <button onClick={handleCheckBox} className="btn btn-success btn-sm">
+                            TRUNCATE
+                        </button>
+                    </div>
                 </div>
 
             </div>
