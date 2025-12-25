@@ -54,7 +54,7 @@ const Home = () => {
   }
 
   return (
-    <div className="container my-5 text-center">
+    <div className="container text-center">
       {/* Images Section */}
       <div className="row justify-content-center">
         <div className="col-lg-8">
