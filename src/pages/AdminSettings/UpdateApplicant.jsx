@@ -27,7 +27,6 @@ export default function UpdateApplicant() {
         'ColumnValue': '',
     });
 
-
     useEffect(() => {
         getColumnNameDrp();
     }, [CompanyID]);
@@ -171,7 +170,6 @@ export default function UpdateApplicant() {
                             placeholder: (base) => ({ ...base, color: "#6c757d" }),
                         }}
                     />
-
 
                     {/* What you update */}
                     <input
