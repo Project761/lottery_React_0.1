@@ -101,4 +101,3 @@ export default function ApplicantPermission() {
         </div>
     );
 }
-//In this on first time when I click on checkbox so our page reloaded & our session got out Applicant Register Permission :-
