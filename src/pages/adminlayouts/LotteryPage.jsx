@@ -67,7 +67,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        background: 'rgba(0,0,0,0.25)', // slight dark overlay
+        background: 'rgba(0,0,0,0.25)', 
     },
 
     title: {

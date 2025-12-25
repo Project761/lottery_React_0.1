@@ -102,7 +102,8 @@ const BankDetailsForm = () => {
             <div className="card">
                 <div className="card-body p-0">
                     <div className="row">
-                        <div className="col-lg-12" style={{ width: "1115px", overflowX: "scroll" }}>
+                        {/* style={{ width: "100%", maxWidth: "1115px", overflowX: "auto" }} */}
+                        <div className="col-lg-12">
                             <DataTable
                                 columns={columns}
                                 data={bankDetails || []}
