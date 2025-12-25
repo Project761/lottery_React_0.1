@@ -26,12 +26,12 @@ export default function ApplicantPermission() {
         });
         if (response?.length) {
             setIsAllowRegister(response[0]?.AppRegPermission);
-            setButtonId(response[0]?.ButtonID)
+            setButtonId(response[0]?.ButtonID);
         }
         console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
-   const handleCheckBox = async (e) => {
+    const handleCheckBox = async (e) => {
         // e.preventDefault();
         try {
             setIsAllowRegister(e.target.checked);
