@@ -54,7 +54,7 @@ const Home = () => {
   }
 
   return (
-    <div className="container my-5 text-center">
+    <div className="container text-center">
       {/* Images Section */}
       <div className="row justify-content-center">
         <div className="col-lg-8">
@@ -74,7 +74,7 @@ const Home = () => {
 
       {/* Checkbox Section */}
 
-      {allowRegister && (
+      {allowRegister ? (
         <div className="text-center mt-4">
           <div className="d-flex justify-content-center align-items-center">
             <input type="checkbox" id="agree" className="me-2" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
@@ -89,6 +89,10 @@ const Home = () => {
               Click Here To Apply
             </button>
           )}
+        </div>
+      ) : (
+        <div className="text-center mt-4">
+          <h6 className="text-danger">Applicant Registration Closed !!</h6>
         </div>
       )}
     </div>

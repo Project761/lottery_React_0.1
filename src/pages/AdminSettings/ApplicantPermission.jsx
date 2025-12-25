@@ -31,26 +31,49 @@ export default function ApplicantPermission() {
         console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
-    const handleCheckBox = (e) => {
-        // console.log(e.target.checked);
-        e.preventDefault();
-        setIsAllowRegister(e.target.checked);
-        const val = {
-            'AppRegPermission': e.target.checked,
-            'ButtonID': buttonId,
-        }
-        AddDeleteUpdateData('Button/Update_Button', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
-            if (response?.success) {
-                showSuccess("Update Successfully")
+   const handleCheckBox = async (e) => {
+        // e.preventDefault();
+        try {
+            setIsAllowRegister(e.target.checked);
+            const val = {
+                'AppRegPermission': e.target.checked,
+                'ButtonID': buttonId,
             }
-            // const parseData = JSON.parse(response?.data);
-            // console.log("🚀 ~ handleCheckBox ~ parseData:", parseData?.Table[0]?.Message);
-
-        })
+            const response = await AddDeleteUpdateData('Button/Update_Button', val);
+            if (response?.success) {
+                showSuccess("Update Successfully");
+                getPaperImage();
+            }
+        } catch (error) {
+            // Handle 401 specifically
+            if (error.response?.status === 401) {
+                showError("Session expired. Please login again.");
+                // Redirect to login gracefully
+                // setTimeout(() => window.location.href = "/admin/login", 1000);
+            }
+            // Revert state on error
+            // setIsAllowRegister(!e.target.checked);
+        }
     }
 
- 
+    // const handleCheckBox = async (e) => {
+    //     e.preventDefault();
+    //     setIsAllowRegister(e.target.checked);
+    //     const val = {
+    //         'AppRegPermission': e.target.checked,
+    //         'ButtonID': buttonId,
+    //     }
+    //     await AddDeleteUpdateData('Button/Update_Button', val).then((response) => {
+    //         console.log("🚀 ~ handleCheckBox ~ response:", response);
+    //         if (response?.success) {
+    //             showSuccess("Update Successfully")
+    //         }
+    //         // const parseData = JSON.parse(response?.data);
+    //         // console.log("🚀 ~ handleCheckBox ~ parseData:", parseData?.Table[0]?.Message);
+
+    //     })
+    // }
+
 
     return (
         <div className="card border">
@@ -71,7 +94,7 @@ export default function ApplicantPermission() {
                     name='AppRegPermission'
                     value={isAllowRegister}
                     checked={isAllowRegister}
-                    onChange={handleCheckBox}
+                    onChange={(e) => handleCheckBox(e)}
                     id="flexCheckDefault1"
                 />
             </div>

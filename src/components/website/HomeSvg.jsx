@@ -1,49 +1,57 @@
 import React from "react";
 
-const HomeSvg = ({ images = [] }) => {
-  // console.log(images);
+const HomePreview = ({ images = [] }) => {
   const img1 = images[0]?.FilePath?.replace(/\\/g, "/");
   const img2 = images[1]?.FilePath?.replace(/\\/g, "/");
-  // console.log(img1, img2);
-  if (!img1 && !img2) return (
-    <div className="text-center m-5">
-      <h2 style={{ margin: "80px 0 120px 0" }}>Paper Cut Comming Soon...</h2>
-    </div>
-  );
+
+  const img1Url = img1 ? `https://${img1}` : null;
+  const img2Url = img2 ? `https://${img2}` : null;
+
+  const boxStyle = {
+    border: "2px solid #cfcfcf",
+    borderRadius: 8,
+    background: "#fff",
+    overflow: "hidden",
+    width: "100%",
+    minHeight: 250,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const imgStyle = {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
+    display: "block",
+  };
+
+  if (!img1Url && !img2Url) {
+    return (
+      <div className="text-center py-5">
+        <h2 className="text-muted">Paper Cut Coming Soon...</h2>
+      </div>
+    );
+  }
 
   return (
-    <svg width="100%" viewBox="0 0 900 1100" role="img" aria-label="Scheme preview">
-      {img1 &&
-        <g transform="translate(50,40)">
-          <rect width="800" height="420" rx="6" fill="#fff" stroke="#cfcfcf" strokeWidth="2" />
-          {img1 && <image
-            href={img1}
-            x="0"
-            y="0"
-            width="800"
-            height="420"
-            preserveAspectRatio="xMidYMid slice"
-          />
-          }
-        </g>
-      }
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
+      
+      {/* TOP IMAGE */}
+      {img1Url && (
+        <div style={{ ...boxStyle, marginBottom: 20 }}>
+          <img src={img1Url} alt="Top Preview" style={imgStyle} />
+        </div>
+      )}
 
-      {img2 &&
-        <g transform="translate(50,490)">
-          <rect width="800" height="320" rx="6" fill="#fff" stroke="#cfcfcf" strokeWidth="2" />
-          <image
-            href={img2}
-            x="0"
-            y="0"
-            width="800"
-            height="320"
-            preserveAspectRatio="xMidYMid slice"
-          />
-        </g>
-      }
-    </svg>
-  )
+      {/* BOTTOM IMAGE */}
+      {img2Url && (
+        <div style={boxStyle}>
+          <img src={img2Url} alt="Bottom Preview" style={imgStyle} />
+        </div>
+      )}
+    </div>
+  );
 };
 
-export default HomeSvg;
-//In this I want to apply css on "Paper Cut Comming Soon..." text
+export default HomePreview;
