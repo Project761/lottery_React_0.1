@@ -5,7 +5,7 @@ import Footer from "../../components/admin/Footer";
 import Sidebar from "../../components/admin/Sidebar";
 
 const AdminLayout = ({ onLogout }) => {
-  
+
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
@@ -37,7 +37,7 @@ const AdminLayout = ({ onLogout }) => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="">
       <Sidebar
         sidebarOpen={sidebarOpen}
         isMobile={isMobile}
