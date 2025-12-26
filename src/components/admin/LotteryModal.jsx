@@ -1,30 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import DataTable from "react-data-table-component";
+import gift from '../../assets/image/gift.png'
+import { fetchPostData } from "../hooks/Api";
+import { useEffect, useState } from "react";
 import { showError } from "../../utils/toast";
-import { fetchPostData } from "../../components/hooks/Api";
 
-function useTableHeight() {
-    const getHeight = () => {
-        const w = window.innerWidth;
-        if (w >= 1400) return "500px"; // xxl
-        if (w >= 1200) return "400px"; // xl
-        if (w >= 992) return "250px"; // lg
-        return "200px";               // md & below
-    };
-
-    const [height, setHeight] = useState(getHeight());
-
-    useEffect(() => {
-        const onResize = () => setHeight(getHeight());
-        window.addEventListener("resize", onResize);
-        return () => window.removeEventListener("resize", onResize);
-    }, []);
-
-    return height;
-}
-
-const Application = () => {
-
+const LotteryModal = ({ onClose }) => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -39,7 +20,7 @@ const Application = () => {
                 IsActive: true,
             });
 
-            // console.log("response:", response);
+            console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
@@ -148,45 +129,88 @@ const Application = () => {
             },
         },
     };
-
-
-    const tableHeight = useTableHeight();
-
+    const styles = {
+        backdrop: {
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1050,
+            padding: "12px",
+        },
+        modal: {
+            width: "96%",
+            maxWidth: "1250px",
+            background: "#fff",
+            borderRadius: "8px",
+            maxHeight: "90vh",
+            overflow: "hidden",
+        },
+        loaderWrap: {
+            height: "420px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "10px",
+        },
+        gift: {
+            width: "140px",
+            height: "140px",
+            objectFit: "contain",
+            animation: "giftPulse 1s ease-in-out infinite",
+        },
+    };
 
     return (
-        <div className="container-fluid py-3">
-            <div className="card">
-                <div className="card-header bg-white py-3">
-                    <h5 className="mb-0">Applications</h5>
+        <div style={styles.backdrop}>
+            <style>{`
+        @keyframes giftPulse {
+          0% { transform: scale(1); opacity: 0.85; }
+          50% { transform: scale(1.06); opacity: 1; }
+          100% { transform: scale(1); opacity: 0.85; }
+        }
+      `}</style>
+
+            <div style={styles.modal}>
+
+                <div className="d-flex justify-content-end align-items-center p-3 border-bottom">
+                    <button className="btn btn-sm btn-outline-danger" onClick={onClose}>
+                        ✕
+                    </button>
                 </div>
-                <div className="card-body p-0">
-                    <DataTable
-                        columns={columns}
-                        data={applications}
-                        progressPending={loading}
-                        pagination
-                        paginationPerPage={6}
-                        paginationRowsPerPageOptions={[6, 25, 50, 100]}
-                        customStyles={customStyles}
-                        highlightOnHover
-                        fixedHeader
-                        showHeader={true}
-                        persistTableHead={true}
-                        dense
-                        fixedHeaderScrollHeight={tableHeight}
-                        pointerOnHover
-                        responsive
-                        noDataComponent={
-                            <div className="p-4 text-center">
-                                {loading ? "Loading..." : "No applications found"}
-                            </div>
-                        }
-                    />
+
+                <div className="p-2">
+                    {loading ? (
+                        <div style={styles.loaderWrap}>
+                            <img src={gift} alt="Loading" style={styles.gift} />
+                            <div className="text-muted small">Loading...</div>
+                        </div>
+                    ) : (
+                        <DataTable
+                            columns={columns}
+                            data={applications || []}
+                            progressPending={loading}
+                            showHeader
+                            persistTableHead
+                            dense
+                            pagination
+                            paginationPerPage={6}
+                            paginationRowsPerPageOptions={[6, 25, 50, 100]}
+                            customStyles={customStyles}
+                            highlightOnHover
+                            fixedHeader
+                            pointerOnHover
+                            responsive
+                            noDataComponent={<div className="p-4 text-center">No applications found</div>}
+                        />
+                    )}
                 </div>
             </div>
         </div>
-
     );
 };
 
-export default Application;
+export default LotteryModal;

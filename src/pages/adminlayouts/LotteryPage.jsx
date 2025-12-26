@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import lottery from '../../assets/image/lottery.png';
 import gift from '../../assets//image/gift.png'
+import LotteryModal from '../../components/admin/LotteryModal';
 
 const LotteryPage = () => {
-
     const [time, setTime] = useState(15);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         if (time === 0) return;
@@ -37,9 +38,18 @@ const LotteryPage = () => {
                     {time}
                 </div>
 
-                <button style={styles.button}>
+                {/* LOTTERY BUTTON */}
+                <button
+                    style={styles.button}
+                    onClick={() => setOpenModal(true)}
+                >
                     LOTTERY
                 </button>
+
+                {/* MODAL */}
+                {openModal && (
+                    <LotteryModal onClose={() => setOpenModal(false)} />
+                )}
             </div>
         </div>
     );
