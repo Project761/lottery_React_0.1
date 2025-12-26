@@ -21,7 +21,7 @@ export default function ButtonChange() {
             "CompanyID": localStorage.getItem('companyID') || 1,
         });
         setImages(response)
-        console.log("🚀 ~ getPaperImage ~ response:", response)
+        // console.log("🚀 ~ getPaperImage ~ response:", response)
     }
 
 
@@ -47,7 +47,7 @@ export default function ButtonChange() {
         // ]);
 
         const response = await axios.post("ButtonDetails/Insert_ButtonDetails", formData);
-        console.log("🚀 ~ handleSave ~ response:", response)
+        // console.log("🚀 ~ handleSave ~ response:", response)
 
         setOpen(false);
         // get Image
@@ -64,7 +64,7 @@ export default function ButtonChange() {
             "IsActive": '0',
             "ButtonDetailsID": id,
         });
-        console.log("🚀 ~ handleRemove ~ response:", response)
+        // console.log("🚀 ~ handleRemove ~ response:", response)
     };
 
 

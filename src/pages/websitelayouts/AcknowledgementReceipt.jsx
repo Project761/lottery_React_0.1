@@ -19,7 +19,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
           CompanyID: 1,
         }
       );
-      console.log(response);
+      // console.log(response);
 
       if (response && Array.isArray(response)) {
         const data = response.find((arr) => String(arr.CategoryID) === String(userData.Category))?.Description;
@@ -40,7 +40,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
           CompanyID: 1,
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response && Array.isArray(response)) {
         const data = response.find((arr) => String(arr.AnnualIncomeID) === String(userData.AnnualIncome))?.Description
         setIncome(data);

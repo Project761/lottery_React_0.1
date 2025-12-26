@@ -13,8 +13,6 @@ function useTableHeight() {
         if (w >= 992) return "280px"; // lg
         return "240px";               // md & below
     };
-
-
     const [height, setHeight] = useState(getHeight());
 
     useEffect(() => {
@@ -25,7 +23,6 @@ function useTableHeight() {
 
     return height;
 }
-
 
 const getModalWidth = () => {
     const w = window.innerWidth;
@@ -38,6 +35,7 @@ const getModalWidth = () => {
 };
 
 const LotteryModal = ({ onClose }) => {
+
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -52,7 +50,7 @@ const LotteryModal = ({ onClose }) => {
                 IsActive: true,
             });
 
-            console.log("response:", response);
+            // console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
@@ -65,8 +63,10 @@ const LotteryModal = ({ onClose }) => {
             showError("Failed to fetch applications");
             console.error("Error fetching applications:", error);
             setApplications([]);
+
         } finally {
             setLoading(false);
+
         }
     };
 
@@ -141,6 +141,7 @@ const LotteryModal = ({ onClose }) => {
         }
 
     ];
+
     const customStyles = {
         headCells: {
             style: {
@@ -161,6 +162,7 @@ const LotteryModal = ({ onClose }) => {
             },
         },
     };
+
     const styles = {
         backdrop: {
             position: "fixed",
@@ -194,9 +196,6 @@ const LotteryModal = ({ onClose }) => {
             animation: "giftPulse 1s ease-in-out infinite",
         },
     };
-
-
-
 
     const tableHeight = useTableHeight();
 

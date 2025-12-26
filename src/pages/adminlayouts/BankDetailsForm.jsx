@@ -35,7 +35,7 @@ const BankDetailsForm = () => {
             setLoading(true);
             const response = await fetchPostData("BankDetails/GetData_BankDetails", { CompanyID, IsActive: true });
             setBankDetails(normalizeList(response));
-            console.log("🚀 ~ fetchBankDetails ~ response:", normalizeList(response))
+            // console.log("🚀 ~ fetchBankDetails ~ response:", normalizeList(response))
         } catch (error) {
             showError("Failed to fetch bank details");
             setBankDetails([]);

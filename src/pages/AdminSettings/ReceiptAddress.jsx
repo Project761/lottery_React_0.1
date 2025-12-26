@@ -20,7 +20,7 @@ export default function ReceiptAddress() {
         const response = await fetchPostData("Company/GetSingleData_Company", {
             "CompanyID": localStorage.getItem('companyID') || 1,
         });
-        console.log("🚀 ~ getPaperImage ~ response:", response);
+        // console.log("🚀 ~ getPaperImage ~ response:", response);
         if (response?.length > 0) {
             setAddress(response[0]?.Address);
 
@@ -45,7 +45,7 @@ export default function ReceiptAddress() {
             'CompanyID': localStorage.getItem('companyID') || 1,
         }
         AddDeleteUpdateData('Company/Update_Company', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully")
             }

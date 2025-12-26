@@ -37,7 +37,7 @@ export default function UpdateApplicant() {
         });
 
         setColumnName(convertToValueLabel(response));
-        console.log("🚀 ~ getColumnNameDrp ~ convertToValueLabel(response):", convertToValueLabel(response))
+        // console.log("🚀 ~ getColumnNameDrp ~ convertToValueLabel(response):", convertToValueLabel(response))
     }
 
     const handleSave = async () => {
