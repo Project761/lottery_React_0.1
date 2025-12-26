@@ -24,7 +24,7 @@ export default function AdminSettings() {
         { key: "contact", label: "WEBSITE CONTACT INFO" },
         { key: "truncate", label: "TRUNCATE TABLE" },
         { key: "receipt", label: "RECEIPT ADDRESS" },
-        { key: "DemandDraft", label: "DEMAND DRAFT" },
+        { key: "DemandDraft", label: "DEMAND DRAFT ATTACHMENT" },
         { key: "update", label: "UPDATE APPLICANT" },
         { key: "logo", label: "LOGO" },
         { key: "admin", label: "CHANGE ADMIN INFO" },
