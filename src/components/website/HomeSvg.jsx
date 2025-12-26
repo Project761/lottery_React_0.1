@@ -36,20 +36,30 @@ const HomePreview = ({ images = [] }) => {
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
-      
+
+      {images.map((image, index) => {
+        const imgUrl = image?.FilePath?.replace(/\\/g, "/");
+        if (!imgUrl) return null;
+        return (
+          <div key={index} style={{ ...boxStyle, marginBottom: 20 }}>
+            <img src={imgUrl} alt={`Top Preview ${index + 1}`} style={imgStyle} />
+          </div>
+        );
+      })}
+
       {/* TOP IMAGE */}
-      {img1Url && (
+      {/* {img1Url && (
         <div style={{ ...boxStyle, marginBottom: 20 }}>
           <img src={img1Url} alt="Top Preview" style={imgStyle} />
         </div>
-      )}
+      )} */}
 
       {/* BOTTOM IMAGE */}
-      {img2Url && (
+      {/* {img2Url && (
         <div style={boxStyle}>
           <img src={img2Url} alt="Bottom Preview" style={imgStyle} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
