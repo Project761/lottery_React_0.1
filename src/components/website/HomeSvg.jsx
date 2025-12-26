@@ -1,11 +1,11 @@
 import React from "react";
 
 const HomePreview = ({ images = [] }) => {
-  const img1 = images[0]?.FilePath?.replace(/\\/g, "/");
-  const img2 = images[1]?.FilePath?.replace(/\\/g, "/");
+  const img1Url = images[0]?.FilePath?.replace(/\\/g, "/");
+  const img2Url = images[1]?.FilePath?.replace(/\\/g, "/");
 
-  const img1Url = img1 ? `https://${img1}` : null;
-  const img2Url = img2 ? `https://${img2}` : null;
+  // const img1Url = img1 ? `https://${img1}` : null;
+  // const img2Url = img2 ? `https://${img2}` : null;
 
   const boxStyle = {
     border: "2px solid #cfcfcf",

@@ -16,6 +16,7 @@ const DemandDraftDetails = () => {
     const [fileObject, setFileObject] = useState(null);
     const [amount, setAmount] = useState([]);
     const [isPaymentAttachmentChanged, setIsPaymentAttachmentChanged] = useState(false);
+    const [demandDraft, setDemandDraft] = useState([]);
 
     // useEffect(() => {
     //     localStorage.setItem("applicationFormData", JSON.stringify(formData));
@@ -67,9 +68,26 @@ const DemandDraftDetails = () => {
         }
     }
 
+    //-----------Demand-Draft-Attachement----------
+    const checkDemandDraftAttach = async () => {
+        try {
+            const response = await fetchPostData("Button/GETALL_BUTTON", {
+                "CompanyID": localStorage.getItem('companyID') || 1,
+                "ButtonType": 'Demand Draft Attachment'
+            });
+            console.log(response);
+            if (response?.length) {
+                setDemandDraft(response[0]?.AppRegPermission);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         fetchBankDetails();
         fetchAmount();
+        checkDemandDraftAttach();
     }, []);
 
     const handleNext = (e) => {
@@ -246,6 +264,28 @@ const DemandDraftDetails = () => {
                                 )
                             }
                         </div>
+                        {demandDraft ? (
+                            <div className="col-md-4">
+                                <label className="form-label fw-semibold">Attachment</label>
+                                <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
+                                    onChange={(e) => {
+                                        const file = e.target.files[0];
+                                        // console.log(file);
+                                        if (file) {
+                                            setFormData({ ...formData, PaymentAttachement: file })
+                                            setFileObject(file);
+                                            setIsPaymentAttachmentChanged(true);
+                                        }
+                                    }} />
+                                {
+                                    formData.PaymentAttachement && (
+                                        <span>
+                                            Uploaded file: <span>{formData.PaymentAttachement?.name || formData.PaymentAttachement}</span>
+                                        </span>
+                                    )
+                                }
+                            </div>) : ""
+                        }
                     </div>
 
                     {/* Buttons */}
