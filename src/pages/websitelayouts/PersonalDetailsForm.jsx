@@ -99,7 +99,7 @@ const PersonalDetailsForm = () => {
             }
         } catch {
             showError('Error fetching States');
-            
+
         }
     }
 
@@ -519,7 +519,7 @@ const PersonalDetailsForm = () => {
                             {/* ID-No */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ID No <span className="text-danger">*</span></label>
-                                <input type="number" autoComplete="off" placeholder="Enter ID No" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({ ...formData, IdproofNo: e.target.value })} />
+                                <input type="text" autoComplete="off" placeholder="Enter ID No" className="form-control" value={formData.IdproofNo} onChange={(e) => setFormData({ ...formData, IdproofNo: e.target.value })} />
                             </div>
 
                             {/* Aadhaar-No */}

@@ -5,13 +5,16 @@ import HomeSvg from "../../components/website/HomeSvg.jsx";
 import { fetchPostData } from "../../components/hooks/Api.js";
 
 const Home = () => {
+
+  const companyId = localStorage.getItem("companyID") || 1;
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const { resetFormData } = useFormData();
   const [allowRegister, setAllowRegister] = useState(false);
   const [buttonId, setButtonId] = useState(0);
   const [images, setImages] = useState([]);
-  const companyId = localStorage.getItem("companyID") || 1;
+  const [buttonArray, setButtonArray] = useState([])
+
 
   useEffect(() => {
     resetFormData();
@@ -20,7 +23,18 @@ const Home = () => {
   useEffect(() => {
     getInsertButton();
     getHomeImage();
+    getPaperImage();
   }, [companyId]);
+
+  const getPaperImage = async () => {
+    const response = await fetchPostData("ButtonDetails/GETALL_ButtonDetails", {
+      "IsActive": true,
+      "ButtonType": "BUTTON CHANGE",
+      "CompanyID": localStorage.getItem('companyID') || 1,
+    });
+    setButtonArray(response)
+    // console.log("🚀 ~ getPaperImage ~ response:", response)
+  }
 
   // Get Insert-button
   const getInsertButton = async () => {
@@ -57,18 +71,26 @@ const Home = () => {
       {/* Images Section */}
       <div className="row justify-content-center">
         <div className="col-lg-8">
-          <HomeSvg images={images.slice(0, 2)}/>
+          {/* <HomeSvg images={images.slice(0, 2)} /> */}
+          <HomeSvg images={images} />
         </div>
       </div>
 
       {/* Buttons Section */}
-      <div className="d-flex justify-content-center flex-wrap gap-3 mb-4">
-        <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", }}>
+      <div className="row justify-content-center flex-column" style={{ gap: "8px" }}>
+        {buttonArray?.map((item) => (
+          <div className="col-md-auto">
+            <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", display: "block", margin: "0 auto" }}>
+              {item?.ButtonDetails}
+            </button>
+          </div>
+        ))}
+        {/* <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", }}>
           Scheme Term & Conditions Booklet
         </button>
         <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500" }}>
           Payment Scanner
-        </button>
+        </button> */}
       </div>
 
       {/* Checkbox Section */}
