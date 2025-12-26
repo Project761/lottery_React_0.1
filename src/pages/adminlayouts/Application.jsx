@@ -6,10 +6,10 @@ import { fetchPostData } from "../../components/hooks/Api";
 function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
-        if (w >= 1400) return "500px"; // xxl
-        if (w >= 1200) return "400px"; // xl
-        if (w >= 992) return "250px"; // lg
-        return "200px";               // md & below
+        if (w >= 1400) return "660px"; // xxl
+        if (w >= 1200) return "610px"; // xl
+        if (w >= 992) return "550px"; // lg
+        return "500px";               // md & below
     };
 
     const [height, setHeight] = useState(getHeight());
@@ -128,6 +128,7 @@ const Application = () => {
         }
 
     ];
+
     const customStyles = {
         headCells: {
             style: {
@@ -149,24 +150,22 @@ const Application = () => {
         },
     };
 
-
     const tableHeight = useTableHeight();
-
 
     return (
         <div className="container-fluid py-3">
             <div className="card">
-                <div className="card-header bg-white py-3">
+                {/* <div className="card-header bg-white py-3">
                     <h5 className="mb-0">Applications</h5>
-                </div>
+                </div> */}
                 <div className="card-body p-0">
                     <DataTable
                         columns={columns}
                         data={applications}
                         progressPending={loading}
                         pagination
-                        paginationPerPage={6}
-                        paginationRowsPerPageOptions={[6, 25, 50, 100]}
+                        paginationPerPage={30}
+                        paginationRowsPerPageOptions={[35, 50, 100]}
                         customStyles={customStyles}
                         highlightOnHover
                         fixedHeader

@@ -7,10 +7,10 @@ import { fetchPostData } from "../../components/hooks/Api";
 function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
-        if (w >= 1400) return "500px"; // xxl
-        if (w >= 1200) return "400px"; // xl
-        if (w >= 992) return "250px"; // lg
-        return "200px";               // md & below
+        if (w >= 1400) return "710px"; // xxl
+        if (w >= 1200) return "600px"; // xl
+        if (w >= 992) return "650px"; // lg
+        return "500px";               // md & below
     };
 
     const [height, setHeight] = useState(getHeight());
@@ -57,19 +57,19 @@ const BankDetailsForm = () => {
     const columns = [
         { name: "S.No", cell: (row, index) => index + 1, width: "80px" },
         { name: "Applicant Number", selector: r => r?.ApplicantNumber ?? "", sortable: true },
-        { name: "Applicant Name", selector: r => r?.ApplicantName ?? "", sortable: true, width: "160px" },
-        { name: "Plot", selector: r => r?.plot ?? "", sortable: true },
-        { name: "Category", selector: r => r?.Category ?? "", sortable: true },
-        { name: "A/C Holder Name", selector: r => r?.AccountHolderName ?? "", sortable: true },
+        { name: "Applicant Name", selector: r => r?.FullName ?? "", sortable: true, width: "160px" },
+        { name: "Category", selector: r => r?.CategoryName ?? "", sortable: true },
+        { name: "A/C Holder Name", selector: r => r?.BankUserName ?? "", sortable: true },
         { name: "A/C Number", selector: r => r?.AccountNumber ?? "", sortable: true },
         { name: "Bank Name", selector: r => r?.BankName ?? "", sortable: true },
         { name: "IFSC Code", selector: r => r?.IfscCode ?? "", sortable: true },
         { name: "Branch Address", selector: r => r?.BranchAddress ?? "", sortable: true },
-        { name: "Demand Draft Number", selector: r => r?.DemandDraftNumber ?? "", sortable: true },
-        { name: "Demand Draft Date", selector: r => r?.DemandDraftDate ?? "", sortable: true },
-        { name: "Demand Draft Bank", selector: r => r?.DemandDraftBank ?? "", sortable: true },
-        { name: "Demand Draft Amount", selector: r => r?.DemandDraftAmount ?? "", sortable: true },
+        { name: "D D Number", selector: r => r?.PaymentTrasnum ?? "", sortable: true },
+        { name: "D D Date", selector: r => r?.PaymentDate ?? "", sortable: true },
+        { name: "D D Bank", selector: r => r?.PaymentBankName ?? "", sortable: true },
+        { name: "D D Amount", selector: r => r?.BankAmountName ?? "", sortable: true },
     ];
+
     const customStyles = {
         tableWrapper: { style: { overflowX: "auto", width: "100%", }, },
         headCells: {
@@ -112,8 +112,8 @@ const BankDetailsForm = () => {
                                 showHeader={true}
                                 persistTableHead={true}
                                 dense
-                                paginationPerPage={10}
-                                paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                                paginationPerPage={30}
+                                paginationRowsPerPageOptions={[35, 50, 100]}
                                 customStyles={customStyles}
                                 highlightOnHover
                                 fixedHeader
