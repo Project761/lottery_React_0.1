@@ -18,9 +18,9 @@ api.interceptors.request.use(
       request.headers["Authorization"] = `Bearer ${accessToken}`;
     }
 
-    if(request.data instanceof FormData){
+    if (request.data instanceof FormData) {
       delete request.headers["Content-Type"];
-    }else{
+    } else {
       request.headers["Content-Type"] = "application/json";
     }
     return request;
@@ -55,7 +55,7 @@ api.interceptors.response.use(
         // Clear tokens and redirect to login
         sessionStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/";
+        // window.location.href = "/";
       } finally {
         isRefreshing = false;
       }
