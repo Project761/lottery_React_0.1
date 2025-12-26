@@ -243,7 +243,7 @@ const DemandDraftDetails = () => {
                         </div>
 
                         {/* Attachment */}
-                        <div className="col-md-4">
+                        {/* <div className="col-md-4">
                             <label className="form-label fw-semibold">Attachment</label>
                             <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
                                 onChange={(e) => {
@@ -263,7 +263,7 @@ const DemandDraftDetails = () => {
                                     </span>
                                 )
                             }
-                        </div>
+                        </div> */}
                         {demandDraft ? (
                             <div className="col-md-4">
                                 <label className="form-label fw-semibold">Attachment</label>
