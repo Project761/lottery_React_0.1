@@ -9,6 +9,7 @@ import ReceiptAddress from "./ReceiptAddress";
 import UpdateApplicant from "./UpdateApplicant";
 import Logo from "./Logo";
 import AdminInfo from "./AdminInfo";
+import DemandDraft from "./DemandDraft";
 
 /* =======================
    Admin Settings (Single File)
@@ -23,6 +24,7 @@ export default function AdminSettings() {
         { key: "contact", label: "WEBSITE CONTACT INFO" },
         { key: "truncate", label: "TRUNCATE TABLE" },
         { key: "receipt", label: "RECEIPT ADDRESS" },
+        { key: "DemandDraft", label: "DEMAND DRAFT ATTACHMENT" },
         { key: "update", label: "UPDATE APPLICANT" },
         { key: "logo", label: "LOGO" },
         { key: "admin", label: "CHANGE ADMIN INFO" },
@@ -59,6 +61,7 @@ export default function AdminSettings() {
                     {activeTab === "permission" && <ApplicantPermission />}
                     {activeTab === "contact" && <WebsiteContact />}
                     {activeTab === "truncate" && <TruncateTable />}
+                    {activeTab === "DemandDraft" && <DemandDraft />}
                     {activeTab === "receipt" && <ReceiptAddress />}
                     {activeTab === "update" && <UpdateApplicant />}
                     {activeTab === "logo" && <Logo />}

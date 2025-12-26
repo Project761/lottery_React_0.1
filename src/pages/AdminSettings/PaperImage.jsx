@@ -21,7 +21,7 @@ export default function PaperImage() {
             "CompanyID": localStorage.getItem('companyID') || 1,
         });
         setImages(response)
-        console.log("🚀 ~ getPaperImage ~ response:", response)
+        // console.log("🚀 ~ getPaperImage ~ response:", response)
     }
 
 
@@ -68,7 +68,7 @@ export default function PaperImage() {
             getPaperImage()
 
         });
-        console.log("🚀 ~ handleRemove ~ response:", response)
+        // console.log("🚀 ~ handleRemove ~ response:", response)
     };
 
 

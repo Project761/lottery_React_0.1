@@ -3,7 +3,7 @@ import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
 
 
-export default function ApplicantPermission() {
+export default function DemandDraft() {
 
     // api/Button/Update_Button
     // AppRegPermission
@@ -23,12 +23,13 @@ export default function ApplicantPermission() {
     const getPaperImage = async () => {
         const response = await fetchPostData("Button/GETALL_BUTTON", {
             "CompanyID": localStorage.getItem('companyID') || 1,
+            "ButtonType": 'Demand Draft Attachment'
         });
         if (response?.length) {
             setIsAllowRegister(response[0]?.AppRegPermission);
             setButtonId(response[0]?.ButtonID);
         }
-        // console.log("🚀 ~ getPaperImage ~ response:", response);
+        console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
     const handleCheckBox = async (e) => {
@@ -38,6 +39,7 @@ export default function ApplicantPermission() {
             const val = {
                 'AppRegPermission': e.target.checked,
                 'ButtonID': buttonId,
+                "ButtonType": 'Demand Draft Attachment'
             }
             const response = await AddDeleteUpdateData('Button/Update_Button', val);
             if (response?.success) {
@@ -56,23 +58,6 @@ export default function ApplicantPermission() {
         }
     }
 
-    // const handleCheckBox = async (e) => {
-    //     e.preventDefault();
-    //     setIsAllowRegister(e.target.checked);
-    //     const val = {
-    //         'AppRegPermission': e.target.checked,
-    //         'ButtonID': buttonId,
-    //     }
-    //     await AddDeleteUpdateData('Button/Update_Button', val).then((response) => {
-    //         console.log("🚀 ~ handleCheckBox ~ response:", response);
-    //         if (response?.success) {
-    //             showSuccess("Update Successfully")
-    //         }
-    //         // const parseData = JSON.parse(response?.data);
-    //         // console.log("🚀 ~ handleCheckBox ~ parseData:", parseData?.Table[0]?.Message);
-
-    //     })
-    // }
 
 
     return (
@@ -83,7 +68,7 @@ export default function ApplicantPermission() {
             >
                 {/* Title */}
                 <span className="fw-normal text-dark">
-                    Applicant Register Permission :-
+                    Demand Draft Attachment  :-
                 </span>
 
                 {/* Checkbox */}
@@ -91,7 +76,7 @@ export default function ApplicantPermission() {
                     type="checkbox"
                     className="form-check-input m-0"
                     style={{ cursor: "pointer" }}
-                    name='AppRegPermission'
+                    name='DemandDraftPermission'
                     value={isAllowRegister}
                     checked={isAllowRegister}
                     onChange={(e) => handleCheckBox(e)}

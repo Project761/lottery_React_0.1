@@ -243,6 +243,27 @@ const DemandDraftDetails = () => {
                         </div>
 
                         {/* Attachment */}
+                        <div className="col-md-4">
+                            <label className="form-label fw-semibold">Attachment</label>
+                            <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    // console.log(file);
+                                    // alert("Hello");
+                                    if (file) {
+                                        setFormData({ ...formData, PaymentAttachement: file })
+                                        setFileObject(file);
+                                        setIsPaymentAttachmentChanged(true);
+                                    }
+                                }} />
+                            {
+                                formData.PaymentAttachement && (
+                                    <span>
+                                        Uploaded file: <span>{formData.PaymentAttachement?.name || formData.PaymentAttachement}</span>
+                                    </span>
+                                )
+                            }
+                        </div>
                         {demandDraft ? (
                             <div className="col-md-4">
                                 <label className="form-label fw-semibold">Attachment</label>

@@ -113,7 +113,7 @@ const IncomeDetails = () => {
           PaymentAttachement: "",
         }));
       }
-      console.log(formData);
+      // console.log(formData);
       const payload = { ...formData };
       // delete payload.PaymentAttachement;
       payload.PaymentAttachement = formData.PaymentAttachement?.name || formData.PaymentAttachement || "";

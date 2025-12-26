@@ -5,7 +5,37 @@ import { fetchPostData } from "../hooks/Api";
 import { useEffect, useState } from "react";
 import { showError } from "../../utils/toast";
 
+function useTableHeight() {
+    const getHeight = () => {
+        const w = window.innerWidth;
+        if (w >= 1400) return "550px"; // xxl
+        if (w >= 1200) return "420px"; // xl
+        if (w >= 992) return "280px"; // lg
+        return "240px";               // md & below
+    };
+    const [height, setHeight] = useState(getHeight());
+
+    useEffect(() => {
+        const onResize = () => setHeight(getHeight());
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
+
+    return height;
+}
+
+const getModalWidth = () => {
+    const w = window.innerWidth;
+    // Bootstrap breakpoints
+    if (w >= 1400) return "1550px"; // xxl
+    if (w >= 1200) return "1240px"; // xl
+    if (w >= 992) return "1060px";  // lg
+    if (w >= 768) return "96%";    // md
+    return "98%";                   // sm
+};
+
 const LotteryModal = ({ onClose }) => {
+
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,7 +50,7 @@ const LotteryModal = ({ onClose }) => {
                 IsActive: true,
             });
 
-            console.log("response:", response);
+            // console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
@@ -33,14 +63,34 @@ const LotteryModal = ({ onClose }) => {
             showError("Failed to fetch applications");
             console.error("Error fetching applications:", error);
             setApplications([]);
+
         } finally {
             setLoading(false);
+
         }
     };
 
     useEffect(() => {
         fetchApplications();
     }, []);
+
+    useEffect(() => {
+        let timerId;
+        const startTime = Date.now();
+        fetchApplications().then(() => {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(30000 - elapsed, 0);
+
+            timerId = setTimeout(() => {
+                setLoading(false);
+            }, remaining);
+        });
+
+        return () => clearTimeout(timerId);
+    }, []);
+
+
+
 
     const columns = [
         {
@@ -109,6 +159,7 @@ const LotteryModal = ({ onClose }) => {
         }
 
     ];
+
     const customStyles = {
         headCells: {
             style: {
@@ -129,6 +180,7 @@ const LotteryModal = ({ onClose }) => {
             },
         },
     };
+
     const styles = {
         backdrop: {
             position: "fixed",
@@ -141,11 +193,10 @@ const LotteryModal = ({ onClose }) => {
             padding: "12px",
         },
         modal: {
-            width: "96%",
-            maxWidth: "1250px",
+            width: getModalWidth(),
             background: "#fff",
             borderRadius: "8px",
-            maxHeight: "90vh",
+            maxHeight: "93vh",
             overflow: "hidden",
         },
         loaderWrap: {
@@ -163,6 +214,8 @@ const LotteryModal = ({ onClose }) => {
             animation: "giftPulse 1s ease-in-out infinite",
         },
     };
+
+    const tableHeight = useTableHeight();
 
     return (
         <div style={styles.backdrop}>
@@ -197,9 +250,10 @@ const LotteryModal = ({ onClose }) => {
                             persistTableHead
                             dense
                             pagination
-                            paginationPerPage={6}
-                            paginationRowsPerPageOptions={[6, 25, 50, 100]}
+                            paginationPerPage={15}
+                            paginationRowsPerPageOptions={[20, 50, 100]}
                             customStyles={customStyles}
+                            fixedHeaderScrollHeight={tableHeight}
                             highlightOnHover
                             fixedHeader
                             pointerOnHover

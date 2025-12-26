@@ -6,9 +6,9 @@ import { fetchPostData } from "../../components/hooks/Api";
 function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
-        if (w >= 1400) return "500px"; // xxl
-        if (w >= 1200) return "400px"; // xl
-        if (w >= 992) return "250px"; // lg
+        if (w >= 1400) return "660px"; // xxl
+        if (w >= 1200) return "385px"; // xl
+        if (w >= 992) return "220px"; // lg
         return "200px";               // md & below
     };
 
@@ -65,7 +65,7 @@ const Application = () => {
         {
             name: "S.No",
             cell: (row, index) => index + 1,
-            width: "80px",
+            minWidth: "30px", wrap: false,
         },
         {
             name: "Attachment",
@@ -82,44 +82,54 @@ const Application = () => {
                 ) : (
                     "-"
                 ),
-            width: "120px",
+            minWidth: "40px", grow: 2, wrap: false,
         },
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
             sortable: true,
+            minWidth: "170px", grow: 2, wrap: false,
         },
         {
             name: "Full Name",
             selector: (row) => row?.FullName ?? "",
             sortable: true,
+            minWidth: "180px", grow: 2, wrap: false,
         },
         {
             name: "Mobile Number",
             selector: (row) => row?.MobileNumber ?? "",
             sortable: true,
+            minWidth: "150px", grow: 2, wrap: false,
         },
         {
             name: "Aadhar Number",
             selector: (row) => row?.AadharNumber ?? "",
             sortable: true,
+            minWidth: "180px", grow: 2, wrap: false,
         },
         {
             name: "Email",
             selector: (row) => row?.Email ?? "",
             sortable: true,
+            minWidth: "200px", grow: 2, wrap: false,
+
         },
         {
             name: "Address",
             sortable: true,
-            cell: (row) => (
+            selector: row => row?.Paraddress ?? row?.Posaddress ?? "",
+            grow: 2,
+            minWidth: "250px",
+            wrap: false,
+            cell: row => (
                 <div
-                    title={(row?.Paraddress ?? row?.Posaddress ?? "")}
+                    title={row?.Paraddress ?? row?.Posaddress ?? ""}
                     style={{
-                        maxWidth: "150px",
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
+                        width: "100%",
                     }}
                 >
                     {row?.Paraddress ?? row?.Posaddress ?? ""}
@@ -127,7 +137,9 @@ const Application = () => {
             ),
         }
 
+
     ];
+
     const customStyles = {
         headCells: {
             style: {
@@ -149,24 +161,22 @@ const Application = () => {
         },
     };
 
-
     const tableHeight = useTableHeight();
-
 
     return (
         <div className="container-fluid py-3">
             <div className="card">
-                <div className="card-header bg-white py-3">
+                {/* <div className="card-header bg-white py-3">
                     <h5 className="mb-0">Applications</h5>
-                </div>
+                </div> */}
                 <div className="card-body p-0">
                     <DataTable
                         columns={columns}
                         data={applications}
                         progressPending={loading}
                         pagination
-                        paginationPerPage={6}
-                        paginationRowsPerPageOptions={[6, 25, 50, 100]}
+                        paginationPerPage={30}
+                        paginationRowsPerPageOptions={[35, 50, 100]}
                         customStyles={customStyles}
                         highlightOnHover
                         fixedHeader

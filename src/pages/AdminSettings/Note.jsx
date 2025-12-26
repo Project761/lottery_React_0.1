@@ -26,12 +26,12 @@ export default function Note() {
             "CompanyID": localStorage.getItem('companyID') || 1,
         });
 
-        console.log("🚀 ~ getPaperImage ~ response:", response);
+        // console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
 
     const handleSave = async () => {
-        console.log(value);
+        // console.log(value);
 
         let error = false;
 
@@ -54,7 +54,7 @@ export default function Note() {
         formData.append("Data", JSON.stringify(value));
 
         const response = await axios.post("ButtonDetails/Insert_ButtonDetails", formData);
-        console.log("🚀 ~ handleSave ~ response:", response)
+        // console.log("🚀 ~ handleSave ~ response:", response)
         getPaperImage();
         resetObject();
     };

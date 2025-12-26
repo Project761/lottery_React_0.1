@@ -7,10 +7,10 @@ import { fetchPostData } from "../../components/hooks/Api";
 function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
-        if (w >= 1400) return "500px"; // xxl
-        if (w >= 1200) return "400px"; // xl
-        if (w >= 992) return "250px"; // lg
-        return "200px";               // md & below
+        if (w >= 1400) return "710px"; // xxl
+        if (w >= 1200) return "415px"; // xl
+        if (w >= 992) return "650px"; // lg
+        return "500px";               // md & below
     };
 
     const [height, setHeight] = useState(getHeight());
@@ -35,7 +35,7 @@ const BankDetailsForm = () => {
             setLoading(true);
             const response = await fetchPostData("BankDetails/GetData_BankDetails", { CompanyID, IsActive: true });
             setBankDetails(normalizeList(response));
-            console.log("🚀 ~ fetchBankDetails ~ response:", normalizeList(response))
+            // console.log("🚀 ~ fetchBankDetails ~ response:", normalizeList(response))
         } catch (error) {
             showError("Failed to fetch bank details");
             setBankDetails([]);
@@ -56,20 +56,21 @@ const BankDetailsForm = () => {
 
     const columns = [
         { name: "S.No", cell: (row, index) => index + 1, width: "80px" },
-        { name: "Applicant Number", selector: r => r?.ApplicantNumber ?? "", sortable: true },
-        { name: "Applicant Name", selector: r => r?.ApplicantName ?? "", sortable: true, width: "160px" },
-        { name: "Plot", selector: r => r?.plot ?? "", sortable: true },
-        { name: "Category", selector: r => r?.Category ?? "", sortable: true },
-        { name: "A/C Holder Name", selector: r => r?.AccountHolderName ?? "", sortable: true },
-        { name: "A/C Number", selector: r => r?.AccountNumber ?? "", sortable: true },
-        { name: "Bank Name", selector: r => r?.BankName ?? "", sortable: true },
-        { name: "IFSC Code", selector: r => r?.IfscCode ?? "", sortable: true },
-        { name: "Branch Address", selector: r => r?.BranchAddress ?? "", sortable: true },
-        { name: "Demand Draft Number", selector: r => r?.DemandDraftNumber ?? "", sortable: true },
-        { name: "Demand Draft Date", selector: r => r?.DemandDraftDate ?? "", sortable: true },
-        { name: "Demand Draft Bank", selector: r => r?.DemandDraftBank ?? "", sortable: true },
-        { name: "Demand Draft Amount", selector: r => r?.DemandDraftAmount ?? "", sortable: true },
+        { name: "Applicant Number", grow: 2, selector: r => r?.ApplicantNumber ?? "", sortable: true, minWidth: "180px", wrap: false, },
+        { name: "Applicant Name", grow: 2, selector: r => r?.ApplicantName ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "Plot", selector: r => r?.plot ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "Category", row: 2, selector: r => r?.Category ?? "", sortable: true, minWidth: "130px", wrap: false, },
+        { name: "A/C Holder Name", grow: 2, selector: r => r?.AccountHolderName ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "A/C Number", grow: 2, selector: r => r?.AccountNumber ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "Bank Name", grow: 2, selector: r => r?.BankName ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "IFSC Code", grow: 2, selector: r => r?.IfscCode ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "Branch Address", grow: 2, selector: r => r?.BranchAddress ?? "", sortable: true, minWidth: "180px", wrap: false, },
+        { name: "Demand Draft Number", grow: 2, selector: r => r?.DemandDraftNumber ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Date", grow: 2, selector: r => r?.DemandDraftDate ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Bank", grow: 2, selector: r => r?.DemandDraftBank ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Amount", grow: 2, selector: r => r?.DemandDraftAmount ?? "", sortable: true, minWidth: "200px", wrap: false, },
     ];
+
     const customStyles = {
         tableWrapper: { style: { overflowX: "auto", width: "100%", }, },
         headCells: {
@@ -112,8 +113,8 @@ const BankDetailsForm = () => {
                                 showHeader={true}
                                 persistTableHead={true}
                                 dense
-                                paginationPerPage={10}
-                                paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                                paginationPerPage={30}
+                                paginationRowsPerPageOptions={[35, 50, 100]}
                                 customStyles={customStyles}
                                 highlightOnHover
                                 fixedHeader

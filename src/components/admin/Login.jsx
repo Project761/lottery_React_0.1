@@ -40,7 +40,7 @@ const Login = (props) => {
             });
 
             const data = response.data;
-            console.log(data, "data");
+            // console.log(data, "data");
 
             // ✅ Successful login check
             if (data && data.access_token) {

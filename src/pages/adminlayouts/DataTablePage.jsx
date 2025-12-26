@@ -78,7 +78,7 @@ const DataTablePage = (props) => {
     try {
       const response = await fetchPostData(getDataApiUrl, { IsActive: true, CompanyID: companyID });
       // setData(response.data);
-      console.log(response);
+      // console.log(response);
       if (response.length > 0) {
         setData(response);
 
@@ -95,9 +95,9 @@ const DataTablePage = (props) => {
 
   const addData = async (formData) => {
     try {
-      console.log(formData);
+      // console.log(formData);
       const response = await AddDeleteUpdateData(addApiUrl, formData);
-      console.log(response);
+      // console.log(response);
       // setData(response.data);
       showSuccess("Item added successfully!");
       getData(companyID);
@@ -108,10 +108,10 @@ const DataTablePage = (props) => {
   };
 
   const updateData = async (formData) => {
-    console.log("🚀 ~ updateData ~ formData:", formData)
+    // console.log("🚀 ~ updateData ~ formData:", formData)
     try {
       const response = await AddDeleteUpdateData(updateApiUrl, formData);
-      console.log(response);
+      // console.log(response);
       // setData(response.data);
       showSuccess("Item updated successfully!");
       getData(companyID);
@@ -122,7 +122,7 @@ const DataTablePage = (props) => {
 
 
   const handleEdit = (row) => {
-    console.log("🚀 ~ handleEdit ~ row:", row)
+    // console.log("🚀 ~ handleEdit ~ row:", row)
     setFormData({
       [listCode]: row[listCode],
       [listId]: row[listId],
