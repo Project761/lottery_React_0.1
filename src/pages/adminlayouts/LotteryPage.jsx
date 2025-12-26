@@ -80,6 +80,7 @@ const styles = {
         justifyContent: 'center',
         textAlign: 'center',
         background: 'rgba(0,0,0,0.25)',
+        
     },
 
     title: {
