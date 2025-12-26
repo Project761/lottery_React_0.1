@@ -8,7 +8,7 @@ function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
         if (w >= 1400) return "710px"; // xxl
-        if (w >= 1200) return "600px"; // xl
+        if (w >= 1200) return "415px"; // xl
         if (w >= 992) return "650px"; // lg
         return "500px";               // md & below
     };
