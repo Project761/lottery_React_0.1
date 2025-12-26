@@ -5,7 +5,6 @@ import HomeSvg from "../../components/website/HomeSvg.jsx";
 import { fetchPostData } from "../../components/hooks/Api.js";
 
 const Home = () => {
-
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const { resetFormData } = useFormData();

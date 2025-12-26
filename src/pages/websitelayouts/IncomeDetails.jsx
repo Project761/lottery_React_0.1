@@ -9,7 +9,7 @@ import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Co
 import { buildFormData } from "../../utils/formDataHelper.js";
 
 const IncomeDetails = () => {
-  
+
   const navigate = useNavigate();
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -22,7 +22,7 @@ const IncomeDetails = () => {
   };
 
   const { formData, setFormData } = useFormData();
-  
+
   useEffect(() => {
     const copy = { ...formData };
     delete copy.PaymentAttachement;
@@ -85,7 +85,7 @@ const IncomeDetails = () => {
       localStorage.setItem("ApplicantNumber", response[0].ApplicantNumber);
       showSuccess("Application submitted successfully!");
 
-      localStorage.removeItem("applicationFormData");
+      // localStorage.removeItem("applicationFormData");
       setFormData({});
       setTimeout(() => navigate("/thank-you"), 1000);
 
