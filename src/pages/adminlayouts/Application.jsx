@@ -7,9 +7,9 @@ function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
         if (w >= 1400) return "660px"; // xxl
-        if (w >= 1200) return "610px"; // xl
-        if (w >= 992) return "550px"; // lg
-        return "500px";               // md & below
+        if (w >= 1200) return "385px"; // xl
+        if (w >= 992) return "220px"; // lg
+        return "200px";               // md & below
     };
 
     const [height, setHeight] = useState(getHeight());
@@ -65,7 +65,7 @@ const Application = () => {
         {
             name: "S.No",
             cell: (row, index) => index + 1,
-            minWidth: "80px", wrap: false,
+            minWidth: "30px", wrap: false,
         },
         {
             name: "Attachment",
@@ -82,19 +82,19 @@ const Application = () => {
                 ) : (
                     "-"
                 ),
-            minWidth: "120px", grow: 2, wrap: false,
+            minWidth: "40px", grow: 2, wrap: false,
         },
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
             sortable: true,
-            minWidth: "180px", grow: 2, wrap: false,
+            minWidth: "170px", grow: 2, wrap: false,
         },
         {
             name: "Full Name",
             selector: (row) => row?.FullName ?? "",
             sortable: true,
-            minWidth: "120px", grow: 2, wrap: false,
+            minWidth: "180px", grow: 2, wrap: false,
         },
         {
             name: "Mobile Number",
@@ -118,21 +118,25 @@ const Application = () => {
         {
             name: "Address",
             sortable: true,
-            cell: (row) => (
+            selector: row => row?.Paraddress ?? row?.Posaddress ?? "",
+            grow: 2,
+            minWidth: "250px",
+            wrap: false,
+            cell: row => (
                 <div
-                    title={(row?.Paraddress ?? row?.Posaddress ?? "")}
+                    title={row?.Paraddress ?? row?.Posaddress ?? ""}
                     style={{
-                        maxWidth: "150px",
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
+                        width: "100%",
                     }}
                 >
                     {row?.Paraddress ?? row?.Posaddress ?? ""}
                 </div>
             ),
-            minWidth: "230px", grow: 2, wrap: false,
         }
+
 
     ];
 
