@@ -24,6 +24,7 @@ function useTableHeight() {
 }
 
 const Application = () => {
+
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -38,7 +39,7 @@ const Application = () => {
                 IsActive: true,
             });
 
-            console.log("response:", response);
+            // console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
