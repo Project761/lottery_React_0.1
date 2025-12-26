@@ -3,17 +3,19 @@ import lottery from '../../assets/image/lottery.png';
 import gift from '../../assets//image/gift.png'
 
 const LotteryPage = () => {
-    const [time, setTime] = useState(0);
+
+    const [time, setTime] = useState(15);
 
     useEffect(() => {
-        if (time === 15) return;
+        if (time === 0) return;
 
         const timer = setTimeout(() => {
-            setTime(prev => prev + 1);
+            setTime(prev => prev - 1);
         }, 1000);
 
         return () => clearTimeout(timer);
     }, [time]);
+
     return (
         <div style={styles.wrapper}>
             <img
@@ -32,7 +34,7 @@ const LotteryPage = () => {
                 </div>
 
                 <div style={styles.age}>
-                    {time} +
+                    {time}
                 </div>
 
                 <button style={styles.button}>
@@ -67,7 +69,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        background: 'rgba(0,0,0,0.25)', 
+        background: 'rgba(0,0,0,0.25)',
     },
 
     title: {
