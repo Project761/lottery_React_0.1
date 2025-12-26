@@ -45,12 +45,12 @@ export default function AdminInfo() {
         } else {
 
         }
-        console.log("🚀 ~ getPaperImage ~ response:", response);
+        // console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
 
     const handleSave = async () => {
-        console.log(value);
+        // console.log(value);
 
         let error = false;
 
@@ -87,9 +87,9 @@ export default function AdminInfo() {
             'ModifiedByUser': '',
 
         }
-        console.log("🚀 ~ handleSave ~ val:", val)
+        // console.log("🚀 ~ handleSave ~ val:", val)
         AddDeleteUpdateData('AppUser/Update_AppUser', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully")
             }

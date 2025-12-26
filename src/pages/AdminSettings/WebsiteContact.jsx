@@ -26,7 +26,7 @@ export default function WebsiteContact() {
         const response = await fetchPostData("Company/GetSingleData_Company", {
             "CompanyID": localStorage.getItem('companyID') || 1,
         });
-        console.log("🚀 ~ getPaperImage ~ response:", response);
+        // console.log("🚀 ~ getPaperImage ~ response:", response);
         if (response?.length > 0) {
             setContact(response[0]?.ContactNo)
             setEmail(response[0]?.EmailID)
@@ -55,7 +55,7 @@ export default function WebsiteContact() {
             'CompanyID': localStorage.getItem('companyID') || 1,
         }
         AddDeleteUpdateData('Company/Update_CompanyContact', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully")
             }

@@ -28,7 +28,7 @@ export default function ApplicantPermission() {
             setIsAllowRegister(response[0]?.AppRegPermission);
             setButtonId(response[0]?.ButtonID);
         }
-        console.log("🚀 ~ getPaperImage ~ response:", response);
+        // console.log("🚀 ~ getPaperImage ~ response:", response);
     }
 
     const handleCheckBox = async (e) => {

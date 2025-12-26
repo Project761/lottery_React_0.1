@@ -37,9 +37,20 @@ const Plots = () => {
         []
     );
 
+    function getValueByLabel(label) {
+        const options = [
+            { value: 1, label: "Residential" },
+            { value: 2, label: "Commercial" },
+        ];
+
+        const found = options.find(
+            item => item.label.toLowerCase() === label.toLowerCase()
+        );
+        return found ? found.value : null;
+    }
+
     const CompanyID = Number(localStorage.getItem("companyID") || 1);
     const [applications, setApplications] = useState([]);
-    // console.log("🚀 ~ Plots ~ applications:", applications)
     const [editMode, setEditMode] = useState(false)
     const [projectNameDrpData, setProjectNameDrpData] = useState([])
     const [loading, setLoading] = useState(true);
@@ -95,7 +106,7 @@ const Plots = () => {
         try {
 
             const response = await fetchPostData("Project/GetDataDropDown_Project", { CompanyID: CompanyID });
-            console.log("🚀 ~ fetchApplications ~ response:", response)
+            // console.log("🚀 ~ fetchApplications ~ response:", response)
             setProjectNameDrpData(ChangeArrayFormat(response, 'ProjectID', 'Description'))
             // Reset Fields
 
@@ -151,14 +162,17 @@ const Plots = () => {
     ];
 
     const edit_Plot_Data = (row) => {
-        console.log("🚀 ~ edit_Plot_Data ~ row:", row);
+        // console.log("🚀 ~ edit_Plot_Data ~ row:", row);
         setEditMode(true);
         setValue({
             ...value,
             'PlotID': row?.PlotID,
             'ProjectID': row?.ProjectID ? parseInt(row?.ProjectID) : null,
             'ProjectName': row?.ProjectName,
-            'ProjectType': row?.ProjectType,
+
+            'ProjectType': row?.ProjectType ? parseInt(row?.ProjectType) : null,
+            // 'ProjectType': row?.ProjectType ? getValueByLabel(row?.ProjectType) : null,
+
             'PlotSize': row?.PlotSize,
             'PlotAreaUnit': row?.PlotAreaUnit,
             'PlotSrNo': row?.PlotSrNo,
@@ -204,7 +218,7 @@ const Plots = () => {
     }
 
     const handleSave = async () => {
-        console.log(value);
+        // console.log(value);
 
         let error = false;
 
@@ -242,9 +256,9 @@ const Plots = () => {
             'PlotID': '',
             'ModifiedByUser': '',
         }
-        console.log("🚀 ~ handleSave ~ val:", val)
+        // console.log("🚀 ~ handleSave ~ val:", val)
         AddDeleteUpdateData('PlotDetails/Insert_PlotDetails', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully");
                 insert_NewPlot();
@@ -254,7 +268,7 @@ const Plots = () => {
     };
 
     const handleUpdate = async () => {
-        console.log(value);
+        // console.log(value);
 
         let error = false;
 
@@ -284,17 +298,19 @@ const Plots = () => {
         const val = {
             "CompanyID": localStorage.getItem('companyID') || 1,
             'ProjectID': ProjectID,
+            'ProjectName': ProjectName,
+
+            'ProjectType': ProjectType,
+
             'PlotAreaUnit': PlotAreaUnit,
             'PlotSize': PlotSize,
             'PlotSrNo': PlotSrNo,
-            'ProjectType': ProjectType,
-            'ProjectName': ProjectName,
             'PlotID': PlotID,
             'ModifiedByUser': '',
         }
-        console.log("🚀 ~ handleSave ~ val:", val)
+        // console.log("🚀 ~ handleSave ~ val:", val)
         AddDeleteUpdateData('PlotDetails/Update_PlotDetails', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully");
                 insert_NewPlot();
@@ -396,6 +412,9 @@ const Plots = () => {
     };
 
     const tableHeight = useTableHeight();
+
+    // console.log(projectNameDrpData);
+    // console.log(projectTypeOptions);
 
 
     return (

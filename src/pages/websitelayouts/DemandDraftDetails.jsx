@@ -230,7 +230,7 @@ const DemandDraftDetails = () => {
                             <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
                                 onChange={(e) => {
                                     const file = e.target.files[0];
-                                    console.log(file);
+                                    // console.log(file);
                                     // alert("Hello");
                                     if (file) {
                                         setFormData({ ...formData, PaymentAttachement: file })

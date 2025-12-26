@@ -17,9 +17,9 @@ export default function TruncateTable() {
             'CompanyID': CompanyID,
             'TableName': selectedTable?.value,
         }
-        console.log("🚀 ~ handleCheckBox ~ val:", val)
+        // console.log("🚀 ~ handleCheckBox ~ val:", val)
         await AddDeleteUpdateData('Button/TruncateTable', val).then((response) => {
-            console.log("🚀 ~ handleCheckBox ~ response:", response);
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
             if (response?.success) {
                 showSuccess("Update Successfully")
             }

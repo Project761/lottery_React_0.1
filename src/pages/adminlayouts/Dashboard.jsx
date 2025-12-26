@@ -21,7 +21,7 @@ const Dashboard = () => {
   const getApplicatonInfo = async () => {
     try {
       const response = await fetchPostData("DashBoard/GetData_DashBoard", { CompanyID: localStorage.getItem('companyID') ?? 1 })
-      console.log("🚀 ~ getApplicatonInfo ~ response:", response)
+      // console.log("🚀 ~ getApplicatonInfo ~ response:", response)
       // setApplicationDetailData( )
 
     } catch (error) {

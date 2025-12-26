@@ -14,7 +14,7 @@ export default function Logo() {
     const getPaperImage = async () => {
         try {
             const response = await fetchPostData("Company/GetSingleData_Company", { CompanyID });
-            console.log("🚀 ~ getPaperImage ~ response:", response);
+            // console.log("🚀 ~ getPaperImage ~ response:", response);
 
             if (response?.length > 0) {
                 setLogo(response[0]?.Logo || "");
