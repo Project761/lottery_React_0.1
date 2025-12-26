@@ -7,10 +7,10 @@ import { fetchPostData } from "../../components/hooks/Api";
 function useTableHeight() {
     const getHeight = () => {
         const w = window.innerWidth;
-        if (w >= 1400) return "500px"; // xxl
-        if (w >= 1200) return "400px"; // xl
-        if (w >= 992) return "250px"; // lg
-        return "200px";               // md & below
+        if (w >= 1400) return "710px"; // xxl
+        if (w >= 1200) return "600px"; // xl
+        if (w >= 992) return "650px"; // lg
+        return "500px";               // md & below
     };
 
     const [height, setHeight] = useState(getHeight());
@@ -70,6 +70,7 @@ const BankDetailsForm = () => {
         { name: "Demand Draft Bank", grow: 2, selector: r => r?.DemandDraftBank ?? "", sortable: true, minWidth: "200px", wrap: false, },
         { name: "Demand Draft Amount", grow: 2, selector: r => r?.DemandDraftAmount ?? "", sortable: true, minWidth: "200px", wrap: false, },
     ];
+
     const customStyles = {
         tableWrapper: { style: { overflowX: "auto", width: "100%", }, },
         headCells: {
@@ -112,8 +113,8 @@ const BankDetailsForm = () => {
                                 showHeader={true}
                                 persistTableHead={true}
                                 dense
-                                paginationPerPage={10}
-                                paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                                paginationPerPage={30}
+                                paginationRowsPerPageOptions={[35, 50, 100]}
                                 customStyles={customStyles}
                                 highlightOnHover
                                 fixedHeader
