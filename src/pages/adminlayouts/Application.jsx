@@ -65,7 +65,7 @@ const Application = () => {
         {
             name: "S.No",
             cell: (row, index) => index + 1,
-            width: "80px",
+            minWidth: "80px", wrap: false,
         },
         {
             name: "Attachment",
@@ -82,32 +82,38 @@ const Application = () => {
                 ) : (
                     "-"
                 ),
-            width: "120px",
+            minWidth: "120px", grow: 2, wrap: false,
         },
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
             sortable: true,
+            minWidth: "180px", grow: 2, wrap: false,
         },
         {
             name: "Full Name",
             selector: (row) => row?.FullName ?? "",
             sortable: true,
+            minWidth: "120px", grow: 2, wrap: false,
         },
         {
             name: "Mobile Number",
             selector: (row) => row?.MobileNumber ?? "",
             sortable: true,
+            minWidth: "150px", grow: 2, wrap: false,
         },
         {
             name: "Aadhar Number",
             selector: (row) => row?.AadharNumber ?? "",
             sortable: true,
+            minWidth: "180px", grow: 2, wrap: false,
         },
         {
             name: "Email",
             selector: (row) => row?.Email ?? "",
             sortable: true,
+            minWidth: "200px", grow: 2, wrap: false,
+
         },
         {
             name: "Address",
@@ -125,6 +131,7 @@ const Application = () => {
                     {row?.Paraddress ?? row?.Posaddress ?? ""}
                 </div>
             ),
+            minWidth: "230px", grow: 2, wrap: false,
         }
 
     ];

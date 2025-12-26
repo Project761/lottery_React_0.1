@@ -74,6 +74,24 @@ const LotteryModal = ({ onClose }) => {
         fetchApplications();
     }, []);
 
+    useEffect(() => {
+        let timerId;
+        const startTime = Date.now();
+        fetchApplications().then(() => {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(30000 - elapsed, 0);
+
+            timerId = setTimeout(() => {
+                setLoading(false);
+            }, remaining);
+        });
+
+        return () => clearTimeout(timerId);
+    }, []);
+
+
+
+
     const columns = [
         {
             name: "S.No",
