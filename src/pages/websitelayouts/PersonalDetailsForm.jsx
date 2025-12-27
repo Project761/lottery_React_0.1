@@ -343,6 +343,56 @@ const PersonalDetailsForm = () => {
         }
     }, []);
 
+
+    const HandleZipCode = (e) => {
+        if (e.target.value.length <= 6) {
+            setFormData({ ...formData, ZipCode: e.target.value })
+        }
+    }
+
+    const onChangeDOBDate = (e) => {
+        const { name, value } = e.target;
+        const selectedDate = new Date(value);
+        const today = new Date();
+        const minDate = new Date("1930-01-01");
+
+        // Validation
+        let errorMessage = "";
+        if (selectedDate < minDate) {
+            errorMessage = "Date of Birth cannot be earlier than 01/01/1930.";
+        } else if (selectedDate > today) {
+            errorMessage = "Date of Birth cannot be in the future.";
+        }
+
+        // Update form data and errors
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+
+        setErrors({
+            ...errors,
+            [name]: errorMessage,
+        });
+    };
+
+
+    // const onChangeDOBDate = (e) => {
+    //     const { name, value, type, checked } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: type === "checkbox" ? checked : value,
+    //     });
+
+    //     // Clear error when user starts typing
+    //     if (errors[name]) {
+    //         setErrors({
+    //             ...errors,
+    //             [name]: "",
+    //         });
+    //     }
+    // };
+
     return (
         <div className="container mb-4 px-0">
 
@@ -408,9 +458,20 @@ const PersonalDetailsForm = () => {
                                     name="Dob"
                                     autoComplete="off"
                                     value={formData.Dob}
-                                    onChange={handleInputChange}
+                                    onChange={onChangeDOBDate}
+                                    min="1930-01-01"
                                     max={new Date().toISOString().split('T')[0]}
                                 />
+
+                                {/* <input
+                                    type="date"
+                                    className={`form-control ${errors.Dob ? 'is-invalid' : ''}`}
+                                    name="Dob"
+                                    autoComplete="off"
+                                    value={formData.Dob}
+                                    onChange={onChangeDOBDate}
+                                    max={new Date().toISOString().split('T')[0]}
+                                /> */}
                                 {errors.Dob && <div className="invalid-feedback">{errors.Dob}</div>}
                             </div>
 
@@ -488,7 +549,7 @@ const PersonalDetailsForm = () => {
                                             checked={formData.Idproof === 'drivingLicense'}
                                             onChange={handleInputChange}
                                         />
-                                        <label className="form-check-label">DRIVING LICENSE</label>
+                                        <label className="form-check-label">Driving Licence</label>
                                     </div>
                                     <div className="form-check form-check-inline">
                                         <input
@@ -510,7 +571,7 @@ const PersonalDetailsForm = () => {
                                             checked={formData.Idproof === 'rashanCard'}
                                             onChange={handleInputChange}
                                         />
-                                        <label className="form-check-label">RASHAN CARD</label>
+                                        <label className="form-check-label">Ration card</label>
                                     </div>
 
                                 </div>
@@ -582,7 +643,7 @@ const PersonalDetailsForm = () => {
                             {/* ZIP-Code */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
-                                <input type="number" autoComplete="off" placeholder="Enter ZIP Code" className="form-control" value={formData.ZipCode} onChange={(e) => setFormData({ ...formData, ZipCode: e.target.value })} />
+                                <input type="number" autoComplete="off" placeholder="Enter ZIP Code" className="form-control" value={formData.ZipCode} onChange={HandleZipCode} />
                             </div>
 
                             {/* State */}
@@ -648,7 +709,7 @@ const PersonalDetailsForm = () => {
                                 <label className="form-label fw-semibold mb-1">
                                     Country <span className="text-danger">*</span>
                                 </label>
-                                <input type="text" value="INDIA" autoComplete="off" className="form-control" readOnly />
+                                <input type="text" value="INDIA" autoComplete="off" className="form-control" readOnly disabled={true} />
                             </div>
 
                             {/* Permanent-Address */}
@@ -665,10 +726,17 @@ const PersonalDetailsForm = () => {
                                         onChange={(e) => {
                                             const checked = e.target.checked;
                                             setSameAddress(checked);
-                                            if (checked) setFormData((prev) => ({
-                                                ...prev,
-                                                Posaddress: prev.Paraddress
-                                            }))
+                                            if (checked) {
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    Posaddress: prev.Paraddress
+                                                }))
+                                            } else {
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    Posaddress: ""
+                                                }))
+                                            }
                                         }}
                                     />
                                     <label className="form-check-label" htmlFor="sameAddress">
@@ -706,7 +774,7 @@ const PersonalDetailsForm = () => {
 
                         {formData.MobileNumber && showOtp && (
                             <div className="text-center">
-                                <p className="mb-3">We've sent a 6-digit OTP to {formData.MobileNumber}</p>
+                                <p className="mb-3">We've sent a 4-digit OTP to {formData.MobileNumber}</p>
                                 <OtpVerify onBack={() => setShowOtp(false)} onVerify={handleOtpVerify} MobileNumber={formData.MobileNumber} isSubmitting={isSubmitting} onResendOtp={() => sendOtpToMobile(formData.MobileNumber)} />
                             </div>
                         )}

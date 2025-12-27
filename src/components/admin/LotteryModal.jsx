@@ -60,6 +60,8 @@ const LotteryModal = ({ onClose }) => {
                                 [];
 
             setApplications(list);
+
+
         } catch (error) {
             showError("Failed to fetch applications");
             console.error("Error fetching applications:", error);
