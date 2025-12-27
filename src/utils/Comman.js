@@ -63,3 +63,15 @@ export const mobileNoValidation = (value) => {
   const digitsOnly = value.replace(/\D/g, "");
   return digitsOnly.slice(0, 10);
 }
+
+export const handleOnlyAlphabet = (e) => {
+  const value = e;
+  const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
+  return filteredValue;
+}
+
+export const allowSomeDigits = (e) => {
+  const value = e;
+  if (value.length > 20) return;
+  return value = value.replace(/\D/g, "");
+}

@@ -98,7 +98,7 @@ const DemandDraftDetails = () => {
             "PaymentDate",
             "PaymentBank",
             "BankAmount",
-            "PaymentAttachement"
+            // "PaymentAttachement"
         ];
 
         const emptyFields = requiredFields.filter(field => !formData[field] || formData[field] === "");
@@ -159,7 +159,7 @@ const DemandDraftDetails = () => {
                             <label className="form-label fw-semibold mb-1">
                                 Demand Draft / Payment Transfer Number <span className="text-danger">*</span>
                             </label>
-                            <input type="number" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} onChange={(e) => setFormData({ ...formData, PaymentTrasnum: e.target.value })} />
+                            <input type="text" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} maxLength="15" onChange={(e) => setFormData({ ...formData, PaymentTrasnum: e.target.value })} />
                         </div>
 
                         {/* Demand Draft / Online Payment Date */}
