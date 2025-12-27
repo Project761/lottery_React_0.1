@@ -46,7 +46,7 @@ const Home = () => {
       });
 
       if (resp?.length) {
-        setAllowRegister(resp[0]?.AppRegPermission);
+        setAllowRegister(resp[0]?.AppRegPermission);  
         setButtonId(resp[0]?.ButtonID);
       }
     } catch (error) {
