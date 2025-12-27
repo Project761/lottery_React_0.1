@@ -1,6 +1,7 @@
 import React from "react";
 import DataTable from "react-data-table-component";
-import gift from '../../assets/image/gift.png'
+import gift from '../../assets/image/gift.gif'
+import user from "../../assets/image/user.png"
 import { fetchPostData } from "../hooks/Api";
 import { useEffect, useState } from "react";
 import { showError } from "../../utils/toast";
@@ -229,11 +230,13 @@ const LotteryModal = ({ onClose }) => {
 
             <div style={styles.modal}>
 
-                <div className="d-flex justify-content-end align-items-center p-3 border-bottom">
-                    <button className="btn btn-sm btn-outline-danger" onClick={onClose}>
-                        ✕
-                    </button>
+                <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <div className="d-flex align-items-center">
+                        <img src={user} alt="user" style={{ width: "36px", height: "36px", borderRadius: "50%" }} />
+                    </div>
+                    <button className="btn btn-sm btn-outline-danger" onClick={onClose}> ✕</button>
                 </div>
+
 
                 <div className="p-2">
                     {loading ? (
