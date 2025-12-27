@@ -27,6 +27,7 @@ const Application = () => {
 
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [checkedRows, setCheckedRows] = useState({});
 
     const CompanyID = localStorage.getItem("companyID") ?? 1;
 
@@ -60,6 +61,19 @@ const Application = () => {
     useEffect(() => {
         fetchApplications();
     }, []);
+
+
+
+    const handleCheckBox = (e, row) => {
+        const { checked } = e.target;
+        setCheckedRows((prev) => ({
+            ...prev,
+            [row.Id]: checked,
+        }));
+
+        console.log("Row:", row, "Checked:", checked);
+    };
+
 
     const columns = [
         {
@@ -135,7 +149,28 @@ const Application = () => {
                     {row?.Paraddress ?? row?.Posaddress ?? ""}
                 </div>
             ),
+        },
+        {
+            name: "Verify/Unverify",
+            cell: (row) => (
+                <div
+                    className="d-flex align-items-center"
+                    style={{ padding: "8px 0", gap: "8px" }}
+                >
+                    <span className="fw-normal text-dark">verify :-</span>
+
+                    <input
+                        type="checkbox"
+                        className="form-check-input m-0"
+                        style={{ cursor: "pointer" }}
+                        checked={!!checkedRows[row.Id]}
+                        onChange={(e) => handleCheckBox(e, row)}
+                    />
+                </div>
+            ),
+            minWidth: "100px", grow: 2, wrap: false,
         }
+
 
 
     ];
