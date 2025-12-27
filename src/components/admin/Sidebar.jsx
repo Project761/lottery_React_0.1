@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-    BiHome,
-    BiBuildingHouse,
-    BiUser,
-    BiFolder,
-    BiMap,
-    BiLogOut,
-    BiCreditCard,
-} from "react-icons/bi";
+import { BiHome, BiBuildingHouse, BiUser, BiFolder, BiMap, BiLogOut, BiCreditCard, BiMoney, BiCategory, BiFile, BiCurrentLocation, BiLineChart, } from "react-icons/bi";
 import { showSuccess } from "../../utils/toast";
 
 const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
@@ -18,16 +10,17 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
     const menuItems = [
         { path: "/admin/dashboard", icon: <BiHome />, label: "Dashboard" },
         { path: "/admin/bank", icon: <BiBuildingHouse />, label: "Banks" },
-        { path: "/admin/DemandDraftAmount", icon: <BiBuildingHouse />, label: "Demand Draft Amount" },
-        { path: "/admin/Annual-Income", icon: <BiBuildingHouse />, label: "Annual Income" },
-        { path: "/admin/Category", icon: <BiBuildingHouse />, label: "Category" },
+        { path: "/admin/DemandDraftAmount", icon: <BiMoney />, label: "Demand Draft Amount" },
+        { path: "/admin/Annual-Income", icon: <BiLineChart />, label: "Annual Income" },
+        { path: "/admin/Category", icon: <BiCategory />, label: "Category" },
         { path: "/admin/caste", icon: <BiUser />, label: "Castes" },
-        { path: "/admin/Application", icon: <BiUser />, label: "Application" },
-        { path: "/admin/city", icon: <BiUser />, label: "Cities" },
+        { path: "/admin/Application", icon: <BiFile />, label: "Application" },
+        { path: "/admin/city", icon: <BiCurrentLocation />, label: "Cities" },
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },
-        // { path: "/admin/application", icon: <BiFolder />, label: "Applications" },
         { path: "/admin/bank-details", icon: <BiCreditCard />, label: "Bank Details" },
+        // { path: "/admin/application", icon: <BiFolder />, label: "Applications" },
+
     ];
 
     // Function to check if a menu item is active

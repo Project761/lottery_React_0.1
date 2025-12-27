@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import lottery from '../../assets/image/lottery.png';
-import gift from '../../assets//image/gift.png'
+// import gift from '../../assets//image/gift.gif'
 import LotteryModal from '../../components/admin/LotteryModal';
 
 const LotteryPage = () => {
