@@ -64,7 +64,7 @@ const OtpVerify = ({ onVerify, MobileNumber, isSubmitting }) => {
           <input
             type="text"
             className="form-control mb-3 text-center"
-            placeholder="Enter 6-digit OTP"
+            placeholder="Enter 4-digit OTP"
             value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
             maxLength={4}
