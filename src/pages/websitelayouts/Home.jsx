@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import HomeSvg from "../../components/website/HomeSvg.jsx";
 import { fetchPostData } from "../../components/hooks/Api.js";
+import FileSaver from "file-saver";
+// var FileSaver = require('file-saver');
 
 const Home = () => {
 
@@ -13,7 +15,7 @@ const Home = () => {
   const [allowRegister, setAllowRegister] = useState(false);
   const [buttonId, setButtonId] = useState(0);
   const [images, setImages] = useState([]);
-  const [buttonArray, setButtonArray] = useState([])
+  const [buttonArray, setButtonArray] = useState([]);
 
 
   useEffect(() => {
@@ -32,8 +34,8 @@ const Home = () => {
       "ButtonType": "BUTTON CHANGE",
       "CompanyID": localStorage.getItem('companyID') || 1,
     });
-    setButtonArray(response)
-    // console.log("🚀 ~ getPaperImage ~ response:", response)
+    setButtonArray(response);
+    console.log("🚀 ~ getPaperImage ~ response:", response)
   }
 
   // Get Insert-button
@@ -66,6 +68,61 @@ const Home = () => {
     }
   }
 
+  // download file
+  const handleDownload_File = async (fileUrl, FileName) => {
+    console.log("🚀 ~ handleDownload_File ~ fileUrl:", fileUrl)
+    console.log("🚀 ~ handleDownload_File ~ fileUrl:", FileName)
+    try {
+
+      const originalUrl = fileUrl;
+      const lastSlashIndex = fileUrl?.lastIndexOf('/');
+      // const updatedUrl = replaceDomain(originalUrl);
+
+      FileSaver.saveAs(fileUrl, FileName);
+
+    } catch (error) {
+      console.log("🚀 ~ downloadFile ~ error:", error);
+    }
+  };
+
+
+
+  // const handleDownload_File = (url) => {
+  //   const link = document.createElement('a');
+  //   link.href = url;
+  //   link.download = url.split('/').pop();
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
+
+
+  // const handleDownload_File = async (url) => {
+  //   try {
+  //     // Fetch the file as a blob (works even with external URLs if CORS allows)
+  //     const response = await fetch(url, { mode: 'cors' });
+  //     if (!response.ok) throw new Error('File download failed');
+
+  //     const blob = await response.blob();
+  //     const blobUrl = window.URL.createObjectURL(blob);
+
+  //     // Create an anchor element for download
+  //     const link = document.createElement('a');
+  //     link.href = blobUrl;
+  //     link.download = url.split('/').pop() || 'downloaded_file';
+  //     document.body.appendChild(link);
+  //     link.click();
+
+  //     // Clean up resources
+  //     window.URL.revokeObjectURL(blobUrl);
+  //     document.body.removeChild(link);
+  //   } catch (error) {
+  //     console.error('Error downloading file:', error);
+  //     alert('Failed to download the file. Please try again.');
+
+  //   }
+  // };
+
   return (
     <div className="container text-center">
       {/* Images Section */}
@@ -80,11 +137,12 @@ const Home = () => {
       <div className="row justify-content-center flex-column" style={{ gap: "8px" }}>
         {buttonArray?.map((item) => (
           <div className="col-md-auto">
-            <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", display: "block", margin: "0 auto" }}>
+            <button className="btn" onClick={() => handleDownload_File(item?.FilePath, item?.ButtonDetails)} style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", display: "block", margin: "0 auto" }}>
               {item?.ButtonDetails}
             </button>
           </div>
         ))}
+
         {/* <button className="btn" style={{ backgroundColor: "#A992F7", color: "white", padding: "10px 20px", fontWeight: "500", }}>
           Scheme Term & Conditions Booklet
         </button>

@@ -35,7 +35,7 @@ const BankDetailsForm = () => {
             setLoading(true);
             const response = await fetchPostData("BankDetails/GetData_BankDetails", { CompanyID, IsActive: true });
             setBankDetails(normalizeList(response));
-            // console.log("🚀 ~ fetchBankDetails ~ response:", normalizeList(response))
+            console.log("🚀 ~ fetchBankDetails ~ response:", normalizeList(response))
         } catch (error) {
             showError("Failed to fetch bank details");
             setBankDetails([]);
@@ -57,18 +57,18 @@ const BankDetailsForm = () => {
     const columns = [
         { name: "S.No", cell: (row, index) => index + 1, width: "80px" },
         { name: "Applicant Number", grow: 2, selector: r => r?.ApplicantNumber ?? "", sortable: true, minWidth: "180px", wrap: false, },
-        { name: "Applicant Name", grow: 2, selector: r => r?.ApplicantName ?? "", sortable: true, minWidth: "160px", wrap: false, },
-        { name: "Plot", selector: r => r?.plot ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "Applicant Name", grow: 2, selector: r => r?.FullName ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        // { name: "Plot", selector: r => r?.plot ?? "", sortable: true, minWidth: "160px", wrap: false, },
         { name: "Category", row: 2, selector: r => r?.Category ?? "", sortable: true, minWidth: "130px", wrap: false, },
-        { name: "A/C Holder Name", grow: 2, selector: r => r?.AccountHolderName ?? "", sortable: true, minWidth: "160px", wrap: false, },
+        { name: "A/C Holder Name", grow: 2, selector: r => r?.BankUserName ?? "", sortable: true, minWidth: "160px", wrap: false, },
         { name: "A/C Number", grow: 2, selector: r => r?.AccountNumber ?? "", sortable: true, minWidth: "160px", wrap: false, },
         { name: "Bank Name", grow: 2, selector: r => r?.BankName ?? "", sortable: true, minWidth: "160px", wrap: false, },
         { name: "IFSC Code", grow: 2, selector: r => r?.IfscCode ?? "", sortable: true, minWidth: "160px", wrap: false, },
         { name: "Branch Address", grow: 2, selector: r => r?.BranchAddress ?? "", sortable: true, minWidth: "180px", wrap: false, },
-        { name: "Demand Draft Number", grow: 2, selector: r => r?.DemandDraftNumber ?? "", sortable: true, minWidth: "200px", wrap: false, },
-        { name: "Demand Draft Date", grow: 2, selector: r => r?.DemandDraftDate ?? "", sortable: true, minWidth: "200px", wrap: false, },
-        { name: "Demand Draft Bank", grow: 2, selector: r => r?.DemandDraftBank ?? "", sortable: true, minWidth: "200px", wrap: false, },
-        { name: "Demand Draft Amount", grow: 2, selector: r => r?.DemandDraftAmount ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Number", grow: 2, selector: r => r?.PaymentTrasnum ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Date", grow: 2, selector: r => r?.PaymentDate ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Bank", grow: 2, selector: r => r?.BankName ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Amount", grow: 2, selector: r => r?.BankAmountName ?? "", sortable: true, minWidth: "200px", wrap: false, },
     ];
 
     const customStyles = {
