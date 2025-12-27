@@ -115,6 +115,7 @@ const BankDetailsForm = () => {
                         <label className="form-label fw-semibold mb-1">
                             IFSC Code <span className="text-danger">*</span>
                         </label>
+                        <input type="text"maxLength={11} className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} onChange={(e) => setFormData({...formData, IfscCode: upperCaseValue(e.target.value)})}/>
                         <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} maxLength="11" onChange={(e) => setFormData({...formData, IfscCode: upperCaseValue(e.target.value)})}/>
                     </div>
 

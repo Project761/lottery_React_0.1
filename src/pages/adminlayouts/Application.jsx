@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { showError } from "../../utils/toast";
-import { fetchPostData } from "../../components/hooks/Api";
+import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
+import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
+
 
 function useTableHeight() {
     const getHeight = () => {
@@ -27,8 +28,14 @@ const Application = () => {
 
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [checkedRows, setCheckedRows] = useState({});
 
     const CompanyID = localStorage.getItem("companyID") ?? 1;
+    const UserID = localStorage.getItem('AdminUserID') || 1
+
+    useEffect(() => {
+        fetchApplications();
+    }, []);
 
     const fetchApplications = async () => {
         try {
@@ -39,7 +46,7 @@ const Application = () => {
                 IsActive: true,
             });
 
-            // console.log("response:", response);
+            console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
@@ -57,11 +64,34 @@ const Application = () => {
         }
     };
 
-    useEffect(() => {
-        fetchApplications();
-    }, []);
-
     const columns = [
+        {
+            name: "Verify/Unverify",
+            cell: (row) => (
+                <div
+                    className="d-flex align-items-center"
+                    style={{ padding: "8px 0", gap: "8px" }}
+                    onClick={(e) => handleCheckBox(e, row)}
+                >
+                    <button
+                        type="Button"
+                        className="btn m-0"
+                        style={{ cursor: "pointer", backgroundColor: row?.Status === "Verify" || row?.Status === "verify" ? 'green' : 'red' }}
+                    >
+                        {row?.Status}
+                    </button>
+                    {/* <span className="fw-normal text-dark">{row?.Status}</span> */}
+                    {/* <input
+                        type="checkbox"
+                        className="form-check-input m-0"
+                        style={{ cursor: "pointer" }}
+                        checked={row?.Status === "Verify" || row?.Status === "verify"}
+                        onChange={(e) => handleCheckBox(e, row)}
+                    /> */}
+                </div>
+            ),
+            minWidth: "100px", grow: 2, wrap: false,
+        },
         {
             name: "S.No",
             cell: (row, index) => index + 1,
@@ -135,10 +165,59 @@ const Application = () => {
                     {row?.Paraddress ?? row?.Posaddress ?? ""}
                 </div>
             ),
-        }
-
+        },
 
     ];
+
+
+    const handleCheckBox = async (e, row) => {
+        console.log("🚀 ~ handleCheckBox ~ row:", row)
+
+        const val = {
+            'Status': row?.Status === "Verify" || row?.Status === "verify" ? "Unverified" : "Verify",
+            'UserID': row?.UserID,
+            'ModifiedByUser': localStorage.getItem('AdminUserID') || 1,
+        }
+
+        await AddDeleteUpdateData('User/Update_UserStatus', val).then((response) => {
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
+            if (response?.success) {
+                showSuccess("Update Successfully");
+                fetchApplications();
+            }
+        })
+    };
+
+    // const handleCheckBox = async (e, row) => {
+    //     console.log("🚀 ~ handleCheckBox ~ row:", row)
+    //     // setCheckedRows((prev) => ({ ...prev, [row.Id]: checked, }));
+    //     const { checked } = e.target;
+    //     console.log("Row:", row, "Checked:", checked);
+
+    //     const val = {
+    //         'Status': checked ? 'Verify' : 'Unverified',
+    //         'UserID': row?.UserID,
+    //         'ModifiedByUser': localStorage.getItem('AdminUserID') || 1,
+    //     }
+
+    //     await AddDeleteUpdateData('User/Update_UserStatus', val).then((response) => {
+    //         // console.log("🚀 ~ handleCheckBox ~ response:", response);
+    //         if (response?.success) {
+    //             showSuccess("Update Successfully");
+    //             fetchApplications();
+    //         }
+    //     })
+    // };
+
+    const updateApplicationStatus = () => {
+        AddDeleteUpdateData('User/Update_UserStatus', val).then((response) => {
+            // console.log("🚀 ~ handleCheckBox ~ response:", response);
+            if (response?.success) {
+                showSuccess("Update Successfully")
+            }
+        })
+    }
+
 
     const customStyles = {
         headCells: {
@@ -162,6 +241,18 @@ const Application = () => {
     };
 
     const tableHeight = useTableHeight();
+
+
+    // User/Update_UserStatus
+    // Status
+    // ModifiedByUser
+    // UserID
+
+    // User/GetData_User
+    // Status
+    // CompanyID
+    // IsActive
+
 
     return (
         <div className="container-fluid py-3">

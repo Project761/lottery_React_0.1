@@ -46,7 +46,7 @@ const Home = () => {
       });
 
       if (resp?.length) {
-        setAllowRegister(resp[0]?.AppRegPermission);
+        setAllowRegister(resp[0]?.AppRegPermission);  
         setButtonId(resp[0]?.ButtonID);
       }
     } catch (error) {
@@ -158,8 +158,9 @@ const Home = () => {
           <div className="d-flex justify-content-center align-items-center">
             <input type="checkbox" id="agree" className="me-2" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
             <label htmlFor="agree" className="text-muted small">
-              I HAVE ACKNOWLEDGED AND AGREE THAT I HAVE READ AND UNDERSTOOD THE TERM
-              AND CONDITION.
+              {/* I HAVE ACKNOWLEDGED AND AGREE THAT I HAVE READ AND UNDERSTOOD THE TERM
+              AND CONDITION. */}
+              I acknowledge and agree that I have read and understood the terms and conditions.
             </label>
           </div>
 
