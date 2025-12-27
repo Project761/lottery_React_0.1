@@ -15,7 +15,7 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
         { path: "/admin/Category", icon: <BiCategory />, label: "Category" },
         { path: "/admin/caste", icon: <BiUser />, label: "Castes" },
         { path: "/admin/Application", icon: <BiFile />, label: "Application" },
-        { path: "/admin/city", icon: <BiCurrentLocation />, label: "Cities" },
+        // { path: "/admin/city", icon: <BiCurrentLocation />, label: "Cities" },
         { path: "/admin/project", icon: <BiFolder />, label: "Projects" },
         { path: "/admin/plot", icon: <BiMap />, label: "Plots" },
         { path: "/admin/bank-details", icon: <BiCreditCard />, label: "Bank Details" },

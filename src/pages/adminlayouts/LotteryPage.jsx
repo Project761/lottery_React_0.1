@@ -4,7 +4,7 @@ import lottery from '../../assets/image/lottery.png';
 import LotteryModal from '../../components/admin/LotteryModal';
 
 const LotteryPage = () => {
-    
+
     const [time, setTime] = useState(15);
     const [openModal, setOpenModal] = useState(false);
 
@@ -82,7 +82,7 @@ const styles = {
         justifyContent: 'center',
         textAlign: 'center',
         background: 'rgba(0,0,0,0.25)',
-        
+
     },
 
     title: {
