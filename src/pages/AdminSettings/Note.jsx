@@ -48,13 +48,11 @@ export default function Note() {
         if (error) {
             return;
         }
-
         const formData = new FormData();
         // formData.append("file", null);
         formData.append("Data", JSON.stringify(value));
-
         const response = await axios.post("ButtonDetails/Insert_ButtonDetails", formData);
-        // console.log("🚀 ~ handleSave ~ response:", response)
+        // console.log("🚀 ~ handleSave ~ response:", response);
         getPaperImage();
         resetObject();
     };
