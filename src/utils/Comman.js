@@ -63,3 +63,9 @@ export const mobileNoValidation = (value) => {
   const digitsOnly = value.replace(/\D/g, "");
   return digitsOnly.slice(0, 10);
 }
+
+
+export const normalizeList = (res) =>
+  [res, res?.data, res?.data?.data, res?.data?.Data, res?.Data]
+    .find(Array.isArray) || [];
+
