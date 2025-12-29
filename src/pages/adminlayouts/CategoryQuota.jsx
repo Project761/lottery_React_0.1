@@ -4,6 +4,7 @@ import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { normalizeList } from "../../utils/Comman";
+import CategoryQuotaModal from "../../components/admin/CategoryQuotaModal";
 
 
 function useTableHeight() {
@@ -33,6 +34,7 @@ const CategoryQuota = () => {
 
     const [CategoryQuotadata, setCategoryQuotadata] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [openModal, setOpenModal] = useState(false)
     // const [categoryQuotaDropdown, setCategoryQuotaDropdown] = useState([]);
     const CompanyID = localStorage.getItem("companyID") ?? 1;
     const UserID = localStorage.getItem('AdminUserID') || 1
@@ -230,9 +232,18 @@ const CategoryQuota = () => {
 
     const tableHeight = useTableHeight();
 
+
+    const handleOpen = () => setOpenModal(true);
+    const handleClose = () => setOpenModal(false);
+
     return (
         <div className="container-fluid py-3">
             <div className="card">
+                <div className="m-1 d-flex justify-content-end">
+                    <button className="btn btn-primary" onClick={handleOpen}>
+                        Add Category Quota
+                    </button>
+                </div>
                 <div className="card-body p-0">
                     <DataTable
                         columns={columns}
@@ -254,6 +265,9 @@ const CategoryQuota = () => {
                     />
                 </div>
             </div>
+
+            {openModal && <CategoryQuotaModal onClose={() => setOpenModal(false)} />}
+
         </div>
 
     );
