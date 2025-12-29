@@ -19,7 +19,7 @@ const Header = () => {
     const response = await fetchPostData("Company/GetSingleData_Company", {
       "CompanyID": localStorage.getItem('companyID') || 1,
     });
-    // console.log("🚀 ~ getPaperImage ~ response:", response);
+    console.log("🚀 ~ getHeaderImage ~ response:", response);
     if (response?.length > 0) {
       response[0]?.Logo && setLogo(response[0]?.Logo)
 

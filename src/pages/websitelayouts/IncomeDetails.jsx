@@ -15,6 +15,7 @@ const IncomeDetails = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [category, setcategory] = useState([]);
   const [income, setIncome] = useState([]);
+  const [projName, setProjName] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -70,9 +71,21 @@ const IncomeDetails = () => {
     }
   };
 
+  const getProjectName = async () => {
+    const response = await fetchPostData("Company/GetSingleData_Company", {
+      "CompanyID": localStorage.getItem('companyID') || 1,
+    });
+    // console.log("🚀 ~ getHeaderImage ~ response:", response);
+    if (response?.length > 0) {
+      setProjName(response[0].ProjectName);
+      // console.log(response[0].ProjectName);
+    }
+  }
+
   useEffect(() => {
     fetchCategory();
     fetchAnnualIncome();
+    getProjectName();
   }, []);
 
   const userID = localStorage.getItem("UserID");
@@ -208,7 +221,7 @@ const IncomeDetails = () => {
                 defaultChecked
               />
               <label className="form-check-label" htmlFor="project1">
-                SERENITY RESIDENCY
+                {projName}
               </label>
             </div>
           </div>
