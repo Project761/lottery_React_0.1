@@ -65,13 +65,13 @@ export const mobileNoValidation = (value) => {
 }
 
 export const handleOnlyAlphabet = (e) => {
-  const value = e;
+  let value = e;
   const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
   return filteredValue;
 }
 
 export const allowSomeDigits = (e) => {
-  const value = e;
+  let value = e;
   if (value.length > 20) return;
   return value = value.replace(/\D/g, "");
 }
