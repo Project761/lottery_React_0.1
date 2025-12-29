@@ -68,7 +68,7 @@ export const mobileNoValidation = (value) => {
 }
 
 export const handleOnlyAlphabet = (e) => {
-  const value = e;
+  let value = e;
   const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
   return filteredValue;
 }
