@@ -6,7 +6,6 @@ export const FormDataContext = createContext();
 export const defaultFormStructure = {
   // Personal Details
   FullName: '',
-  CoapplicantName: '',
   Gender: '',
   Dob: '',
   Email: '',
@@ -23,6 +22,25 @@ export const defaultFormStructure = {
   Country: 'INDIA',
   Paraddress: '',
   Posaddress: '',
+
+  // Co-applicant
+  CoapplicantName: '',
+  CoGender: '',
+  CoDob: '',
+  CoEmail: '',
+  CoNameSelect: '',
+  CoFhname: '',
+  CoIdproof: '',
+  CoIdproofNo: '',
+  CoAadharNumber: '',
+  CoCaste: null,
+  CoMobileNumber: '',
+  CoZipCode: '',
+  CoState: null,
+  CoCity: null,
+  CoCountry: 'INDIA',
+  CoParaddress: '',
+  CoPosaddress: '',
 
   // Bank Details
   BankUserName: '',
