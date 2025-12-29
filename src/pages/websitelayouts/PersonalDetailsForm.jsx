@@ -420,20 +420,32 @@ const PersonalDetailsForm = () => {
                                 {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
                             </div>
 
-                            {/* Co-Applicant-Name */}
+                            {/* Co-Applicant-Check_Box */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Co-Applicant Name</label>
-                                <input
-                                    type="text"
-                                    className={`form-control ${errors.FullName ? 'is-invalid' : ''}`}
-                                    name="FullName"
-                                    autoComplete="off"
-                                    placeholder="Enter Co-Applicant Name"
-                                    value={formData.CoapplicantName}
-                                    maxLength="30"
-                                    onChange={(e) => setFormData({ ...formData, CoapplicantName: handleOnlyAlphabet(e.target.value) })}
-                                />
-                                {/* {errors.CoapplicantName && <div className="invalid-feedback">{errors.CoapplicantName}</div>} */}
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" id="sameAddress"
+                                        checked={sameAddress}
+                                        onChange={(e) => {
+                                            const checked = e.target.checked;
+                                            setSameAddress(checked);
+                                            if (checked) {
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    CoapplicantName: prev.CoapplicantName
+                                                }))
+                                            } else {
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    Posaddress: ""
+                                                }))
+                                            }
+                                        }}
+                                    />
+                                    <label className="form-check-label" htmlFor="sameAddress">
+                                        Want Co-applicant details
+                                    </label>
+                                </div>
                             </div>
 
                             {/* Gender */}
@@ -540,6 +552,7 @@ const PersonalDetailsForm = () => {
                                 <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
                                 <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" maxLength="30" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: handleOnlyAlphabet(e.target.value) })} />
                             </div>
+
                             {/* Select-Cast */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
@@ -813,4 +826,5 @@ const PersonalDetailsForm = () => {
     );
 };
 
+// In this when we check 
 export default PersonalDetailsForm;
