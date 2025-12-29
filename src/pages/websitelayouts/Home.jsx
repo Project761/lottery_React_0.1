@@ -44,7 +44,8 @@ const Home = () => {
       const resp = await fetchPostData("Button/GETALL_BUTTON", {
         "CompanyID": localStorage.getItem("companyID") || 1
       });
-
+      // console.log("🚀"+ resp[0].FromStartDtTm);
+      // console.log("Hello");
       if (resp?.length) {
         setAllowRegister(resp[0]?.AppRegPermission);  
         setButtonId(resp[0]?.ButtonID);

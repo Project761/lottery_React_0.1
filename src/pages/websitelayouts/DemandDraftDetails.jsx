@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
-import { ChangeArrayFormat, onChangeDropdown, selectValue } from "../../utils/Comman.js";
+import { ChangeArrayFormat, onChangeDropdown, selectValue, getShowingDateText } from "../../utils/Comman.js";
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
@@ -17,6 +17,7 @@ const DemandDraftDetails = () => {
     const [amount, setAmount] = useState([]);
     const [isPaymentAttachmentChanged, setIsPaymentAttachmentChanged] = useState(false);
     const [demandDraft, setDemandDraft] = useState([]);
+    const [registerDate, setRegisterDate] = useState("");
 
     // useEffect(() => {
     //     localStorage.setItem("applicationFormData", JSON.stringify(formData));
@@ -68,6 +69,23 @@ const DemandDraftDetails = () => {
         }
     }
 
+    // Demand Draft / Online Payment Date-Valiadation
+    const getRegistrationDate = async () => {
+        try {
+            const resp = await fetchPostData("Button/GETALL_BUTTON", {
+                "CompanyID": localStorage.getItem("companyID") || 1
+            });
+            if (resp?.length) {
+                const regData = resp[0]?.FromStartDtTm;
+                const formatteddate = new Date(regData).toISOString().split('T')[0];
+                setRegisterDate(formatteddate);
+                // setButtonId(resp[0]?.ButtonID);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     //-----------Demand-Draft-Attachement----------
     const checkDemandDraftAttach = async () => {
         try {
@@ -88,6 +106,7 @@ const DemandDraftDetails = () => {
         fetchBankDetails();
         fetchAmount();
         checkDemandDraftAttach();
+        getRegistrationDate();
     }, []);
 
     const handleNext = (e) => {
@@ -173,6 +192,7 @@ const DemandDraftDetails = () => {
                                 className="form-control"
                                 value={formData.PaymentDate ? new Date(formData.PaymentDate).toISOString().split('T')[0] : ''}
                                 onChange={(e) => setFormData({ ...formData, PaymentDate: e.target.value })}
+                                min={registerDate}
                                 max={new Date().toISOString().split('T')[0]}
                             />
                         </div>

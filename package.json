@@ -16,6 +16,7 @@
     "bootstrap": "^5.3.8",
     "file-saver": "^2.0.5",
     "hoist-non-react-statics": "^3.3.2",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.10",
     "react-data-table-component": "^7.5.2",
