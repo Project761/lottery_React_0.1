@@ -74,3 +74,8 @@ export const onlyDigitsWithLimit = (value, limit) => {
   let digitsOnly = value.replace(/\D/g, "");
   return digitsOnly.slice(0, limit);
 }
+
+
+export const normalizeList = (res) =>
+  [res, res?.data, res?.data?.data, res?.data?.Data, res?.Data]
+    .find(Array.isArray) || [];
