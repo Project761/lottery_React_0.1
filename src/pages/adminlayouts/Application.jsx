@@ -69,7 +69,7 @@ const Application = () => {
             name: "Verify/Unverify",
             cell: (row) => (
                 <button type="button" className={`btn my-1 btn-sm text-white ${String(row?.Status || "").toLowerCase() === "verify" ? "btn-success" : "btn-danger"}`}
-                    onClick={() => handleCheckBox(row)}
+                    onClick={(e, row) => handleCheckBox(row)}
                     style={{ width: "clamp(70px, 8vw, 85px)" }}
                 >
                     {String(row?.Status || "").toLowerCase() === "verify" ? "Verified" : "Unverified"}
@@ -179,7 +179,7 @@ const Application = () => {
 
 
     const handleCheckBox = async (e, row) => {
-        // console.log("🚀 ~ handleCheckBox ~ row:", row)
+        console.log("🚀 ~ handleCheckBox ~ row:", row)
 
         const val = {
             'Status': row?.Status === "Verify" || row?.Status === "verify" ? "Unverified" : "Verify",
