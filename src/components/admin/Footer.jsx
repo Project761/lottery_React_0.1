@@ -9,9 +9,9 @@ const Footer = () => {
       <Container fluid>
         <Row className="align-items-center">
           <Col md={6} className="text-center text-md-start">
-            <span className="text-muted">
+            {/* <span className="text-muted">
               © {currentYear} RIYASAT VATIKA. All rights reserved.
-            </span>
+            </span> */}
           </Col>
           <Col md={6} className="text-center text-md-end text-muted">
             <span>
