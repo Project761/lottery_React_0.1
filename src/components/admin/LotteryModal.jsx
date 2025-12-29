@@ -38,24 +38,20 @@ const getModalWidth = () => {
 const LotteryModal = ({ onClose }) => {
 
 
-    // api/PlotLottery/RunPlotLottery
-    // CompanyID
-    // PlotRange
-    // PolicyName
-
-    // api/PlotLottery/GetData_PlotLottery
-    // CompanyID
-    // PlotRange
-    // PolicyName
+// api/PlotLottery/RunPlotLottery
+// CompanyID
+// PlotRange
+// PolicyName
+ 
+// api/PlotLottery/GetData_PlotLottery
+// CompanyID
+// PlotRange
+// PolicyName
 
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const CompanyID = localStorage.getItem("companyID") ?? 1;
-
-    useEffect(() => {
-        fetchApplications();
-    }, []);
 
     const fetchApplications = async () => {
         try {
@@ -87,6 +83,10 @@ const LotteryModal = ({ onClose }) => {
 
         }
     };
+
+    useEffect(() => {
+        fetchApplications();
+    }, []);
 
     useEffect(() => {
         let timerId;
@@ -246,6 +246,8 @@ const LotteryModal = ({ onClose }) => {
                     </div>
                     <button className="btn btn-sm btn-outline-danger" onClick={onClose}> ✕</button>
                 </div>
+
+
                 <div className="p-2">
                     {loading ? (
                         <div style={styles.loaderWrap}>

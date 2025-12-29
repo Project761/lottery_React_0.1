@@ -28,17 +28,28 @@ function useTableHeight() {
     return height;
 }
 
-
-
 const CategoryQuota = () => {
 
-
-    const [CategoryQuotadata, setCategoryQuotadata] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [openModal, setOpenModal] = useState(false)
-    // const [categoryQuotaDropdown, setCategoryQuotaDropdown] = useState([]);
     const CompanyID = localStorage.getItem("companyID") ?? 1;
     const UserID = localStorage.getItem('AdminUserID') || 1
+    const [CategoryQuotadata, setCategoryQuotadata] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
+    const [categoryQuotaid, setCategoryQuotaId] = useState('');
+    const [EditMode, setEditMode] = useState(false);
+    const [editData, setEditData] = useState([]);
+    const [count, setCount] = useState(0)
+
+    // const [value, setValue] = useState({
+    //     CompanyID: localStorage.getItem("companyID") ?? 1,
+    //     quota: '',
+    //     CategoryQuotas: '',
+    //     plot_range: '',
+    //     policy_name: '',
+    //     CreatedByUser: '',
+    //     CategoryQuotaID: '',
+    //     ModifiedByUser: '',
+    // });
 
     useEffect(() => {
         fetchCategoryQuota();
@@ -55,87 +66,37 @@ const CategoryQuota = () => {
             const list = normalizeList(response);
             setCategoryQuotadata(list);
 
-            // console.log("CategoryQuota list:", list);
+            console.log("CategoryQuota list:", list);
         } catch (error) {
             showError("Failed to fetch Category Quota");
             setCategoryQuotadata([]);
+
         } finally {
             setLoading(false);
+
         }
     };
 
+    const handleEdit = (row) => {
+        setOpenModal(true);
+        // console.log("Edit row:", row);
+        setCategoryQuotaId(row?.CategoryQuotaID);
+        setEditMode(true);
+        setEditData(row);
+        setCount(count + 1);
 
-    // const fetchGetDataDropDown = async () => {
-    //     try {
-    //         const response = await fetchPostData(
-    //             "/CategoryQuota/GetDataDropDown_CategoryQuota",
-    //             { CompanyID }
-    //         );
-    //         console.log(response)
-
-    //         setCategoryQuotaDropdown((response));
-    //     } catch (error) {
-    //         showError("Failed to fetch Category Quota");
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchGetDataDropDown();
-    // }, [CompanyID]);
-
-    const insertCategoryQuota = async () => {
-        try {
-            setLoading(true);
-            const val = { 'CompanyID': CompanyID, 'quota': "", 'CategoryQuotas': "", 'plot_range': "", 'policy_name': "", 'CreatedByUser': UserID, };
-
-            const response = await fetchPostData("CategoryQuota/Insert_CategoryQuota", val);
-            console.log("✅ Insert CategoryQuota Response:", response);
-
-            showSuccess("Inserted successfully");
-            fetchCategoryQuota();
-        } catch (e) {
-            showError("Insert failed");
-        } finally {
-            setLoading(false);
-        }
     };
-
-
-    const handleEdit = async (row) => {
-        try {
-            console.log("Edit row:", row);
-            const val = {
-                'CompanyID': CompanyID,
-                'CategoryQuotaID': row?.CategoryQuotaID,
-                'quota': row?.quota ?? "",
-                'CategoryQuotas': row?.CategoryQuotas ?? "",
-                'plot_range': row?.plot_range ?? "",
-                'policy_name': row?.policy_name ?? "",
-                'ModifiedByUser': UserID,
-            };
-
-            console.log("➡️ Update Payload:", val);
-
-            const response = await fetchPostData("CategoryQuota/Update_CategoryQuota", val);
-            console.log("✅ Update Response:", response);
-
-            showSuccess("Updated successfully");
-            fetchCategoryQuota();
-        } catch (e) {
-            showError("Update failed");
-        }
-    };
-
 
     const handleDelete = async (row) => {
         try {
             const response = await AddDeleteUpdateData("CategoryQuota/Delete_CategoryQuota", {
                 CategoryQuotaID: row?.CategoryQuotaID,
                 ModifiedByUser: UserID,
+                IsActive: ""
             });
             if (response?.success) {
                 showSuccess("Deleted successfully");
-                console.log(response?.success)
+                // console.log(response?.success)
                 fetchCategoryQuota();
             } else {
                 showError("Delete failed");
@@ -197,11 +158,11 @@ const CategoryQuota = () => {
                     >
                         <FaEdit />
                     </Button>
-                    
+
                     <Button
                         variant="outline-danger"
                         size="sm"
-                        onClick={() => handleDelete(row[listId])}
+                        onClick={() => handleDelete(row)}
                     >
                         <FaTrash />
                     </Button>
@@ -236,8 +197,12 @@ const CategoryQuota = () => {
 
     const tableHeight = useTableHeight();
 
+    const handleOpen = () => {
+        setOpenModal(true);
+        setEditMode(false);
+        setCategoryQuotaId('');
+    }
 
-    const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
 
     return (
@@ -265,13 +230,20 @@ const CategoryQuota = () => {
                         fixedHeaderScrollHeight={tableHeight}
                         pointerOnHover
                         responsive
-
                     />
                 </div>
             </div>
-
-            {openModal && <CategoryQuotaModal onClose={() => setOpenModal(false)} />}
-
+            {openModal && <CategoryQuotaModal
+                count={count}
+                EditMode={EditMode}
+                editData={editData}
+                setEditData={setEditData}
+                setEditMode={setEditMode}
+                setCategoryQuotaId={setCategoryQuotaId}
+                categoryQuotaid={categoryQuotaid}
+                onClose={() => setOpenModal(false)}
+                fetchCategoryQuota={fetchCategoryQuota}
+            />}
         </div>
 
     );
