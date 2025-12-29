@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+
 export const ChangeArrayFormat = (data, value, Lable) => {
   const formattedArray = data.map(item => ({
     value: item[value],
@@ -79,3 +82,11 @@ export const onlyDigitsWithLimit = (value, limit) => {
 export const normalizeList = (res) =>
   [res, res?.data, res?.data?.data, res?.data?.Data, res?.Data]
     .find(Array.isArray) || [];
+// export const getShowingDateText = (dateStr) => {
+//   return moment(dateStr)?.format("MM/DD/yyyy HH:mm")
+// }
+
+export const formattedDate = (date) => {
+  if(!date) return "";
+  return new Date(date).toISOString().split('T')[0];
+}

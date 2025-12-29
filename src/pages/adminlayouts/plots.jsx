@@ -94,7 +94,7 @@ const Plots = () => {
         } catch (error) {
             showError("Failed to fetch applications");
             setLoading(false);
-            console.error("Error fetching applications:", error);
+            // console.error("Error fetching applications:", error);
 
         } finally {
             setLoading(false);
@@ -332,7 +332,7 @@ const Plots = () => {
             showSuccess("Item deleted successfully!");
 
         } catch (error) {
-            console.error("Error deleting item:", error);
+            // console.error("Error deleting item:", error);
             showError("Failed to delete item. Please try again.");
 
         } finally {

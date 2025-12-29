@@ -24,7 +24,7 @@ const Footer = () => {
     const response = await fetchPostData("Company/GetSingleData_Company", {
       "CompanyID": localStorage.getItem('companyID') || 1,
     });
-    console.log("🚀🚀🚀 ~ getPaperImage ~ response:", response);
+    // console.log("🚀🚀🚀 ~ getPaperImage ~ response:", response);
     if (response?.length > 0) {
       response[0]?.ContactNo && setContact(response[0]?.ContactNo)
       response[0]?.EmailID && setEmail(response[0]?.EmailID)

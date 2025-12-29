@@ -35,7 +35,7 @@ const Home = () => {
       "CompanyID": localStorage.getItem('companyID') || 1,
     });
     setButtonArray(response);
-    console.log("🚀 ~ getPaperImage ~ response:", response)
+    // console.log("🚀 ~ getPaperImage ~ response:", response)
   }
 
   // Get Insert-button
@@ -44,7 +44,8 @@ const Home = () => {
       const resp = await fetchPostData("Button/GETALL_BUTTON", {
         "CompanyID": localStorage.getItem("companyID") || 1
       });
-
+      // console.log("🚀"+ resp[0].FromStartDtTm);
+      // console.log("Hello");
       if (resp?.length) {
         setAllowRegister(resp[0]?.AppRegPermission);  
         setButtonId(resp[0]?.ButtonID);
@@ -70,8 +71,8 @@ const Home = () => {
 
   // download file
   const handleDownload_File = async (fileUrl, FileName) => {
-    console.log("🚀 ~ handleDownload_File ~ fileUrl:", fileUrl)
-    console.log("🚀 ~ handleDownload_File ~ fileUrl:", FileName)
+    // console.log("🚀 ~ handleDownload_File ~ fileUrl:", fileUrl)
+    // console.log("🚀 ~ handleDownload_File ~ fileUrl:", FileName)
     try {
 
       const originalUrl = fileUrl;
