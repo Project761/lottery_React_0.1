@@ -68,35 +68,26 @@ const Application = () => {
         {
             name: "Verify/Unverify",
             cell: (row) => (
-                <div
-                    className="d-flex align-items-center"
-                    style={{ padding: "8px 0", gap: "8px" }}
-                    onClick={(e) => handleCheckBox(e, row)}
+                <button type="button" className={`btn my-1 btn-sm text-white ${String(row?.Status || "").toLowerCase() === "verify" ? "btn-success" : "btn-danger"}`}
+                    onClick={() => handleCheckBox(row)}
+                    style={{ width: "clamp(70px, 8vw, 85px)" }}
                 >
-                    <button
-                        type="Button"
-                        className="btn m-0"
-                        style={{ cursor: "pointer", backgroundColor: row?.Status === "Verify" || row?.Status === "verify" ? 'green' : 'red' }}
-                    >
-                        {row?.Status}
-                    </button>
-                    {/* <span className="fw-normal text-dark">{row?.Status}</span> */}
-                    {/* <input
-                        type="checkbox"
-                        className="form-check-input m-0"
-                        style={{ cursor: "pointer" }}
-                        checked={row?.Status === "Verify" || row?.Status === "verify"}
-                        onChange={(e) => handleCheckBox(e, row)}
-                    /> */}
-                </div>
+                    {String(row?.Status || "").toLowerCase() === "verify" ? "Verified" : "Unverified"}
+                </button>
             ),
-            minWidth: "100px", grow: 2, wrap: false,
+            width: "150px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "S.No",
             cell: (row, index) => index + 1,
-            minWidth: "30px", wrap: false,
+            width: "70px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "Attachment",
             cell: (row) =>
@@ -112,59 +103,76 @@ const Application = () => {
                 ) : (
                     "-"
                 ),
-            minWidth: "40px", grow: 2, wrap: false,
+            width: "120px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
             sortable: true,
-            minWidth: "170px", grow: 2, wrap: false,
+            width: "170px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "Full Name",
             selector: (row) => row?.FullName ?? "",
             sortable: true,
-            minWidth: "180px", grow: 2, wrap: false,
+            width: "170px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "Mobile Number",
             selector: (row) => row?.MobileNumber ?? "",
             sortable: true,
-            minWidth: "150px", grow: 2, wrap: false,
+            width: "150px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "Aadhar Number",
             selector: (row) => row?.AadharNumber ?? "",
             sortable: true,
-            minWidth: "180px", grow: 2, wrap: false,
+            width: "170px",
+            grow: 0,
+            wrap: false,
         },
+
         {
             name: "Email",
             selector: (row) => row?.Email ?? "",
             sortable: true,
-            minWidth: "200px", grow: 2, wrap: false,
-
+            width: "220px",
+            grow: 0,
+            wrap: false,
         },
         {
             name: "Address",
-            sortable: true,
-            selector: row => row?.Paraddress ?? row?.Posaddress ?? "",
-            grow: 2,
-            minWidth: "250px",
+            cell: (row) => {
+                const addr = row?.Paraddress ?? row?.Posaddress ?? "";
+                return (
+                    <div
+                        title={addr}
+                        style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "280px",
+                        }}
+                    >
+                        {addr}
+                    </div>
+                );
+            },
+            width: "300px",
+            grow: 0,
             wrap: false,
-            cell: row => (
-                <div
-                    title={row?.Paraddress ?? row?.Posaddress ?? ""}
-                    style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        width: "100%",
-                    }}
-                >
-                    {row?.Paraddress ?? row?.Posaddress ?? ""}
-                </div>
-            ),
         },
 
     ];

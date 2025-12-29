@@ -78,6 +78,10 @@ export const onlyDigitsWithLimit = (value, limit) => {
   return digitsOnly.slice(0, limit);
 }
 
+
+export const normalizeList = (res) =>
+  [res, res?.data, res?.data?.data, res?.data?.Data, res?.Data]
+    .find(Array.isArray) || [];
 // export const getShowingDateText = (dateStr) => {
 //   return moment(dateStr)?.format("MM/DD/yyyy HH:mm")
 // }

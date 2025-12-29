@@ -4,6 +4,7 @@ import DataTablePage from "./DataTablePage";
 import Application from "./Application";
 import Plots from "./plots";
 import BankDetailsForm from "./BankDetailsForm";
+import CategoryQuota from "./CategoryQuota";
 // import Application from "./Application";
 
 
@@ -157,16 +158,22 @@ const AdminPage = ({ page: propPage }) => {
                             </>
                           )
                             :
-                            (
-                              <DataTablePage
-                                page={propPage}
-                                getDataApiUrl={""}
-                                updateApiUrl={""}
-                                deleteApiUrl={""}
-                                addApiUrl={""}
-                                getSingleDataApiUrl={""}
-                              />
+                            propPage === "Category-Quota" ? (
+                              <>
+                                <CategoryQuota />
+                              </>
                             )
+                              :
+                              (
+                                <DataTablePage
+                                  page={propPage}
+                                  getDataApiUrl={""}
+                                  updateApiUrl={""}
+                                  deleteApiUrl={""}
+                                  addApiUrl={""}
+                                  getSingleDataApiUrl={""}
+                                />
+                              )
       }
     </div>
   );
