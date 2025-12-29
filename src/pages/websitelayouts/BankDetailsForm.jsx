@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
-import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue, handleOnlyAlphabet } from "../../utils/Comman.js";
+import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue, handleOnlyAlphabet, onlyDigitsWithLimit} from "../../utils/Comman.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const BankDetailsForm = () => {
         try {
             const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
                 // CompanyId: Number(localStorage.getItem('companyID')),
-                CompanyID: 1,
+                CompanyID: localStorage.getItem('companyID') || 1,
             })
             if (response && Array.isArray(response)) {
                 setBankDetails(response);
@@ -87,7 +87,7 @@ const BankDetailsForm = () => {
                         <label className="form-label fw-semibold mb-1">
                             Bank Account Number <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} maxLength="20" onChange={(e) => setFormData({...formData, AccountNumber: Number(e.target.value)})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} maxLength="20" onChange={(e) => setFormData({...formData, AccountNumber: onlyDigitsWithLimit((e.target.value), 20)})}/>
                     </div>
                     {/* Select Bank */}
                     <div className="col-md-4">

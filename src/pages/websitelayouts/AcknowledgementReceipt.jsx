@@ -15,8 +15,8 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
       const response = await fetchPostData(
         "Category/GetDataDropDown_Category",
         {
-          // CompanyId: Number(localStorage.getItem('companyID')),
-          CompanyID: 1,
+          CompanyId: localStorage.getItem('companyID') || 1,
+          // CompanyID: 1,
         }
       );
       // console.log(response);
@@ -37,7 +37,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
     try {
       const response = await fetchPostData("AnnualIncome/GetDataDropDown_AnnualIncome",
         {
-          CompanyID: 1,
+          CompanyID: localStorage.getItem('companyID') || 1,
         }
       );
       // console.log(response);
@@ -55,7 +55,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
   const fetchBank = async () => {
     const response = await fetchPostData('Bank/GetDataDropDown_Bank',
       {
-        CompanyID: 1
+        CompanyID: localStorage.getItem('companyID') || 1
       }
     );
     // console.log(response);
