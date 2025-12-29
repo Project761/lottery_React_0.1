@@ -5,6 +5,7 @@ import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { normalizeList } from "../../utils/Comman";
 import CategoryQuotaModal from "../../components/admin/CategoryQuotaModal";
+import { Button } from "react-bootstrap";
 
 
 function useTableHeight() {
@@ -194,18 +195,21 @@ const CategoryQuota = () => {
             name: "Actions",
             cell: (row) => (
                 <div className="d-flex gap-1 my-1">
-                    <button
-                        className="btn btn-sm btn-primary"
+                    <Button
+                        variant="outline-primary"
+                        size="sm"
                         onClick={() => handleEdit(row)}
                     >
                         <FaEdit />
-                    </button>
-                    <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleDelete(row)}
+                    </Button>
+                    
+                    <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => handleDelete(row[listId])}
                     >
                         <FaTrash />
-                    </button>
+                    </Button>
                 </div>
             ),
             // width: "150px",
