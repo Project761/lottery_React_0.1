@@ -3,11 +3,11 @@ import { Card, Button } from "react-bootstrap";
 import { FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const StatCard = ({ title, value, icon, color, showButtons }) => {
+const StatCard = ({ title, value, icon, color, showButtons, category, policyName }) => {
   const navigate = useNavigate();
 
   const handleRunClick = () => {
-    navigate('/admin/lottery');
+    navigate(`/admin/lottery?Category=${category}&PolicyName=${policyName}`);
   };
 
   const getIcon = () => {

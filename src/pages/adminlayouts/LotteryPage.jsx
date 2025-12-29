@@ -2,11 +2,28 @@ import React, { useEffect, useState } from 'react';
 import lottery from '../../assets/image/lottery.png';
 // import gift from '../../assets//image/gift.gif'
 import LotteryModal from '../../components/admin/LotteryModal';
+import { useLocation } from 'react-router-dom';
+import { fetchPostData } from '../../components/hooks/Api';
 
 const LotteryPage = () => {
 
     const [time, setTime] = useState(15);
     const [openModal, setOpenModal] = useState(false);
+
+    const useQuery = () => {
+        const params = new URLSearchParams(useLocation().search);
+        return {
+            get: (param) => params.get(param)
+        };
+    };
+
+    const query = useQuery();
+    var Category = query?.get("Category");
+    var PolicyName = query?.get("PolicyName");
+
+    const [applications, setApplications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const CompanyID = localStorage.getItem("companyID") ?? 1;
 
     useEffect(() => {
         if (time === 0) return;
@@ -17,6 +34,34 @@ const LotteryPage = () => {
 
         return () => clearTimeout(timer);
     }, [time]);
+
+
+    const fetchApplications = async () => {
+        try {
+            setLoading(true);
+
+            const response = await fetchPostData("PlotLottery/RunPlotLottery", {
+                CompanyID: CompanyID,
+                // plot range
+                PlotRange: Category,
+                // project Name
+                PolicyName: PolicyName,
+            });
+
+            console.log("response:", response);
+
+            setApplications([]);
+
+        } catch (error) {
+            showError("Failed to fetch applications");
+            // console.error("Error fetching applications:", error);
+            setApplications([]);
+
+        } finally {
+            setLoading(false);
+
+        }
+    };
 
     return (
         <div style={styles.wrapper}>
@@ -44,7 +89,10 @@ const LotteryPage = () => {
                     time === 0 &&
                     <button
                         style={styles.button}
-                        onClick={() => setOpenModal(true)}
+                        onClick={() => {
+                            fetchApplications()
+                            setOpenModal(true);
+                        }}
                     >
                         LOTTERY
                     </button>
@@ -59,7 +107,11 @@ const LotteryPage = () => {
 
                 {/* MODAL */}
                 {openModal && (
-                    <LotteryModal onClose={() => setOpenModal(false)} />
+                    <LotteryModal
+                        onClose={() => setOpenModal(false)}
+                        applications={applications}
+                        loading={loading}
+                    />
                 )}
             </div>
 

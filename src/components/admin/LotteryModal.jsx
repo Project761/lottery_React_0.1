@@ -5,6 +5,7 @@ import user from "../../assets/image/user.png"
 import { fetchPostData } from "../hooks/Api";
 import { useEffect, useState } from "react";
 import { showError } from "../../utils/toast";
+import { useLocation } from "react-router-dom";
 
 function useTableHeight() {
     const getHeight = () => {
@@ -35,73 +36,34 @@ const getModalWidth = () => {
     return "98%";                   // sm
 };
 
-const LotteryModal = ({ onClose }) => {
+const LotteryModal = ({ onClose, applications, loading }) => {
 
 
-// api/PlotLottery/RunPlotLottery
-// CompanyID
-// PlotRange
-// PolicyName
- 
-// api/PlotLottery/GetData_PlotLottery
-// CompanyID
-// PlotRange
-// PolicyName
 
-    const [applications, setApplications] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // api/PlotLottery/RunPlotLottery
+    // CompanyID
+    // PlotRange
+    // PolicyName
 
-    const CompanyID = localStorage.getItem("companyID") ?? 1;
+    // api/PlotLottery/GetData_PlotLottery
+    // CompanyID
+    // PlotRange
+    // PolicyName
 
-    const fetchApplications = async () => {
-        try {
-            setLoading(true);
+    // useEffect(() => {
+    //     let timerId;
+    //     const startTime = Date.now();
+    //     fetchApplications().then(() => {
+    //         const elapsed = Date.now() - startTime;
+    //         const remaining = Math.max(30000 - elapsed, 0);
 
-            const response = await fetchPostData("User/GetData_User", {
-                CompanyID,
-                IsActive: true,
-            });
+    //         timerId = setTimeout(() => {
+    //             setLoading(false);
+    //         }, remaining);
+    //     });
 
-            // console.log("response:", response);
-            const list =
-                Array.isArray(response) ? response :
-                    Array.isArray(response?.data) ? response.data :
-                        Array.isArray(response?.data?.data) ? response.data.data :
-                            Array.isArray(response?.data?.Data) ? response.data.Data :
-                                [];
-
-            setApplications(list);
-
-
-        } catch (error) {
-            showError("Failed to fetch applications");
-            // console.error("Error fetching applications:", error);
-            setApplications([]);
-
-        } finally {
-            setLoading(false);
-
-        }
-    };
-
-    useEffect(() => {
-        fetchApplications();
-    }, []);
-
-    useEffect(() => {
-        let timerId;
-        const startTime = Date.now();
-        fetchApplications().then(() => {
-            const elapsed = Date.now() - startTime;
-            const remaining = Math.max(30000 - elapsed, 0);
-
-            timerId = setTimeout(() => {
-                setLoading(false);
-            }, remaining);
-        });
-
-        return () => clearTimeout(timerId);
-    }, []);
+    //     return () => clearTimeout(timerId);
+    // }, []);
 
     const columns = [
         {
