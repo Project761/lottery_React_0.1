@@ -64,8 +64,18 @@ export const mobileNoValidation = (value) => {
   return digitsOnly.slice(0, 10);
 }
 
+export const handleOnlyAlphabet = (e) => {
+  let value = e;
+  const filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
+  return filteredValue;
+}
+
+export const onlyDigitsWithLimit = (value, limit) => {
+  let digitsOnly = value.replace(/\D/g, "");
+  return digitsOnly.slice(0, limit);
+}
+
 
 export const normalizeList = (res) =>
   [res, res?.data, res?.data?.data, res?.data?.Data, res?.Data]
     .find(Array.isArray) || [];
-

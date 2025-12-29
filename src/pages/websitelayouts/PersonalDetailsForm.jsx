@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { showSuccess, showError } from "../../utils/toast";
 import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
 import { fetchPostData } from "../../components/hooks/Api";
-import { onChangeDropdown, formatTextwithSpace, mobileNoValidation, ChangeArrayFormat, selectValue } from "../../utils/Comman.js";
+import { onChangeDropdown, formatTextwithSpace, mobileNoValidation, ChangeArrayFormat, selectValue, handleOnlyAlphabet, onlyDigitsWithLimit } from "../../utils/Comman.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { defaultFormStructure } from "../../context/FormDataContext";
 import { useNavigate } from "react-router-dom";
@@ -415,7 +415,8 @@ const PersonalDetailsForm = () => {
                                     autoComplete="off"
                                     placeholder="Enter Full Name"
                                     value={formData.FullName}
-                                    onChange={(e) => setFormData({ ...formData, FullName: e.target.value })}
+                                    maxLength="30"
+                                    onChange={(e) => setFormData({ ...formData, FullName: handleOnlyAlphabet(e.target.value) })}
                                 />
                                 {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
                             </div>
@@ -522,7 +523,7 @@ const PersonalDetailsForm = () => {
                             {/* Father/Husband-Name */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
-                                <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: e.target.value })} />
+                                <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" maxLength="30" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: handleOnlyAlphabet(e.target.value) })} />
                             </div>
 
                             {/* ID-Type */}
@@ -643,7 +644,15 @@ const PersonalDetailsForm = () => {
                             {/* ZIP-Code */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
-                                <input type="number" autoComplete="off" placeholder="Enter ZIP Code" className="form-control" value={formData.ZipCode} onChange={HandleZipCode} />
+                                <input 
+                                  type="text" 
+                                  autoComplete="off" 
+                                  placeholder="Enter ZIP Code" 
+                                  className="form-control" 
+                                  maxLength="6" 
+                                  value={formData.ZipCode} 
+                                  onChange={(e) => setFormData({ ...formData, ZipCode: onlyDigitsWithLimit(e.target.value, 6) })} 
+                                />
                             </div>
 
                             {/* State */}
