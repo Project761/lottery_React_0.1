@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
-import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue, allowSomeDigits, handleOnlyAlphabet } from "../../utils/Comman.js";
+import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue, handleOnlyAlphabet } from "../../utils/Comman.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 

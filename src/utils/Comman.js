@@ -70,8 +70,7 @@ export const handleOnlyAlphabet = (e) => {
   return filteredValue;
 }
 
-export const allowSomeDigits = (e) => {
-  let value = e;
-  if (value.length > 20) return;
-  return value = value.replace(/\D/g, "");
+export const onlyDigitsWithLimit = (value, limit) => {
+  let digitsOnly = value.replace(/\D/g, "");
+  return digitsOnly.slice(0, limit);
 }
