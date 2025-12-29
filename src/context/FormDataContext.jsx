@@ -47,7 +47,7 @@ export const defaultFormStructure = {
   Status: 'Active',
   // CreatedByUser: 'Admin',
   ApplicantNumber: '',
-  CompanyID: 1
+  CompanyID: localStorage.getItem('companyID') || 1,
 };
 
 // export const 

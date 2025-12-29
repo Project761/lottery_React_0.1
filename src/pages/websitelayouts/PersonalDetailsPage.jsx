@@ -75,7 +75,7 @@ const PersonalDetailsPage = () => {
     const fetchBank = async () => {
         const response = await fetchPostData('Bank/GetDataDropDown_Bank',
             {
-                CompanyID: 1
+                CompanyID: localStorage.getItem('companyID') || 1
             }
         );
         // console.log(response);

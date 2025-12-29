@@ -39,7 +39,7 @@ const DemandDraftDetails = () => {
         try {
             const response = await fetchPostData('Bank/GetDataDropDown_Bank', {
                 // CompanyId: Number(localStorage.getItem('companyID')),
-                CompanyID: 1,
+                CompanyID: localStorage.getItem('companyID') || 1,
             })
             if (response && Array.isArray(response)) {
                 setBankDetails(response);
@@ -55,7 +55,7 @@ const DemandDraftDetails = () => {
         try {
             const response = await fetchPostData('Amount/GetDataDropDown_Amount', {
                 // CompanyId: Number(localStorage.getItem('companyID')),
-                CompanyID: 1,
+                CompanyID: localStorage.getItem('companyID') || 1,
             });
             // console.log(response);
 
@@ -107,7 +107,7 @@ const DemandDraftDetails = () => {
         fetchAmount();
         checkDemandDraftAttach();
         getRegistrationDate();
-        console.log(formattedDate(formData.PaymentDate));
+        // console.log(formattedDate(formData.PaymentDate));
         // console.log(registerDate);
     }, []);
 
