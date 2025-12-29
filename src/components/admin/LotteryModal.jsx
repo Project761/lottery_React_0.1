@@ -38,8 +38,6 @@ const getModalWidth = () => {
 
 const LotteryModal = ({ onClose, applications, loading }) => {
 
-
-
     // api/PlotLottery/RunPlotLottery
     // CompanyID
     // PlotRange
