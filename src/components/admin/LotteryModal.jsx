@@ -92,9 +92,6 @@ const LotteryModal = ({ onClose }) => {
         return () => clearTimeout(timerId);
     }, []);
 
-
-
-
     const columns = [
         {
             name: "S.No",
