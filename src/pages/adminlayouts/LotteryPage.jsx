@@ -28,7 +28,7 @@ const LotteryPage = () => {
 
             <div style={styles.overlay}>
                 <div style={styles.title}>
-                    Click Here To See Your Number
+                    Click LOTTERY To See Your Number
                 </div>
 
                 <div style={styles.wait}>
@@ -40,12 +40,22 @@ const LotteryPage = () => {
                 </div>
 
                 {/* LOTTERY BUTTON */}
-                <button
+                {
+                    time === 0 &&
+                    <button
+                        style={styles.button}
+                        onClick={() => setOpenModal(true)}
+                    >
+                        LOTTERY
+                    </button>
+                }
+
+                {/* <button
                     style={styles.button}
                     onClick={() => setOpenModal(true)}
                 >
                     LOTTERY
-                </button>
+                </button> */}
 
                 {/* MODAL */}
                 {openModal && (

@@ -30,6 +30,8 @@ function useTableHeight() {
 
 
 const CategoryQuota = () => {
+
+
     const [CategoryQuotadata, setCategoryQuotadata] = useState([]);
     const [loading, setLoading] = useState(true);
     const [openModal, setOpenModal] = useState(false)
@@ -62,7 +64,6 @@ const CategoryQuota = () => {
     };
 
 
-
     // const fetchGetDataDropDown = async () => {
     //     try {
     //         const response = await fetchPostData(
@@ -81,10 +82,6 @@ const CategoryQuota = () => {
     //     fetchGetDataDropDown();
     // }, [CompanyID]);
 
-
-
-
-
     const insertCategoryQuota = async () => {
         try {
             setLoading(true);
@@ -101,8 +98,6 @@ const CategoryQuota = () => {
             setLoading(false);
         }
     };
-
-
 
 
     const handleEdit = async (row) => {
@@ -213,9 +208,6 @@ const CategoryQuota = () => {
             // wrap: false,
         },
     ];
-
-
-
 
     const customStyles = {
         headCells: {
