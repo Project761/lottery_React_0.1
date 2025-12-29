@@ -1,41 +1,177 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
+import { AddDeleteUpdateData } from "../hooks/Api";
 
-const CategoryQuotaModal = ({ onClose }) => {
+
+const CategoryQuotaModal = ({ onClose, categoryQuotaid, EditMode, setEditMode, setCategoryQuotaId, editData, setEditData, count, fetchCategoryQuota }) => {
+
+    const CompanyID = localStorage.getItem("companyID") ?? 1;
+    const UserID = localStorage.getItem('AdminUserID') || 1
+
     const [form, setForm] = useState({
-        quota: "",
-        plot_range: "",
-        policy_name: "",
-        CategoryQuota: null,
+        CompanyID: localStorage.getItem("companyID") ?? 1,
+        quota: '',
+        CategoryQuotas: '',
+        plot_range: '',
+        policy_name: '',
+        CategoryQuotaID: '',
+        CreatedByUser: '',
+        ModifiedByUser: '',
+
     });
 
-    const categoryOptions = [
-        { value: 1, label: "General" },
-        { value: 2, label: "OBC" },
-    ];
+    useEffect(() => {
+        // console.log("🚀 ~ CategoryQuotaModal ~ editData:", editData)
+        if (EditMode && editData) {
+            setForm({
+                ...form,
+                CompanyID: localStorage.getItem("companyID") ?? 1,
+                quota: editData?.quota,
+                // CategoryQuotas: editData?.CategoryQuota ? getValueByLabel(categoryOptions, editData?.CategoryQuota) : null,
+                // plot_range: editData?.plot_range ? getValueByLabel(plotRangeOptions, editData?.plot_range) : null,
+                CategoryQuotas: editData?.CategoryQuota ? editData?.CategoryQuota : null,
+                plot_range: editData?.plot_range ? editData?.plot_range : null,
+                policy_name: editData?.policy_name,
+                CategoryQuotaID: editData?.CategoryQuotaID,
+                CreatedByUser: editData?.CreatedByUser,
+                ModifiedByUser: '',
+            });
+        }
+    }, [EditMode, editData, count]);
+
+    const handleSubmit = async () => {
+
+        const { CompanyID, quota, CategoryQuotas, plot_range, policy_name, CreatedByUser } = form;
+
+        const payload = {
+            'CompanyID': localStorage.getItem("companyID") ?? 1,
+            'quota': quota,
+            'CategoryQuotas': CategoryQuotas,
+            'plot_range': plot_range,
+            'policy_name': policy_name,
+            'CreatedByUser': UserID,
+        };
+
+        console.log("Submit payload:", payload);
+
+        try {
+
+            const response = await AddDeleteUpdateData("CategoryQuota/Insert_CategoryQuota", payload);
+            console.log("✅ Insert CategoryQuota Response:", response);
+
+            showSuccess("Inserted successfully");
+            fetchCategoryQuota();
+
+        } catch (e) {
+            showError("Insert failed");
+
+        } finally {
+            // setLoading(false);
+
+        }
+
+        Reset();
+        // 👉 API call yaha
+        onClose(); // success ke baad close
+    };
+
+    const handleUpdate = async () => {
+        const { CompanyID, quota, CategoryQuotas, plot_range, policy_name, CreatedByUser, CategoryQuotaID } = form;
+
+        const payload = {
+            'CompanyID': localStorage.getItem("companyID") ?? 1,
+            'quota': quota,
+            'CategoryQuotas': CategoryQuotas,
+            'plot_range': plot_range,
+            'policy_name': policy_name,
+            'CreatedByUser': CreatedByUser,
+            'CategoryQuotaID': categoryQuotaid,
+            'ModifiedByUser': UserID
+
+        };
+
+        console.log("Submit payload:", payload);
+
+        try {
+
+            const response = await AddDeleteUpdateData("CategoryQuota/Update_CategoryQuota", payload);
+            console.log("✅ Insert CategoryQuota Response:", response);
+
+            showSuccess("Updated successfully");
+            fetchCategoryQuota();
+
+        } catch (e) {
+            showError("Updated failed");
+
+        } finally {
+            // setLoading(false);
+
+        }
+
+        Reset();
+        // 👉 API call yaha
+        onClose(); // success ke baad close
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((p) => ({ ...p, [name]: value }));
     };
 
-    const handleCategoryChange = (selected) => {
-        setForm((p) => ({ ...p, CategoryQuota: selected }));
+    const handleCategoryChange = (selected, name) => {
+        setForm((p) => ({ ...p, [name]: selected?.label }));
+        // setForm((p) => ({ ...p, [name]: selected?.value }));
     };
 
-    const handleSubmit = () => {
-        const payload = {
-            quota: form.quota,
-            plot_range: form.plot_range,
-            policy_name: form.policy_name,
-            CategoryQuotaID: form.CategoryQuota?.value,
-        };
+    const Reset = () => {
+        setForm((p) => ({
+            ...p,
+            quota: '',
+            CategoryQuotas: '',
+            plot_range: '',
+            policy_name: '',
+            CreatedByUser: '',
+            CategoryQuotaID: '',
+            ModifiedByUser: '',
+        }));
+        setEditMode(false);
+        setCategoryQuotaId('');
+    }
 
-        console.log("Submit payload:", payload);
+    const OnChangeDropDown = (e, name) => {
+        // console.log(e);
+        // console.log(name);
+        // console.log(e.target.value);
+        if (e) {
+            setValue({ ...value, [name]: e.value, });
+        } else {
+            setValue({ ...value, [name]: null, });
+        }
+    }
 
-        // 👉 API call yaha
-        onClose(); // success ke baad close
-    };
+    const categoryOptions = [
+        { value: 1, label: "General" },
+        { value: 2, label: "OBC" },
+    ];
+
+    const plotRangeOptions = [
+        { value: 1, label: "EWS" },
+        { value: 2, label: "LIG" },
+    ];
+
+
+    function getValueByLabel(options, label) {
+        // const options = [
+        //     { value: 1, label: "Residential" },
+        //     { value: 2, label: "Commercial" },
+        // ];
+
+        const found = options.find(
+            item => item.label.toLowerCase() === label.toLowerCase()
+        );
+        return found ? found.value : null;
+    }
 
     return (
         <>
@@ -58,8 +194,8 @@ const CategoryQuotaModal = ({ onClose }) => {
                                     <label className="form-label">Category Quotas</label>
                                     <Select
                                         options={categoryOptions}
-                                        value={form.CategoryQuota}
-                                        onChange={handleCategoryChange}
+                                        value={categoryOptions?.filter((obj) => obj.label === form.CategoryQuotas)}
+                                        onChange={(selected) => handleCategoryChange(selected, 'CategoryQuotas')}
                                         placeholder="Select Category Quota"
                                         classNamePrefix="react-select"
                                     />
@@ -79,14 +215,22 @@ const CategoryQuotaModal = ({ onClose }) => {
 
                                 <div className="col-md-6">
                                     <label className="form-label">Plot Range</label>
-                                    <input
+                                    <Select
+                                        options={plotRangeOptions}
+                                        // value={form.plot_range}
+                                        value={plotRangeOptions?.filter((obj) => obj.label === form.plot_range)}
+                                        onChange={(selected) => handleCategoryChange(selected, 'plot_range')}
+                                        placeholder="Select Category Quota"
+                                        classNamePrefix="react-select"
+                                    />
+                                    {/* <input
                                         type="text"
                                         className="form-control"
                                         name="plot_range"
                                         value={form.plot_range}
                                         onChange={handleChange}
                                         placeholder="Ex: 100-200"
-                                    />
+                                    /> */}
                                 </div>
 
                                 <div className="col-md-6">
@@ -109,11 +253,19 @@ const CategoryQuotaModal = ({ onClose }) => {
                             <button className="btn btn-secondary" onClick={onClose}>
                                 Cancel
                             </button>
-                            <button className="btn btn-primary" onClick={handleSubmit}>
-                                Save
-                            </button>
+                            {
+                                categoryQuotaid && EditMode ?
+                                    (
+                                        <button className="btn btn-primary" onClick={handleUpdate}>
+                                            Update
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-primary" onClick={handleSubmit}>
+                                            Save
+                                        </button>
+                                    )
+                            }
                         </div>
-
                     </div>
                 </div>
             </div>
