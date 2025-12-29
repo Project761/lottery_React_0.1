@@ -37,7 +37,7 @@ const IncomeDetails = () => {
         "Category/GetDataDropDown_Category",
         {
           // CompanyId: Number(localStorage.getItem('companyID')),
-          CompanyID: 1,
+          CompanyID: localStorage.getItem('companyID') || 1,
         }
       );
       // console.log(response);
@@ -57,7 +57,7 @@ const IncomeDetails = () => {
       const response = await fetchPostData(
         "AnnualIncome/GetDataDropDown_AnnualIncome",
         {
-          CompanyID: 1,
+          CompanyID: localStorage.getItem('companyID') || 1,
         }
       );
       // console.log(response);

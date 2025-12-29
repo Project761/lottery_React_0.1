@@ -86,8 +86,8 @@ const PersonalDetailsForm = () => {
     const fetchCast = async () => {
         try {
             const response = await fetchPostData("Cast/GetDataDropDown_Cast", {
-                // CompanyId: Number(localStorage.getItem('companyID')),
-                CompanyID: 1,
+                CompanyId: Number(localStorage.getItem('companyID')) || 1,
+                // CompanyID: 1,
             });
 
             if (response && Array.isArray(response)) {
@@ -106,8 +106,8 @@ const PersonalDetailsForm = () => {
     const fetchState = async () => {
         try {
             const response = await fetchPostData('State/GetDataDropDown_State', {
-                // CompanyId: Number(localStorage.getItem('companyID')),
-                CompanyID: 1,
+                CompanyId: localStorage.getItem('companyID') || 1,
+                // CompanyID: 1,
             });
 
             if (response && Array.isArray(response)) {
@@ -125,7 +125,7 @@ const PersonalDetailsForm = () => {
             const response = await fetchPostData('City/GetDataDropDown_City', {
                 StateID: stateID,
                 // CompanyId: Number(localStorage.getItem('companyID')),
-                CompanyID: 1,
+                CompanyID: localStorage.getItem('companyID') || 1,
             })
             if (Array.isArray(response)) {
                 setCityies(response);

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BiHome, BiBuildingHouse, BiUser, BiFolder, BiMap, BiLogOut, BiCreditCard, BiMoney, BiCategory, BiFile, BiCurrentLocation, BiLineChart, } from "react-icons/bi";
 import { showSuccess } from "../../utils/toast";
+import { fetchPostData } from "../hooks/Api";
 
 const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
 
+
+    const [projName, setProjName] = useState("");
     const location = useLocation();
 
     const menuItems = [
@@ -30,6 +33,21 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
             (path === "/admin/dashboard" && location.pathname === "/admin");
     };
 
+    const getProjectName = async () => {
+        const response = await fetchPostData("Company/GetSingleData_Company", {
+            "CompanyID": localStorage.getItem('companyID') || 1,
+        });
+        // console.log("🚀 ~ getHeaderImage ~ response:", response);
+        if (response?.length > 0) {
+            setProjName(response[0].ProjectName);
+            // console.log(response[0].ProjectName);
+        }
+    }
+
+    useEffect(() => {
+        getProjectName();
+    }, []);
+//In this why getProjectName is not getting called at page refresh
     return (
         <>
             {/* Sidebar */}
@@ -49,7 +67,7 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
             >
                 <div className="d-flex flex-column h-100">
                     <div className="mb-3 text-center">
-                        <h5 className="fw-bold mb-0">🏠 RIYASAT VATIKA</h5>
+                        <h5 className="fw-bold mb-0">🏠 {projName}</h5>
                         <p className="text-secondary small mb-0">PHASE - 1</p>
                     </div>
 
