@@ -69,23 +69,7 @@ const LotteryModal = ({ onClose, applications, loading }) => {
             cell: (row, index) => index + 1,
             width: "80px",
         },
-        {
-            name: "Attachment",
-            cell: (row) =>
-                row?.PaymentAttachement ? (
-                    <a
-                        href={row.PaymentAttachement}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary"
-                    >
-                        Attachment
-                    </a>
-                ) : (
-                    "-"
-                ),
-            width: "120px",
-        },
+
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
@@ -97,37 +81,32 @@ const LotteryModal = ({ onClose, applications, loading }) => {
             sortable: true,
         },
         {
-            name: "Mobile Number",
-            selector: (row) => row?.MobileNumber ?? "",
+            name: "Policy Name",
+            selector: (row) => row?.PolicyName ?? "",
             sortable: true,
         },
         {
-            name: "Aadhar Number",
-            selector: (row) => row?.AadharNumber ?? "",
+            name: "Lottery Type",
+            selector: (row) => row?.LotteryType ?? "",
             sortable: true,
         },
         {
-            name: "Email",
-            selector: (row) => row?.Email ?? "",
+            name: "Category",
+            selector: (row) => row?.Category ?? "",
             sortable: true,
         },
         {
-            name: "Address",
+            name: "Plot No",
+            selector: (row) => row?.PlotNo ?? "",
             sortable: true,
-            cell: (row) => (
-                <div
-                    title={(row?.Paraddress ?? row?.Posaddress ?? "")}
-                    style={{
-                        maxWidth: "150px",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                    }}
-                >
-                    {row?.Paraddress ?? row?.Posaddress ?? ""}
-                </div>
-            ),
-        }
+        },
+        {
+            name: "Area",
+            selector: (row) => row?.Area ?? "",
+            sortable: true,
+        },
+
+
 
     ];
 
