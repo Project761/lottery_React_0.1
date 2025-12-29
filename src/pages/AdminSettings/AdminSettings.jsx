@@ -10,6 +10,7 @@ import UpdateApplicant from "./UpdateApplicant";
 import Logo from "./Logo";
 import AdminInfo from "./AdminInfo";
 import DemandDraft from "./DemandDraft";
+import Paymentqrcode from "./Paymentqrcode";
 
 /* =======================
    Admin Settings (Single File)
@@ -28,6 +29,9 @@ export default function AdminSettings() {
         { key: "update", label: "UPDATE APPLICANT" },
         { key: "logo", label: "LOGO" },
         { key: "admin", label: "CHANGE ADMIN INFO" },
+        { key: "admin", label: "CHANGE ADMIN INFO" },
+        { key: "Paymentqrcode", label: "PAYMENTQRCODE" }
+
     ];
 
     const [activeTab, setActiveTab] = useState("paperImage");
@@ -66,6 +70,7 @@ export default function AdminSettings() {
                     {activeTab === "update" && <UpdateApplicant />}
                     {activeTab === "logo" && <Logo />}
                     {activeTab === "admin" && <AdminInfo />}
+                    {activeTab === "Paymentqrcode" && <Paymentqrcode />}
                 </div>
             </div>
         </div>
