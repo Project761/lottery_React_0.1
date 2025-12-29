@@ -50,7 +50,7 @@ const LotteryPage = () => {
 
             console.log("response:", response);
 
-            setApplications([]);
+            setApplications(response);
 
         } catch (error) {
             showError("Failed to fetch applications");
