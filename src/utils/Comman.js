@@ -83,5 +83,6 @@ export const onlyDigitsWithLimit = (value, limit) => {
 // }
 
 export const formattedDate = (date) => {
-  return new Date(data).toISOString().split('T')[0];
+  if(!date) return "";
+  return new Date(date).toISOString().split('T')[0];
 }

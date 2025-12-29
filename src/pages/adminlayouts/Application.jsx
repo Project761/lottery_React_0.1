@@ -46,7 +46,7 @@ const Application = () => {
                 IsActive: true,
             });
 
-            console.log("response:", response);
+            // console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
@@ -57,7 +57,7 @@ const Application = () => {
             setApplications(list);
         } catch (error) {
             showError("Failed to fetch applications");
-            console.error("Error fetching applications:", error);
+            // console.error("Error fetching applications:", error);
             setApplications([]);
         } finally {
             setLoading(false);
@@ -171,7 +171,7 @@ const Application = () => {
 
 
     const handleCheckBox = async (e, row) => {
-        console.log("🚀 ~ handleCheckBox ~ row:", row)
+        // console.log("🚀 ~ handleCheckBox ~ row:", row)
 
         const val = {
             'Status': row?.Status === "Verify" || row?.Status === "verify" ? "Unverified" : "Verify",

@@ -343,7 +343,6 @@ const PersonalDetailsForm = () => {
         }
     }, []);
 
-
     const HandleZipCode = (e) => {
         if (e.target.value.length <= 6) {
             setFormData({ ...formData, ZipCode: e.target.value })
@@ -419,6 +418,22 @@ const PersonalDetailsForm = () => {
                                     onChange={(e) => setFormData({ ...formData, FullName: handleOnlyAlphabet(e.target.value) })}
                                 />
                                 {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
+                            </div>
+
+                            {/* Co-Applicant-Name */}
+                            <div className="col-md-3">
+                                <label className="form-label fw-semibold mb-1">Co-Applicant Name</label>
+                                <input
+                                    type="text"
+                                    className={`form-control ${errors.FullName ? 'is-invalid' : ''}`}
+                                    name="FullName"
+                                    autoComplete="off"
+                                    placeholder="Enter Co-Applicant Name"
+                                    value={formData.CoapplicantName}
+                                    maxLength="30"
+                                    onChange={(e) => setFormData({ ...formData, CoapplicantName: handleOnlyAlphabet(e.target.value) })}
+                                />
+                                {/* {errors.CoapplicantName && <div className="invalid-feedback">{errors.CoapplicantName}</div>} */}
                             </div>
 
                             {/* Gender */}
@@ -525,6 +540,34 @@ const PersonalDetailsForm = () => {
                                 <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
                                 <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" maxLength="30" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: handleOnlyAlphabet(e.target.value) })} />
                             </div>
+                            {/* Select-Cast */}
+                            <div className="col-md-3">
+                                <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
+                                <Select
+                                    className={`${errors.Caste ? 'is-invalid' : ''}`}
+                                    name="Caste"
+                                    // value={
+                                    //     casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
+                                    //         value: String(formData.Caste),
+                                    //         label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
+                                    //     } : null
+                                    // }
+                                    value={selectValue(casts, 'CastID', formData.Caste, 'Description')}
+                                    onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
+                                    options={ChangeArrayFormat(casts, 'CastID', 'Description')}
+                                    placeholder="Select Cast"
+                                    isClearable
+                                    classNamePrefix="select"
+                                    styles={{
+                                        control: (base) => ({
+                                            ...base,
+                                            minHeight: '38px',
+                                            height: '38px',
+                                        })
+                                    }}
+                                />
+                                {errors.Caste && <div className="invalid-feedback">{errors.Caste}</div>}
+                            </div>
 
                             {/* ID-Type */}
                             <div className="col-md-6">
@@ -594,35 +637,6 @@ const PersonalDetailsForm = () => {
                                     }} maxLength="14" />
                             </div>
 
-                            {/* Select-Cast */}
-                            <div className="col-md-3">
-                                <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
-                                <Select
-                                    className={`${errors.Caste ? 'is-invalid' : ''}`}
-                                    name="Caste"
-                                    // value={
-                                    //     casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
-                                    //         value: String(formData.Caste),
-                                    //         label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
-                                    //     } : null
-                                    // }
-                                    value={selectValue(casts, 'CastID', formData.Caste, 'Description')}
-                                    onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
-                                    options={ChangeArrayFormat(casts, 'CastID', 'Description')}
-                                    placeholder="Select Cast"
-                                    isClearable
-                                    classNamePrefix="select"
-                                    styles={{
-                                        control: (base) => ({
-                                            ...base,
-                                            minHeight: '38px',
-                                            height: '38px',
-                                        })
-                                    }}
-                                />
-                                {errors.Caste && <div className="invalid-feedback">{errors.Caste}</div>}
-                            </div>
-
                             {/* Mobile-No */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
@@ -644,14 +658,14 @@ const PersonalDetailsForm = () => {
                             {/* ZIP-Code */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
-                                <input 
-                                  type="text" 
-                                  autoComplete="off" 
-                                  placeholder="Enter ZIP Code" 
-                                  className="form-control" 
-                                  maxLength="6" 
-                                  value={formData.ZipCode} 
-                                  onChange={(e) => setFormData({ ...formData, ZipCode: onlyDigitsWithLimit(e.target.value, 6) })} 
+                                <input
+                                    type="text"
+                                    autoComplete="off"
+                                    placeholder="Enter ZIP Code"
+                                    className="form-control"
+                                    maxLength="6"
+                                    value={formData.ZipCode}
+                                    onChange={(e) => setFormData({ ...formData, ZipCode: onlyDigitsWithLimit(e.target.value, 6) })}
                                 />
                             </div>
 

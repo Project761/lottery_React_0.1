@@ -42,15 +42,15 @@ export const refreshAccessToken = async () => {
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("refresh_token", data.refresh_token);
       localStorage.setItem("token_expiry", data.expires);
-      console.log("Token refreshed successfully");
+      // console.log("Token refreshed successfully");
       return data.access_token;
     } else {
-      console.warn("Token refresh failed:", data?.error_description);
+      // console.warn("Token refresh failed:", data?.error_description);
       localStorage.clear(); // logout fallback
       return null;
     }
   } catch (error) {
-    console.error("Error refreshing token:", error);
+    // console.error("Error refreshing token:", error);
     localStorage.clear();
     return null;
   }

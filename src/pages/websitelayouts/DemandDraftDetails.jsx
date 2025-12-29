@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
-import { ChangeArrayFormat, onChangeDropdown, selectValue, getShowingDateText } from "../../utils/Comman.js";
+import { ChangeArrayFormat, onChangeDropdown, selectValue, formattedDate } from "../../utils/Comman.js";
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
@@ -77,8 +77,8 @@ const DemandDraftDetails = () => {
             });
             if (resp?.length) {
                 const regData = resp[0]?.FromStartDtTm;
-                const formatteddate = new Date(regData).toISOString().split('T')[0];
-                setRegisterDate(formatteddate);
+                const formateddate = formattedDate(regData);
+                setRegisterDate(formateddate);
                 // setButtonId(resp[0]?.ButtonID);
             }
         } catch (error) {
@@ -107,6 +107,8 @@ const DemandDraftDetails = () => {
         fetchAmount();
         checkDemandDraftAttach();
         getRegistrationDate();
+        console.log(formattedDate(formData.PaymentDate));
+        // console.log(registerDate);
     }, []);
 
     const handleNext = (e) => {
@@ -190,7 +192,7 @@ const DemandDraftDetails = () => {
                                 type="date"
                                 autoComplete="off"
                                 className="form-control"
-                                value={formData.PaymentDate ? new Date(formData.PaymentDate).toISOString().split('T')[0] : ''}
+                                value={formData.PaymentDate ? formattedDate(formData.PaymentDate) : ''}
                                 onChange={(e) => setFormData({ ...formData, PaymentDate: e.target.value })}
                                 min={registerDate}
                                 max={new Date().toISOString().split('T')[0]}

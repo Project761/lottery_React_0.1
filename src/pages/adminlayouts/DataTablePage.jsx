@@ -146,7 +146,7 @@ const DataTablePage = (props) => {
       await getData(companyID);
       showSuccess("Item deleted successfully!");
     } catch (error) {
-      console.error("Error deleting item:", error);
+      // console.error("Error deleting item:", error);
       showError("Failed to delete item. Please try again.");
     } finally {
       setLoading(false);

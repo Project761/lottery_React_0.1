@@ -6,6 +6,7 @@ export const FormDataContext = createContext();
 export const defaultFormStructure = {
   // Personal Details
   FullName: '',
+  CoapplicantName: '',
   Gender: '',
   Dob: '',
   Email: '',
