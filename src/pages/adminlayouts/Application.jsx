@@ -32,6 +32,7 @@ const Application = () => {
     const [checkedRows, setCheckedRows] = useState({});
     const [showVerifyModal, setShowVerifyModal] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [applicationID, setApplicationID] = useState(null);
 
 
     const CompanyID = localStorage.getItem("companyID") ?? 1;
@@ -78,20 +79,16 @@ const Application = () => {
                         ? "btn-success"
                         : "btn-danger"
                         }`}
-                    onClick={() => openVerifyModal(row)}
+                    onClick={() => { openVerifyModal(row); setApplicationID(row?.UserID) }}
                     style={{ width: "clamp(70px, 8vw, 85px)" }}
                 >
-                    {String(row?.Status || "").toLowerCase() === "verify"
-                        ? "Verified"
-                        : "Unverified"}
+                    {String(row?.Status || "").toLowerCase() === "verify" ? "Verified" : "Unverified"}
                 </button>
             ),
             width: "150px",
             grow: 0,
             wrap: false,
         },
-
-
         {
             name: "S.No",
             cell: (row, index) => index + 1,
@@ -99,7 +96,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Attachment",
             cell: (row) =>
@@ -119,7 +115,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
@@ -128,7 +123,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Full Name",
             selector: (row) => row?.FullName ?? "",
@@ -137,7 +131,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Mobile Number",
             selector: (row) => row?.MobileNumber ?? "",
@@ -146,7 +139,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Aadhar Number",
             selector: (row) => row?.AadharNumber ?? "",
@@ -155,7 +147,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Email",
             selector: (row) => row?.Email ?? "",
@@ -186,15 +177,14 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
     ];
 
-    const handleCheckBox = async (e, row) => {
+    const handleCheckBox = async (row) => {
         console.log("🚀 ~ handleCheckBox ~ row:", row)
 
         const val = {
             'Status': row?.Status === "Verify" || row?.Status === "verify" ? "Unverified" : "Verify",
-            'UserID': row?.UserID,
+            'UserID': applicationID,
             'ModifiedByUser': localStorage.getItem('AdminUserID') || 1,
         }
 
@@ -203,6 +193,7 @@ const Application = () => {
             if (response?.success) {
                 showSuccess("Update Successfully");
                 fetchApplications();
+                closeVerifyModal();
             }
         })
     };
@@ -228,15 +219,6 @@ const Application = () => {
     //     })
     // };
 
-    const updateApplicationStatus = () => {
-        AddDeleteUpdateData('User/Update_UserStatus', val).then((response) => {
-            // console.log("🚀 ~ handleCheckBox ~ response:", response);
-            if (response?.success) {
-                showSuccess("Update Successfully")
-            }
-        })
-    }
-
     const customStyles = {
         headCells: {
             style: {
@@ -260,10 +242,15 @@ const Application = () => {
 
     const tableHeight = useTableHeight();
 
-
     const openVerifyModal = (row) => {
         setSelectedRow(row);
         setShowVerifyModal(true);
+    };
+
+    const closeVerifyModal = () => {
+        setShowVerifyModal(false);
+        setSelectedRow(null);
+        setApplicationID(null);
     };
 
 
@@ -302,8 +289,8 @@ const Application = () => {
             <VerifyStatusModal
                 show={showVerifyModal}
                 row={selectedRow}
-                onClose={() => setShowVerifyModal(false)}
-                // onConfirm={handleVerifyConfirm}
+                onClose={() => { closeVerifyModal(); }}
+                onConfirm={handleCheckBox}
             />
 
         </div>
