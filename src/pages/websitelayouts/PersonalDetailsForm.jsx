@@ -407,7 +407,7 @@ const PersonalDetailsForm = () => {
                 {/* {!showOtp ? ( */}
                 {activeTab === "personal" && (
                     <form>
-                        <div className="row g-2 p-3 ">
+                        <div className="row g-2 p-3 pb-0 align-items-center ">
                             {/* Applicant-Name */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Applicant Name <span className="text-danger">*</span></label>
@@ -422,18 +422,6 @@ const PersonalDetailsForm = () => {
                                     onChange={(e) => setFormData({ ...formData, FullName: handleOnlyAlphabet(e.target.value) })}
                                 />
                                 {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
-                            </div>
-
-                            {/* Co-Applicant-Check_Box */}
-                            <div className="col-md-3">
-                                <label className="form-label fw-semibold mb-1">Co-Applicant Name</label><b />
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="sameAddress"
-                                    checked={coapplicantAdd}
-                                    onChange={(e) => setCoApplicantAdd(e.target.checked)}
-                                />
                             </div>
 
                             {/* Gender */}
@@ -564,6 +552,24 @@ const PersonalDetailsForm = () => {
                                 {errors.Caste && <div className="invalid-feedback">{errors.Caste}</div>}
                             </div>
 
+                            {/* Mobile-No */}
+                            <div className="col-md-3">
+                                <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
+                                <input
+                                    type="number"
+                                    className={`form-control ${errors.MobileNumber ? 'is-invalid' : ''}`}
+                                    name="MobileNumber"
+                                    placeholder="Enter Mobile No"
+                                    value={formData.MobileNumber}
+                                    onChange={(e) => {
+                                        const formattedMobile = mobileNoValidation(e.target.value);
+                                        setFormData({ ...formData, MobileNumber: formattedMobile })
+                                    }}
+                                    maxLength="10"
+                                />
+                                {errors.MobileNumber && <div className="invalid-feedback">{errors.MobileNumber}</div>}
+                            </div>
+
                             {/* ID-Type */}
                             <div className="col-md-6">
                                 <label className="form-label fw-semibold mb-1">Select One <span className="text-danger">*</span></label>
@@ -632,23 +638,7 @@ const PersonalDetailsForm = () => {
                                     }} maxLength="14" />
                             </div>
 
-                            {/* Mobile-No */}
-                            <div className="col-md-3">
-                                <label className="form-label fw-semibold mb-1">Mobile Number <span className="text-danger">*</span></label>
-                                <input
-                                    type="number"
-                                    className={`form-control ${errors.MobileNumber ? 'is-invalid' : ''}`}
-                                    name="MobileNumber"
-                                    placeholder="Enter Mobile No"
-                                    value={formData.MobileNumber}
-                                    onChange={(e) => {
-                                        const formattedMobile = mobileNoValidation(e.target.value);
-                                        setFormData({ ...formData, MobileNumber: formattedMobile })
-                                    }}
-                                    maxLength="10"
-                                />
-                                {errors.MobileNumber && <div className="invalid-feedback">{errors.MobileNumber}</div>}
-                            </div>
+
 
                             {/* ZIP-Code */}
                             <div className="col-md-3">
@@ -748,27 +738,25 @@ const PersonalDetailsForm = () => {
                                 <label className="form-label fw-semibold mb-1">Postal Address <span className="text-danger">*</span></label>
                                 <textarea autoComplete="off" className="form-control" placeholder="Enter Postal Address" rows="1" value={formData.Posaddress} onChange={(e) => setFormData({ ...formData, Posaddress: e.target.value })}></textarea>
                             </div>
+
+                            {/* Co-Applicant-Check_Box */}
+                            <div className="col-md-12 mt-4 pt-2" style={{ borderTop: "1px solid #ccc" }}>
+                                <label className="form-label fw-semibold mb-2 mr-2">Co-Applicant Name</label><b />
+                                <input
+                                    style={{ marginLeft: "10px" }}
+                                    className="form-check-input "
+                                    type="checkbox"
+                                    id="sameAddress"
+                                    checked={coapplicantAdd}
+                                    onChange={(e) => setCoApplicantAdd(e.target.checked)}
+                                />
+                            </div>
                         </div>
 
-                        <div className="text-center mt-3 mb-4">
-                            <button
-                                type="submit"
-                                onClick={handleSubmit}
-                                style={{
-                                    backgroundColor: "#A992F7",
-                                    border: "none",
-                                    fontWeight: "500",
-                                    padding: "8px 24px",
-                                    borderRadius: "6px",
-                                    color: "white",
-                                    opacity: isSubmitting ? 0.7 : 1,
-                                    cursor: isSubmitting ? 'not-allowed' : 'pointer'
-                                }}
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? 'Sending OTP...' : 'Next →'}
-                            </button>
-                        </div>
+
+
+
+
 
                         {formData.MobileNumber && showOtp && (
                             <div className="text-center">
@@ -778,270 +766,307 @@ const PersonalDetailsForm = () => {
                         )}
                     </form>
                 )}
-            </div>
-            {coapplicantAdd && (
-                <div className="row g-2 p-3">
 
-                    {/* Co-Applicant Name */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Applicant Name *</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={formData.CoapplicantName}
-                            maxLength="30"
-                            onChange={(e) =>
-                                setFormData({ ...formData, CoapplicantName: handleOnlyAlphabet(e.target.value) })
-                            }
-                        />
-                    </div>
 
-                    {/* Co-Gender */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Gender *</label>
-                        <div className="d-flex">
-                            <div className="form-check me-3">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="CoGender"
-                                    value="male"
-                                    checked={formData.CoGender === 'male'}
-                                    onChange={(e) => setFormData({ ...formData, CoGender: e.target.value })}
-                                />
-                                <label className="form-check-label">Male</label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="CoGender"
-                                    value="female"
-                                    checked={formData.CoGender === 'female'}
-                                    onChange={(e) => setFormData({ ...formData, CoGender: e.target.value })}
-                                />
-                                <label className="form-check-label">Female</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Co-DOB */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Date of Birth *</label>
-                        <input
-                            type="date"
-                            className="form-control"
-                            value={formData.CoDob}
-                            max={new Date().toISOString().split('T')[0]}
-                            onChange={(e) => setFormData({ ...formData, CoDob: e.target.value })}
-                        />
-                    </div>
-
-                    {/* Co-Email */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Email *</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            value={formData.CoEmail}
-                            onChange={(e) => setFormData({ ...formData, CoEmail: e.target.value })}
-                        />
-                    </div>
-
-                    {/* Co-Father / Husband */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Select One *</label>
-                        <div className="d-flex">
-                            <div className="form-check me-3">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="CoNameSelect"
-                                    value="father"
-                                    checked={formData.CoNameSelect === 'father'}
-                                    onChange={(e) => setFormData({ ...formData, CoNameSelect: e.target.value })}
-                                />
-                                <label className="form-check-label">Father</label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="CoNameSelect"
-                                    value="husband"
-                                    checked={formData.CoNameSelect === 'husband'}
-                                    onChange={(e) => setFormData({ ...formData, CoNameSelect: e.target.value })}
-                                />
-                                <label className="form-check-label">Husband</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Co-Father / Husband Name */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Father/Husband Name *</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={formData.CoFhname}
-                            onChange={(e) =>
-                                setFormData({ ...formData, CoFhname: handleOnlyAlphabet(e.target.value) })
-                            }
-                        />
-                    </div>
-
-                    {/* Co-Caste */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Caste *</label>
-                        <Select
-                            value={selectValue(casts, 'CastID', formData.CoCaste, 'Description')}
-                            onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCaste')}
-                            options={ChangeArrayFormat(casts, 'CastID', 'Description')}
-                            isClearable
-                        />
-                    </div>
-
-                    {/* Co-ID Proof */}
-                    <div className="col-md-6">
-                        <label className="form-label fw-semibold">ID Proof *</label>
-                        {['pan', 'drivingLicense', 'voterId', 'rashanCard'].map((id) => (
-                            <div className="form-check form-check-inline" key={id}>
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="CoIdproof"
-                                    value={id}
-                                    checked={formData.CoIdproof === id}
-                                    onChange={(e) => setFormData({ ...formData, CoIdproof: e.target.value })}
-                                />
-                                <label className="form-check-label">{id}</label>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Co-ID No */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">ID No *</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={formData.CoIdproofNo}
-                            onChange={(e) => setFormData({ ...formData, CoIdproofNo: e.target.value })}
-                        />
-                    </div>
-
-                    {/* Co-Aadhaar */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Aadhaar *</label>
-                        <input
-                            type="text"
-                            maxLength="14"
-                            className="form-control"
-                            value={formData.CoAadharNumber}
-                            onChange={(e) =>
-                                setFormData({ ...formData, CoAadharNumber: formatTextwithSpace(e.target.value) })
-                            }
-                        />
-                    </div>
-
-                    {/* Co-Mobile */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Mobile *</label>
-                        <input
-                            type="text"
-                            maxLength="10"
-                            className="form-control"
-                            value={formData.CoMobileNumber}
-                            onChange={(e) =>
-                                setFormData({ ...formData, CoMobileNumber: mobileNoValidation(e.target.value) })
-                            }
-                        />
-                    </div>
-
-                    {/* Co-ZIP */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">ZIP *</label>
-                        <input
-                            type="text"
-                            maxLength="6"
-                            className="form-control"
-                            value={formData.CoZipCode}
-                            onChange={(e) =>
-                                setFormData({ ...formData, CoZipCode: onlyDigitsWithLimit(e.target.value, 6) })
-                            }
-                        />
-                    </div>
-
-                    {/* Co-State */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">State *</label>
-                        <Select
-                            value={selectValue(states, 'StateID', formData.CoState, 'Description')}
-                            options={ChangeArrayFormat(states, 'StateID', 'Description')}
-                            onChange={(e) => {
-                                onChangeDropdown(e, setFormData, formData, 'CoState');
-                                fetchCity(e.value);
-                                setFormData(prev => ({ ...prev, CoCity: null }));
-                            }}
-                            isClearable
-                        />
-                    </div>
-
-                    {/* Co-City */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">City *</label>
-                        <Select
-                            value={selectValue(cityies, 'CityID', formData.CoCity, 'Description')}
-                            options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
-                            onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCity')}
-                            isClearable
-                        />
-                    </div>
-
-                    {/* Co-Country */}
-                    <div className="col-md-3">
-                        <label className="form-label fw-semibold">Country</label>
-                        <input className="form-control" value="INDIA" disabled />
-                    </div>
-
-                    {/* Co-Address */}
-                    <div className="col-md-12">
-                        <label className="form-label fw-semibold">Permanent Address *</label>
-                        <textarea
-                            className="form-control"
-                            value={formData.CoParaddress}
-                            onChange={(e) => setFormData({ ...formData, CoParaddress: e.target.value })}
-                        />
-                    </div>
-
-                    <div className="col-md-12">
-                        <div className="form-check">
+                {coapplicantAdd && (
+                    <div className="row g-2 p-3">
+                        {/* Co-Applicant Name */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Applicant Name *</label>
                             <input
-                                className="form-check-input"
-                                type="checkbox"
-                                checked={coAppliAddress}
-                                onChange={(e) => {
-                                    setCoAppliAddress(e.target.checked);
-                                    setFormData(prev => ({
-                                        ...prev,
-                                        CoPosaddress: e.target.checked ? prev.CoParaddress : ''
-                                    }));
-                                }}
+                                type="text"
+                                className="form-control"
+                                value={formData.CoapplicantName}
+                                placeholder="Enter Co-Applicant Name"
+                                maxLength="30"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, CoapplicantName: handleOnlyAlphabet(e.target.value) })
+                                }
                             />
-                            <label className="form-check-label">Same as above</label>
+                        </div>
+
+                        {/* Co-Gender */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Gender *</label>
+                            <div className="d-flex">
+                                <div className="form-check me-3">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="CoGender"
+                                        value="male"
+                                        checked={formData.CoGender === 'male'}
+                                        onChange={(e) => setFormData({ ...formData, CoGender: e.target.value })}
+                                    />
+                                    <label className="form-check-label">Male</label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="CoGender"
+                                        value="female"
+                                        checked={formData.CoGender === 'female'}
+                                        onChange={(e) => setFormData({ ...formData, CoGender: e.target.value })}
+                                    />
+                                    <label className="form-check-label">Female</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Co-DOB */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Date of Birth *</label>
+                            <input
+                                type="date"
+                                className="form-control"
+                                value={formData.CoDob}
+                                max={new Date().toISOString().split('T')[0]}
+                                onChange={(e) => setFormData({ ...formData, CoDob: e.target.value })}
+                            />
+                        </div>
+
+                        {/* Co-Email */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Email *</label>
+                            <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Enter Co-Applicant Email"
+                                value={formData.CoEmail}
+                                onChange={(e) => setFormData({ ...formData, CoEmail: e.target.value })}
+                            />
+                        </div>
+
+                        {/* Co-Father / Husband */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Select One *</label>
+                            <div className="d-flex">
+                                <div className="form-check me-3">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="CoNameSelect"
+                                        value="father"
+                                        checked={formData.CoNameSelect === 'father'}
+                                        onChange={(e) => setFormData({ ...formData, CoNameSelect: e.target.value })}
+                                    />
+                                    <label className="form-check-label">Father</label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="CoNameSelect"
+                                        value="husband"
+                                        checked={formData.CoNameSelect === 'husband'}
+                                        onChange={(e) => setFormData({ ...formData, CoNameSelect: e.target.value })}
+                                    />
+                                    <label className="form-check-label">Husband</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Co-Father / Husband Name */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Father/Husband Name *</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={formData.CoFhname}
+                                maxLength="30"
+                                placeholder="Enter Co-Father/Husband Name"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, CoFhname: handleOnlyAlphabet(e.target.value) })
+                                }
+                            />
+                        </div>
+
+                        {/* Co-Caste */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Caste *</label>
+                            <Select
+                                value={selectValue(casts, 'CastID', formData.CoCaste, 'Description')}
+                                onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCaste')}
+                                options={ChangeArrayFormat(casts, 'CastID', 'Description')}
+                                isClearable
+                            />
+                        </div>
+                        {/* Co-Mobile */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Mobile *</label>
+                            <input
+                                type="text"
+                                maxLength="10"
+                                className="form-control"
+                                value={formData.CoMobileNumber}
+                                placeholder="Enter Co-Mobile Number"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, CoMobileNumber: mobileNoValidation(e.target.value) })
+                                }
+                            />
+                        </div>
+
+                        {/* Co-ID Proof */}
+                        <div className="col-md-6">
+                            <label className="form-label fw-semibold d-block">ID Proof *</label>
+                            {['PAN', 'Driving License', 'Voter ID', 'Rashan Card'].map((id) => (
+                                <div className="form-check form-check-inline" key={id}>
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="CoIdproof"
+                                        value={id}
+                                        checked={formData.CoIdproof === id}
+                                        onChange={(e) => setFormData({ ...formData, CoIdproof: e.target.value })}
+                                    />
+                                    <label className="form-check-label">{id}</label>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Co-ID No */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">ID No *</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={formData.CoIdproofNo}
+                                placeholder="Enter Co-ID No"
+                                onChange={(e) => setFormData({ ...formData, CoIdproofNo: e.target.value })}
+                            />
+                        </div>
+
+                        {/* Co-Aadhaar */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Aadhaar *</label>
+                            <input
+                                type="text"
+                                maxLength="14"
+                                className="form-control"
+                                value={formData.CoAadharNumber}
+                                placeholder="Enter Co-Aadhaar"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, CoAadharNumber: formatTextwithSpace(e.target.value) })
+                                }
+                            />
+                        </div>
+
+
+
+                        {/* Co-ZIP */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">ZIP *</label>
+                            <input
+                                type="text"
+                                maxLength="6"
+                                className="form-control"
+                                value={formData.CoZipCode}
+                                placeholder="Enter Co-ZIP"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, CoZipCode: onlyDigitsWithLimit(e.target.value, 6) })
+                                }
+                            />
+                        </div>
+
+                        {/* Co-State */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">State *</label>
+                            <Select
+                                value={selectValue(states, 'StateID', formData.CoState, 'Description')}
+                                options={ChangeArrayFormat(states, 'StateID', 'Description')}
+                                onChange={(e) => {
+                                    onChangeDropdown(e, setFormData, formData, 'CoState');
+                                    fetchCity(e.value);
+                                    setFormData(prev => ({ ...prev, CoCity: null }));
+                                }}
+                                isClearable
+                            />
+                        </div>
+
+                        {/* Co-City */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">City *</label>
+                            <Select
+                                value={selectValue(cityies, 'CityID', formData.CoCity, 'Description')}
+                                options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
+                                onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCity')}
+                                isClearable
+                            />
+                        </div>
+
+                        {/* Co-Country */}
+                        <div className="col-md-3">
+                            <label className="form-label fw-semibold">Country</label>
+                            <input className="form-control" value="INDIA" disabled />
+                        </div>
+
+                        {/* Co-Address */}
+                        <div className="col-md-12">
+                            <label className="form-label fw-semibold">Permanent Address *</label>
+                            <textarea
+                                className="form-control"
+                                value={formData.CoParaddress}
+                                rows="1"
+                                placeholder="Enter Co-Permanent Address"
+                                onChange={(e) => setFormData({ ...formData, CoParaddress: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="col-md-12">
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    checked={coAppliAddress}
+                                    onChange={(e) => {
+                                        setCoAppliAddress(e.target.checked);
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            CoPosaddress: e.target.checked ? prev.CoParaddress : ''
+                                        }));
+                                    }}
+                                />
+                                <label className="form-check-label">Same as above</label>
+                            </div>
+                        </div>
+
+                        <div className="col-md-12">
+                            <label className="form-label fw-semibold">Postal Address *</label>
+                            <textarea
+                                className="form-control"
+                                value={formData.CoPosaddress}
+                                placeholder="Enter Co-Postal Address"
+                                rows="1"
+                                onChange={(e) => setFormData({ ...formData, CoPosaddress: e.target.value })}
+                            />
                         </div>
                     </div>
+                )}
 
-                    <div className="col-md-12">
-                        <label className="form-label fw-semibold">Postal Address *</label>
-                        <textarea
-                            className="form-control"
-                            value={formData.CoPosaddress}
-                            onChange={(e) => setFormData({ ...formData, CoPosaddress: e.target.value })}
-                        />
-                    </div>
+                <div className="text-center mt-3 mb-4">
+                    <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        style={{
+                            backgroundColor: "#A992F7",
+                            border: "none",
+                            fontWeight: "500",
+                            padding: "8px 24px",
+                            borderRadius: "6px",
+                            color: "white",
+                            opacity: isSubmitting ? 0.7 : 1,
+                            cursor: isSubmitting ? 'not-allowed' : 'pointer'
+                        }}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? 'Sending OTP...' : 'Next →'}
+                    </button>
                 </div>
-            )}
+
+
+            </div>
+
 
             {
                 activeTab === "bank" && (
