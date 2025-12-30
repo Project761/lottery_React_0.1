@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { showSuccess, showError } from "../../utils/toast";
 import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
 import { fetchPostData } from "../../components/hooks/Api";
@@ -63,9 +63,21 @@ const PersonalDetailsForm = () => {
     const [states, setStates] = useState([]);
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
+
     const [sameAddress, setSameAddress] = useState(() => {
         try {
             const saved = localStorage.getItem("sameAddress");
+            if (saved === null || saved == "undefined") return false;
+            return JSON.parse(saved);
+        } catch {
+            return false;
+        }
+    }
+    );
+
+    const [coAppliAddress, setCoAppliAddress] = useState(() => {
+        try {
+            const saved = localStorage.getItem("coAppliAddress");
             if (saved === null || saved == "undefined") return false;
             return JSON.parse(saved);
         } catch {
@@ -142,39 +154,6 @@ const PersonalDetailsForm = () => {
         fetchState();
         fetchCast();
     }, []);
-
-    // const validateForm = () => {
-    //     const newErrors = {};
-    //     const requiredFields = [
-    //         'FullName', 'Gender', 'Dob', 'Email', 'NameSelect', 'Fhname',
-    //         'Idproof', 'IdproofNo', 'AadharNumber', 'Caste', 'MobileNumber', 'ZipCode',
-    //         'City', 'Paraddress'
-    //     ];
-
-    //     requiredFields.forEach(field => {
-    //         if (!formData[field]) {
-    //             newErrors[field] = 'This field is required';
-    //         }
-    //     });
-
-    //     // Email validation
-    //     if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
-    //         newErrors.Email = 'Please enter a valid Email address';
-    //     }
-
-    //     // Mobile number validation
-    //     if (formData.MobileNumber && !/^[0-9]{10}$/.test(formData.MobileNumber)) {
-    //         newErrors.MobileNumber = 'Please enter a valid 10-digit mobile number';
-    //     }
-
-    //     // Aadhaar validation
-    //     if (formData.AadharNumber && !/^[0-9]{12}$/.test(formData.AadharNumber)) {
-    //         newErrors.AadharNumber = 'Please enter a valid 12-digit Aadhaar number';
-    //     }
-
-    //     setErrors(newErrors);
-    //     return Object.keys(newErrors).length === 0;
-    // };
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -294,27 +273,53 @@ const PersonalDetailsForm = () => {
     }, []);
 
     // getSingleData_API
+    // const fetchSingleData = async () => {
+    //     try {
+    //         const userID = localStorage.getItem("UserID");
+    //         const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
+    //         // console.log("response", response);
+    //         if (response) {
+    //             // console.log(defaultFormStructure);
+    //             const normalizedData = { ...defaultFormStructure, ...response[0] };
+    //             // console.log(normalizedData.PaymentAttachement);
+    //             setFormData(normalizedData);
+    //             localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
+    //             setOriginalMobile(response[0].MobileNumber || "");
+    //             setIsExistingUser(true);
+    //         } else {
+    //             setIsExistingUser(false);
+    //         }
+
+    //     } catch (error) {
+    //         showError("Failed to fetch user data.");
+    //     }
+    // }
+    // getSingleData_API
     const fetchSingleData = async () => {
         try {
             const userID = localStorage.getItem("UserID");
             const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
-            // console.log("response", response);
+
             if (response) {
-                // console.log(defaultFormStructure);
-                const normalizedData = { ...defaultFormStructure, ...response[0] };
-                // console.log(normalizedData.PaymentAttachement);
-                setFormData(normalizedData);
-                localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
+                const data = { ...defaultFormStructure, ...response[0] };
+                setFormData(data);
+                localStorage.setItem("applicationFormData", JSON.stringify(data));
+
                 setOriginalMobile(response[0].MobileNumber || "");
                 setIsExistingUser(true);
+
+                if (response[0].CoapplicantName && response[0].CoapplicantName.trim() !== "") {
+                    setCoApplicantAdd(true);
+                } else {
+                    setCoApplicantAdd(false);
+                }
             } else {
                 setIsExistingUser(false);
             }
-
         } catch (error) {
             showError("Failed to fetch user data.");
         }
-    }
+    };
 
     //Update-address when typing
     useEffect(() => {
@@ -329,6 +334,21 @@ const PersonalDetailsForm = () => {
     useEffect(() => {
         localStorage.setItem("sameAddress", JSON.stringify(sameAddress))
     }, [sameAddress])
+
+    //Update co-applicant address when typing
+    useEffect(() => {
+        if (coAppliAddress) {
+            setFormData((prev) => ({
+                ...prev,
+                CoPosaddress: prev.CoParaddress
+            }))
+        }
+    }, [formData.CoParaddress, coAppliAddress])
+
+    useEffect(() => {
+        localStorage.setItem("coAppliAddress", JSON.stringify(coAppliAddress))
+    }, [coAppliAddress])
+
 
     useEffect(() => {
         if (formData.State) {
@@ -405,40 +425,16 @@ const PersonalDetailsForm = () => {
                             </div>
 
                             {/* Co-Applicant-Check_Box */}
-                            {/* <div className="col-md-3">
-                                <label className="form-label fw-semibold mb-1">Co-Applicant Name</label>
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" id="sameAddress"
-                                        checked={sameAddress}
-                                        onChange={(e) => {
-                                            const checked = e.target.checked;
-                                            setSameAddress(checked);
-                                            if (checked) {
-                                                setFormData((prev) => ({
-                                                    ...prev,
-                                                    CoapplicantName: prev.CoapplicantName
-                                                }))
-                                            } else {
-                                                setFormData((prev) => ({
-                                                    ...prev,
-                                                    Posaddress: ""
-                                                }))
-                                            }
-                                        }}
-                                    />
-                                    <label className="form-check-label" htmlFor="sameAddress">
-                                        Want Co-applicant details
-                                    </label>
-                                </div>
-                            </div> */}
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                id="sameAddress"
-                                checked={sameAddress}
-                                onChange={(e) => setCoApplicantAdd(e.target.checked)}
-                            />
-
+                            <div className="col-md-3">
+                                <label className="form-label fw-semibold mb-1">Co-Applicant Name</label><b />
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="sameAddress"
+                                    checked={coapplicantAdd}
+                                    onChange={(e) => setCoApplicantAdd(e.target.checked)}
+                                />
+                            </div>
 
                             {/* Gender */}
                             <div className="col-md-3">
@@ -551,12 +547,6 @@ const PersonalDetailsForm = () => {
                                 <Select
                                     className={`${errors.Caste ? 'is-invalid' : ''}`}
                                     name="Caste"
-                                    // value={
-                                    //     casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
-                                    //         value: String(formData.Caste),
-                                    //         label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
-                                    //     } : null
-                                    // }
                                     value={selectValue(casts, 'CastID', formData.Caste, 'Description')}
                                     onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
                                     options={ChangeArrayFormat(casts, 'CastID', 'Description')}
@@ -678,19 +668,9 @@ const PersonalDetailsForm = () => {
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
                                 <Select
-                                    // value={states.find((s) => String(s.StateID) === String(formData.State)) ?
-                                    //     {
-                                    //         value: String(formData.State),
-                                    //         label: states.find((st) => String(st.StateID) === String(formData.State))?.Description || '',
-                                    //     } : null
-                                    // }
                                     value={selectValue(states, 'StateID', formData.State, 'Description')}
                                     className="w-full"
                                     placeholder="Select State"
-                                    // options={states.map((st) => ({
-                                    //     value: st.StateID,
-                                    //     label: st.Description,
-                                    // }))}
                                     options={ChangeArrayFormat(states, 'StateID', 'Description')}
                                     default={formData.State}
                                     onChange={(event) => {
@@ -712,17 +692,7 @@ const PersonalDetailsForm = () => {
                                 <Select
                                     className="w-full"
                                     placeholder="Select City"
-                                    // value={cityies.find((c) => String(c.CityID) === String(formData.City))
-                                    //     ? {
-                                    //         value: String(formData.City),
-                                    //         label: cityies.find((d) => String(d.CityID) === String(formData.City))?.Description || '',
-                                    //     } : null
-                                    // }
                                     value={selectValue(cityies, 'CityID', formData.City, 'Description')}
-                                    // options={cityies.map((d) => ({
-                                    //     value: d.CityID,
-                                    //     label: d.Description,
-                                    // }))}
                                     options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
                                     onChange={(selectedOption) => {
                                         onChangeDropdown(selectedOption, setFormData, formData, 'City');
@@ -812,7 +782,7 @@ const PersonalDetailsForm = () => {
             {coapplicantAdd && (
                 <div className="row g-2 p-3">
 
-                    {/* Name */}
+                    {/* Co-Applicant Name */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Applicant Name *</label>
                         <input
@@ -826,7 +796,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Gender */}
+                    {/* Co-Gender */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Gender *</label>
                         <div className="d-flex">
@@ -855,7 +825,7 @@ const PersonalDetailsForm = () => {
                         </div>
                     </div>
 
-                    {/* DOB */}
+                    {/* Co-DOB */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Date of Birth *</label>
                         <input
@@ -867,7 +837,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Email */}
+                    {/* Co-Email */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Email *</label>
                         <input
@@ -878,7 +848,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Father / Husband */}
+                    {/* Co-Father / Husband */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Select One *</label>
                         <div className="d-flex">
@@ -907,7 +877,7 @@ const PersonalDetailsForm = () => {
                         </div>
                     </div>
 
-                    {/* Father / Husband Name */}
+                    {/* Co-Father / Husband Name */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Father/Husband Name *</label>
                         <input
@@ -920,7 +890,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Caste */}
+                    {/* Co-Caste */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Caste *</label>
                         <Select
@@ -931,7 +901,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* ID Proof */}
+                    {/* Co-ID Proof */}
                     <div className="col-md-6">
                         <label className="form-label fw-semibold">ID Proof *</label>
                         {['pan', 'drivingLicense', 'voterId', 'rashanCard'].map((id) => (
@@ -949,7 +919,7 @@ const PersonalDetailsForm = () => {
                         ))}
                     </div>
 
-                    {/* ID No */}
+                    {/* Co-ID No */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">ID No *</label>
                         <input
@@ -960,7 +930,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Aadhaar */}
+                    {/* Co-Aadhaar */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Aadhaar *</label>
                         <input
@@ -974,7 +944,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Mobile */}
+                    {/* Co-Mobile */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Mobile *</label>
                         <input
@@ -988,7 +958,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* ZIP */}
+                    {/* Co-ZIP */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">ZIP *</label>
                         <input
@@ -1002,7 +972,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* State */}
+                    {/* Co-State */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">State *</label>
                         <Select
@@ -1017,7 +987,7 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* City */}
+                    {/* Co-City */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">City *</label>
                         <Select
@@ -1028,13 +998,13 @@ const PersonalDetailsForm = () => {
                         />
                     </div>
 
-                    {/* Country */}
+                    {/* Co-Country */}
                     <div className="col-md-3">
                         <label className="form-label fw-semibold">Country</label>
                         <input className="form-control" value="INDIA" disabled />
                     </div>
 
-                    {/* Address */}
+                    {/* Co-Address */}
                     <div className="col-md-12">
                         <label className="form-label fw-semibold">Permanent Address *</label>
                         <textarea
@@ -1049,9 +1019,9 @@ const PersonalDetailsForm = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
-                                checked={sameAddress}
+                                checked={coAppliAddress}
                                 onChange={(e) => {
-                                    setSameAddress(e.target.checked);
+                                    setCoAppliAddress(e.target.checked);
                                     setFormData(prev => ({
                                         ...prev,
                                         CoPosaddress: e.target.checked ? prev.CoParaddress : ''
@@ -1070,7 +1040,6 @@ const PersonalDetailsForm = () => {
                             onChange={(e) => setFormData({ ...formData, CoPosaddress: e.target.value })}
                         />
                     </div>
-
                 </div>
             )}
 
