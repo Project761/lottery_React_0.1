@@ -40,7 +40,7 @@ const IncomeDetails = () => {
           CompanyID: localStorage.getItem('companyID') || 1,
         }
       );
-      // console.log(response);
+      console.log(response);
 
       if (response && Array.isArray(response)) {
         setcategory(response);
@@ -167,11 +167,11 @@ const IncomeDetails = () => {
 
           {/* Category */}
           <div className="col-md-6">
-            <label className="form-label fw-semibold mb-1"> Select Category <span className="text-danger">*</span></label>
+            <label className="form-label fw-semibold mb-1"> Select Income Category <span className="text-danger">*</span></label>
             <Select name="Category"
               value={selectValue(category, 'CategoryID', formData.Category, 'Description')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "Category")}
-              options={ChangeArrayFormat(category, 'CategoryID', 'Description')}
+              options={ChangeArrayFormat(category, 'CategoryID', 'plot_range')}
               placeholder="Select Category"
               isClearable
               classNamePrefix="select"
