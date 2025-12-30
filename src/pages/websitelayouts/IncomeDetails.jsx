@@ -202,6 +202,20 @@ const IncomeDetails = () => {
             />
           </div>
         </div>
+        <div className="row my-2">
+          <div className="col-md-6">
+            <label className="form-label">Payment Attachment</label>
+            <input
+              type="file"
+              className="form-control"
+              name="attachment"
+              // onChange={handleChange}
+              accept=".pdf,.jpg,.jpeg,.png"
+              required
+            />
+          </div>
+
+        </div>
 
         {/* Project Name */}
         <div className="row my-3">
@@ -225,6 +239,9 @@ const IncomeDetails = () => {
               </label>
             </div>
           </div>
+
+
+
         </div>
 
         {/* Terms Checkbox */}
