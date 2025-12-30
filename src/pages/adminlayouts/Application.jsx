@@ -177,7 +177,6 @@ const Application = () => {
 
     ];
 
-
     const handleCheckBox = async (e, row) => {
         console.log("🚀 ~ handleCheckBox ~ row:", row)
 
@@ -225,7 +224,6 @@ const Application = () => {
             }
         })
     }
-
 
     const customStyles = {
         headCells: {
