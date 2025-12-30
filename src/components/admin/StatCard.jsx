@@ -3,7 +3,8 @@ import { Card, Button } from "react-bootstrap";
 import { FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const StatCard = ({ title, value, icon, color, showButtons, category, policyName }) => {
+const StatCard = ({ title, value, icon, color, showButtons, category, policyName, onClick = () => { } }) => {
+
   const navigate = useNavigate();
 
   const handleRunClick = () => {
@@ -19,7 +20,7 @@ const StatCard = ({ title, value, icon, color, showButtons, category, policyName
   };
 
   return (
-    <div className="col-lg-3 col-md-6 col-sm-12 d-flex">
+    <div className="col-lg-3 col-md-6 col-sm-12 d-flex" onClick={onClick}>
       <Card className="shadow-sm border-0 flex-fill h-100 w-100">
         <Card.Body className="d-flex flex-column justify-content-between">
           {/* Icon */}
