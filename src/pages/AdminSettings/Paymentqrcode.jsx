@@ -92,7 +92,7 @@ export default function Paymentqrcode() {
                             {/* Image */}
                             <div
                                 className="bg-light d-flex align-items-center justify-content-center"
-                                style={{ height: 200 }}
+                                // style={{ height: 200 }}
                             >
                                 <img
                                     src={img.FilePath}
