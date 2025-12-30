@@ -29,7 +29,6 @@ const DataTablePage = (props) => {
     DeleteByUser: '',
   });
 
-
   const columns = [
     {
       name: listCode ? `${listCode.replace(/([a-z])([A-Z])/g, "$1 $2")}` : "Code",
@@ -152,6 +151,7 @@ const DataTablePage = (props) => {
       setLoading(false);
     }
   };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -256,6 +256,15 @@ const DataTablePage = (props) => {
     },
   };
 
+  const showAddButton = (page) => {
+    if (page === "project") {
+      return data?.length === 1 || data?.length > 1 ? false : true;
+
+    } else {
+      return true;
+
+    }
+  }
 
   return (
     <div className="container-fluid">
@@ -277,16 +286,19 @@ const DataTablePage = (props) => {
 
             <div className="d-flex justify-content-between align-items-center ">
               {/* <h2>{title}</h2> */}
-              <Button
-                variant="primary"
-                className="btn-mobile-small"
-                onClick={() => {
-                  handleAddNew();
-                  setShowModal(true);
-                }}
-              >
-                <FaPlus className="me-2" /> Add New
-              </Button>
+              {
+                showAddButton(page) &&
+                <Button
+                  variant="primary"
+                  className="btn-mobile-small"
+                  onClick={() => {
+                    handleAddNew();
+                    setShowModal(true);
+                  }}
+                >
+                  <FaPlus className="me-2" /> Add New
+                </Button>
+              }
             </div>
           </div>
           <div className="table-responsive">

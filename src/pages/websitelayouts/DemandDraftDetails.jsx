@@ -7,7 +7,7 @@ import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 const DemandDraftDetails = () => {
-
+    const CompanyID = localStorage.getItem('companyID') ?? 1
     const navigate = useNavigate();
     const [selectedBank, setSelectedBank] = useState(null);
     const [selectedAmount, setSelectedAmount] = useState(null);
@@ -18,6 +18,7 @@ const DemandDraftDetails = () => {
     const [isPaymentAttachmentChanged, setIsPaymentAttachmentChanged] = useState(false);
     const [demandDraft, setDemandDraft] = useState([]);
     const [registerDate, setRegisterDate] = useState("");
+    const [images, setImages] = useState([]);
 
     // useEffect(() => {
     //     localStorage.setItem("applicationFormData", JSON.stringify(formData));
@@ -150,6 +151,23 @@ const DemandDraftDetails = () => {
 
     const onBack = () => {
         navigate("/bank-details");
+    }
+
+
+
+
+    useEffect(() => {
+        getPaperImage();
+    }, [CompanyID]);
+
+    const getPaperImage = async () => {
+        const response = await fetchPostData("ButtonDetails/GETALL_ButtonDetails", {
+            "IsActive": true,
+            "ButtonType": "PAYMENTQRCODE IMAGE",
+            "CompanyID": localStorage.getItem('companyID') || 1,
+        });
+        setImages(response)
+        // console.log("🚀 ~ getPaperImage ~ response:", response)
     }
 
     return (
@@ -309,6 +327,21 @@ const DemandDraftDetails = () => {
                             </div>) : ""
                         }
                     </div>
+
+                    <div className="d-flex gap-2 flex-wrap justify-content-center mt-3">
+                        {images?.map((item, index) => (
+                            <img key={index} src={item?.FilePath} alt="QR Code"
+                                style={{
+                                    width: "300px", height: "300px", objectFit: "contain", border: "1px solid #ddd", borderRadius: "8px",
+                                }}
+                            />
+                        ))}
+                    </div>
+
+
+
+
+
 
                     {/* Buttons */}
                     <div className="d-flex justify-content-center gap-3 mt-4">
