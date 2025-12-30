@@ -2,11 +2,32 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "../../utils/toast";
+import { fetchPostData } from "../hooks/Api";
 
 const TermsModal = ({ show, onClose, onAgree }) => {
     const [agree, setAgree] = useState(false);
     const [showModal, setShowModal] = useState(show);
+    const [submitButt, setSubmitButt] = useState(false);
     const userID = localStorage.getItem("UserID");
+
+    const handleSubmitButt = async () => {
+        try {
+            const response = await fetchPostData("Button/GETALL_BUTTON", {
+                "CompanyID": localStorage.getItem('companyID') || 1,
+                "ButtonType": 'Is Otp Verified'
+            })
+
+            if (response?.length) {
+                setSubmitButt(response[0]?.AppRegPermission);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        handleSubmitButt();
+    })
 
     useEffect(() => {
         setShowModal(show);
@@ -38,7 +59,7 @@ const TermsModal = ({ show, onClose, onAgree }) => {
                 <Modal.Title>Term and Condition</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div style={{ border: "1px solid #ccc", height: "200px", borderRadius: "4px", padding: "15px", overflowY: "auto",}}>
+                <div style={{ border: "1px solid #ccc", height: "200px", borderRadius: "4px", padding: "15px", overflowY: "auto", }}>
                     <h5>Terms and Conditions</h5>
                     <p>1. By agreeing to these terms, you confirm that all information provided is accurate.</p>
                     <p>2. The developer reserves the right to verify all submitted information.</p>
@@ -47,19 +68,21 @@ const TermsModal = ({ show, onClose, onAgree }) => {
                 </div>
 
                 <div className="form-check mt-3">
-                    <input className="form-check-input" type="checkbox" id="agreeCheck" checked={agree} onChange={(e) => setAgree(e.target.checked)}/>
+                    <input className="form-check-input" type="checkbox" id="agreeCheck" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
                     <label className="form-check-label" htmlFor="agreeCheck">
                         I have read and understood the terms and conditions and agree to be bound by them.
                     </label>
                 </div>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-end">
-                <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: "#555", borderColor: "#555", width: "100px",}}>
+                <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: "#555", borderColor: "#555", width: "100px", }}>
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} style={{ background: "linear-gradient(to right, #9b5cff, #8a7dff)", border: "none", width: "100px",}} >
-                    { userID ? "Update" : "Submit" }
-                </Button>
+                {submitButt &&
+                    <Button onClick={handleSubmit} style={{ background: "linear-gradient(to right, #9b5cff, #8a7dff)", border: "none", width: "100px", }} >
+                        {userID ? "Update" : "Submit"}
+                    </Button>
+                }
             </Modal.Footer>
         </Modal>
     );

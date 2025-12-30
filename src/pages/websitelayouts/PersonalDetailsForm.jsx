@@ -800,7 +800,6 @@ const PersonalDetailsForm = () => {
                     </form>
                 )}
 
-
                 {coapplicantAdd && (
                     <div className="row g-2 p-3">
                         {/* Co-Applicant Name */}

@@ -173,12 +173,12 @@ const DemandDraftDetails = () => {
     return (
         <div className="container px-0 ">
             {/* Section Header */}
-            <div className="text-center text-white fw-semibold py-1 mb-2" style={{ backgroundColor: "#6c757d" }}>
+            <div className="text-center text-white fw-semibold py-1" style={{ backgroundColor: "#6c757d" }}>
                 Fill Demand Draft Details
             </div>
 
             {/* Bank Info Bar */}
-            <div className="text-center text-white py-1" style={{ backgroundColor: "#6c757d", fontSize: "14px" }}>
+            {/* <div className="text-center text-white py-1" style={{ backgroundColor: "#6c757d", fontSize: "14px" }}>
                 <div className="row g-3 align-items-center">
                     <div className="col-md-12">
                         <span className="me-2">Bank Name: <b>HDFC Bank</b></span>
@@ -187,7 +187,7 @@ const DemandDraftDetails = () => {
                         <span>IFSC Code: <b>HDFC0000054</b></span>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Form */}
             <div className="border p-4 bg-white shadow-sm">

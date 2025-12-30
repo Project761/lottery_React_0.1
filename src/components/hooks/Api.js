@@ -194,7 +194,6 @@ export const fetchPostFormData = async (url, formData) => {
     }
 };
 
-
 export const AddDelete_Img = async (url, FormData) => {
     if (FormData) {
         try {
@@ -212,6 +211,5 @@ export const AddDelete_Img = async (url, FormData) => {
     } else {
         // console.log(`${url}-----${FormData}`)
         console.log("%c🚀 ~ AddDelete_Img: " + `${url}-----${FormData}`, "padding: 6px; font-weight: bold; background-color: #2ecc71; color: black'");
-
     }
 }
