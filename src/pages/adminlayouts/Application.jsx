@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
+import VerifyStatusModal from "../../components/admin/VerifyStatusModal";
 
 
 function useTableHeight() {
@@ -29,6 +30,10 @@ const Application = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [checkedRows, setCheckedRows] = useState({});
+    const [showVerifyModal, setShowVerifyModal] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [applicationID, setApplicationID] = useState(null);
+
 
     const CompanyID = localStorage.getItem("companyID") ?? 1;
     const UserID = localStorage.getItem('AdminUserID') || 1
@@ -66,10 +71,15 @@ const Application = () => {
 
     const columns = [
         {
-            name: "Verify/Unverify",
+            name: "Verify / Unverify",
             cell: (row) => (
-                <button type="button" className={`btn my-1 btn-sm text-white ${String(row?.Status || "").toLowerCase() === "verify" ? "btn-success" : "btn-danger"}`}
-                    onClick={() => handleCheckBox(row)}
+                <button
+                    type="button"
+                    className={`btn my-1 btn-sm text-white ${String(row?.Status || "").toLowerCase() === "verify"
+                        ? "btn-success"
+                        : "btn-danger"
+                        }`}
+                    onClick={() => { openVerifyModal(row); setApplicationID(row?.UserID) }}
                     style={{ width: "clamp(70px, 8vw, 85px)" }}
                 >
                     {String(row?.Status || "").toLowerCase() === "verify" ? "Verified" : "Unverified"}
@@ -79,7 +89,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "S.No",
             cell: (row, index) => index + 1,
@@ -87,7 +96,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Attachment",
             cell: (row) =>
@@ -107,7 +115,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
@@ -116,7 +123,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Full Name",
             selector: (row) => row?.FullName ?? "",
@@ -125,7 +131,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Mobile Number",
             selector: (row) => row?.MobileNumber ?? "",
@@ -134,7 +139,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Aadhar Number",
             selector: (row) => row?.AadharNumber ?? "",
@@ -143,7 +147,6 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
         {
             name: "Email",
             selector: (row) => row?.Email ?? "",
@@ -174,16 +177,14 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
-
     ];
 
-
-    const handleCheckBox = async (e, row) => {
-        // console.log("🚀 ~ handleCheckBox ~ row:", row)
+    const handleCheckBox = async (row) => {
+        console.log("🚀 ~ handleCheckBox ~ row:", row)
 
         const val = {
             'Status': row?.Status === "Verify" || row?.Status === "verify" ? "Unverified" : "Verify",
-            'UserID': row?.UserID,
+            'UserID': applicationID,
             'ModifiedByUser': localStorage.getItem('AdminUserID') || 1,
         }
 
@@ -192,6 +193,7 @@ const Application = () => {
             if (response?.success) {
                 showSuccess("Update Successfully");
                 fetchApplications();
+                closeVerifyModal();
             }
         })
     };
@@ -217,16 +219,6 @@ const Application = () => {
     //     })
     // };
 
-    const updateApplicationStatus = () => {
-        AddDeleteUpdateData('User/Update_UserStatus', val).then((response) => {
-            // console.log("🚀 ~ handleCheckBox ~ response:", response);
-            if (response?.success) {
-                showSuccess("Update Successfully")
-            }
-        })
-    }
-
-
     const customStyles = {
         headCells: {
             style: {
@@ -250,16 +242,16 @@ const Application = () => {
 
     const tableHeight = useTableHeight();
 
+    const openVerifyModal = (row) => {
+        setSelectedRow(row);
+        setShowVerifyModal(true);
+    };
 
-    // User/Update_UserStatus
-    // Status
-    // ModifiedByUser
-    // UserID
-
-    // User/GetData_User
-    // Status
-    // CompanyID
-    // IsActive
+    const closeVerifyModal = () => {
+        setShowVerifyModal(false);
+        setSelectedRow(null);
+        setApplicationID(null);
+    };
 
 
     return (
@@ -293,6 +285,14 @@ const Application = () => {
                     />
                 </div>
             </div>
+
+            <VerifyStatusModal
+                show={showVerifyModal}
+                row={selectedRow}
+                onClose={() => { closeVerifyModal(); }}
+                onConfirm={handleCheckBox}
+            />
+
         </div>
 
     );

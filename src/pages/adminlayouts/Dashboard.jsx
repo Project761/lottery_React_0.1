@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import StatCard from "../../components/admin/StatCard";
 import { fetchPostData } from "../../components/hooks/Api";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 
+  const navigate = useNavigate()
   const CompanyID = localStorage.getItem('companyID') ?? 1
   const [applicationDetailData, setApplicationDetailData] = useState([])
   // const [applicationDetailData, setApplicationDetailData] = useState([
@@ -42,6 +44,7 @@ const Dashboard = () => {
           value={applicationDetailData[0]?.TotalApplication}
           icon="user"
           color="#e91e63"
+          onClick={() => navigate("/admin/Application")}
         />
         <StatCard
           title="Success Application"
