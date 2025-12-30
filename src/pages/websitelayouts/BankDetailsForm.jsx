@@ -52,7 +52,8 @@ const BankDetailsForm = () => {
         return;
     }
 
-    navigate("/dd-details");
+    navigate("/application-processing-fees");
+    // navigate("/dd-details");
     };
 
     const onBack = () => {
