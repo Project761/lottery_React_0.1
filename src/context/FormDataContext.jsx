@@ -102,6 +102,8 @@ export const FormDataProvider = ({ children }) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("token_expiry");
+    localStorage.removeItem("coApplicantData");
+    localStorage.removeItem("coAppliAddress");
   }
 
   return (
