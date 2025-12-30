@@ -755,6 +755,7 @@ const PersonalDetailsForm = () => {
                             <div className="col-md-12 mt-4 pt-2" style={{ borderTop: "1px solid #ccc" }}>
                                 <label className="form-label fw-semibold mb-2 mr-2">Co-Applicant Name</label><b />
                                 <input
+                                    style={{ marginLeft: "10px" }}
                                     className="form-check-input"
                                     type="checkbox"
                                     id="sameAddress"
