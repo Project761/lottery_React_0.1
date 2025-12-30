@@ -91,6 +91,7 @@ const PersonalDetailsForm = () => {
     const [isExistingUser, setIsExistingUser] = useState(false);
     const [isMobileVerified, setIsMobileVerified] = useState(false);
     const [coapplicantAdd, setCoApplicantAdd] = useState(false);
+    const [phoneVerification, setPhoneVeri] = useState([]);
 
     const { formData, setFormData } = useFormData();
     useEffect(() => {
@@ -152,9 +153,25 @@ const PersonalDetailsForm = () => {
         }
     }
 
+    const handlePhoneVerification = async () => {
+        try {
+            const response = await fetchPostData("Button/GETALL_BUTTON", {
+                "CompanyID": localStorage.getItem('companyID') || 1,
+                "ButtonType": 'Is Otp Verified'
+            })
+
+            if (response?.length) {
+                setPhoneVeri(response[0]?.AppRegPermission);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         fetchState();
         fetchCast();
+        handlePhoneVerification();
     }, []);
 
     const handleInputChange = (e) => {
@@ -221,6 +238,11 @@ const PersonalDetailsForm = () => {
         //     showError('Please enter a valid 12-digit Aadhaar number');
         //     return;
         // }
+
+        if (!phoneVerification) {
+            Navigate('/bank-details');
+            return;
+        }
 
         if (isMobileVerified && formData.MobileNumber === originalMobile) {
             //   setActiveTab("bank");
@@ -769,10 +791,6 @@ const PersonalDetailsForm = () => {
                         </div>
 
 
-
-
-
-
                         {formData.MobileNumber && showOtp && (
                             <div className="text-center">
                                 <p className="mb-3">We've sent a 4-digit OTP to {formData.MobileNumber}</p>
@@ -1078,10 +1096,7 @@ const PersonalDetailsForm = () => {
                         {isSubmitting ? 'Sending OTP...' : 'Next →'}
                     </button>
                 </div>
-
-
             </div>
-
 
             {
                 activeTab === "bank" && (
@@ -1093,5 +1108,3 @@ const PersonalDetailsForm = () => {
 };
 
 export default PersonalDetailsForm;
-
-//In this tell me so that our top condition will work
