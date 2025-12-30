@@ -1,3 +1,5 @@
+//In this tell me so that our top condition will work
+
 import React, { useState, useEffect } from "react";
 import { showSuccess, showError } from "../../utils/toast";
 import Select from "../../../node_modules/react-select/dist/react-select.esm.js";
@@ -179,6 +181,11 @@ const PersonalDetailsForm = () => {
             "AadharNumber", "Caste", "MobileNumber", "ZipCode", "State", "City", "Paraddress", "Posaddress"
         ];
 
+        const coapplicantRequiredFields = [
+            "CoapplicantName", "CoGender", "CoDob", "CoEmail", "CoNameSelect", "CoFhname", "CoIdproof", "CoIdproofNo",
+            "CoAadharNumber", "CoCaste", "CoMobileNumber", "CoZipCode", "CoState", "CoCity", "CoParaddress", "CoPosaddress"
+        ];
+
         const isAnyFieldMissing = requiredFields.some(
             (field) => !formData[field] || formData[field].toString().trim() === ""
         );
@@ -186,6 +193,18 @@ const PersonalDetailsForm = () => {
         if (isAnyFieldMissing) {
             showError("Please fill all mandatory fields");
             return;
+        }
+
+        const coAppliData = JSON.parse(localStorage.getItem("coApplicantData") || "false");
+        if (coAppliData) {
+            const isFieldMissing = coapplicantRequiredFields.some(
+                (field) => !formData[field] || formData[field].toString().trim() === ""
+            );
+
+            if (isFieldMissing) {
+                showError("Please fill all mandatory fields");
+                return;
+            }
         }
 
         if (formData.Email && formData.Email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) === null) {
@@ -310,6 +329,7 @@ const PersonalDetailsForm = () => {
 
                 if (response[0].CoapplicantName && response[0].CoapplicantName.trim() !== "") {
                     setCoApplicantAdd(true);
+                    localStorage.setItem("coApplicantData", JSON.stringify(true));
                 } else {
                     setCoApplicantAdd(false);
                 }
@@ -363,12 +383,6 @@ const PersonalDetailsForm = () => {
             setOriginalMobile(verifiedMobile);
         }
     }, []);
-
-    const HandleZipCode = (e) => {
-        if (e.target.value.length <= 6) {
-            setFormData({ ...formData, ZipCode: e.target.value })
-        }
-    }
 
     const onChangeDOBDate = (e) => {
         const { name, value } = e.target;
@@ -638,8 +652,6 @@ const PersonalDetailsForm = () => {
                                     }} maxLength="14" />
                             </div>
 
-
-
                             {/* ZIP-Code */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">ZIP Code <span className="text-danger">*</span></label>
@@ -743,12 +755,14 @@ const PersonalDetailsForm = () => {
                             <div className="col-md-12 mt-4 pt-2" style={{ borderTop: "1px solid #ccc" }}>
                                 <label className="form-label fw-semibold mb-2 mr-2">Co-Applicant Name</label><b />
                                 <input
-                                    style={{ marginLeft: "10px" }}
-                                    className="form-check-input "
+                                    className="form-check-input"
                                     type="checkbox"
                                     id="sameAddress"
                                     checked={coapplicantAdd}
-                                    onChange={(e) => setCoApplicantAdd(e.target.checked)}
+                                    onChange={(e) => {
+                                        setCoApplicantAdd(e.target.checked)
+                                        localStorage.setItem("coApplicantData", JSON.stringify(e.target.checked));
+                                    }}
                                 />
                             </div>
                         </div>
@@ -1078,3 +1092,5 @@ const PersonalDetailsForm = () => {
 };
 
 export default PersonalDetailsForm;
+
+//In this tell me so that our top condition will work
