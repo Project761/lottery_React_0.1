@@ -150,7 +150,8 @@ const DemandDraftDetails = () => {
     };
 
     const onBack = () => {
-        navigate("/bank-details");
+        // navigate("/bank-details");
+         navigate("/application-processing-fees");
     }
 
 

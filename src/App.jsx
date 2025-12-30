@@ -26,6 +26,7 @@ import PersonalDetailsPage from './pages/websitelayouts/PersonalDetailsPage';
 import PersonalDetailsForm from './pages/websitelayouts/PersonalDetailsForm';
 import AdminSettings from './pages/AdminSettings/AdminSettings';
 import LotteryPage from './pages/adminlayouts/LotteryPage';
+import ApplicationProcessingFees from './pages/websitelayouts/ApplicationProcessingFees';
 
 // Admin Layout Wrapper
 // const AdminLayout = () => {
@@ -50,6 +51,8 @@ const WebsiteLayout = () => {
     else if (path === '/bank-details') setActiveTab('bank');
     else if (path === '/dd-details') setActiveTab('dd');
     else if (path === '/income-details') setActiveTab('income');
+    else if (path === '/application-processing-fees') setActiveTab('fees');
+
     else setActiveTab('');
   }, [location]);
 
@@ -167,6 +170,7 @@ function AppContent() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/apply" element={<PersonalDetailsForm />} />
           <Route path="/bank-details" element={<BankDetailsForm />} />
+          <Route path="/application-processing-fees" element={<ApplicationProcessingFees />} />
           <Route path="/dd-details" element={<DemandDraftDetails />} />
           <Route path="/income-details" element={<IncomeDetails />} />
           <Route path="/verify-otp" element={<OtpVerify />} />

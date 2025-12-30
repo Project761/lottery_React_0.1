@@ -565,9 +565,9 @@ const PersonalDetailsForm = () => {
                                 <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" maxLength="30" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: handleOnlyAlphabet(e.target.value) })} />
                             </div>
 
-                            {/* Select-Cast */}
+                            {/* Select-Category */}
                             <div className="col-md-3">
-                                <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
+                                <label className="form-label fw-semibold mb-1">Select Category <span className="text-danger">*</span></label>
                                 <Select
                                     className={`${errors.Caste ? 'is-invalid' : ''}`}
                                     name="Caste"

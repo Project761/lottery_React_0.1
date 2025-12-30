@@ -43,9 +43,9 @@ const Footer = () => {
 
           {/* Payment System Section */}
           <div className="col-md-4 mb-3 mb-md-0">
-            <p className="mb-2 text-white">Supported Payment System</p>
+            {/* <p className="mb-2 text-white">Supported Payment System</p> */}
             <div className="d-flex justify-content-center gap-2 flex-wrap">
-              <img
+              {/* <img
                 src={visa}
                 alt="Visa"
                 width="45"
@@ -74,7 +74,7 @@ const Footer = () => {
                 alt="Amex"
                 width="45"
                 height="25"
-              />
+              /> */}
             </div>
           </div>
 
