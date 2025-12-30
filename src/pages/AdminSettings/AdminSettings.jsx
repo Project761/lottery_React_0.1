@@ -30,7 +30,7 @@ export default function AdminSettings() {
         { key: "update", label: "UPDATE APPLICANT" },
         { key: "logo", label: "LOGO" },
         { key: "admin", label: "CHANGE ADMIN INFO" },
-        { key: "Paymentqrcode", label: "PAYMENTQRCODE" },
+        { key: "Paymentqrcode", label: "PAYMENT QR CODE" },
         { key: "isOtpVerified", label: "IS OTP VERIFIED" }
 
     ];
