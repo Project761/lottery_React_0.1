@@ -54,7 +54,7 @@ const NavbarComponent = ({ toggleSidebar, currentPage, totalEntries, onLogout })
             <FaUserCircle className="fs-3" />
           </Dropdown.Toggle>
 
-          <Dropdown.Menu className="border-0 shadow-sm">
+          <Dropdown.Menu className="border-0 shadow-lg">
             <Dropdown.Header className="small text-muted">
               {localStorage.getItem('FullName') || 'Admin User'}
             </Dropdown.Header>
