@@ -63,6 +63,7 @@ const PersonalDetailsForm = () => {
     const [states, setStates] = useState([]);
     const [cityies, setCityies] = useState([]);
     const [casts, setCasts] = useState([]);
+
     const [sameAddress, setSameAddress] = useState(() => {
         try {
             const saved = localStorage.getItem("sameAddress");
@@ -73,9 +74,21 @@ const PersonalDetailsForm = () => {
         }
     }
     );
+
+    const [coAppliAddress, setCoAppliAddress] = useState(() => {
+        try {
+            const saved = localStorage.getItem("coAppliAddress");
+            if (saved === null || saved == "undefined") return false;
+            return JSON.parse(saved);
+        } catch {
+            return false;
+        }
+    }
+    );
     const [originalMobile, setOriginalMobile] = useState("");
     const [isExistingUser, setIsExistingUser] = useState(false);
     const [isMobileVerified, setIsMobileVerified] = useState(false);
+    const [coapplicantAdd, setCoApplicantAdd] = useState(false);
 
     const { formData, setFormData } = useFormData();
     useEffect(() => {
@@ -141,39 +154,6 @@ const PersonalDetailsForm = () => {
         fetchState();
         fetchCast();
     }, []);
-
-    // const validateForm = () => {
-    //     const newErrors = {};
-    //     const requiredFields = [
-    //         'FullName', 'Gender', 'Dob', 'Email', 'NameSelect', 'Fhname',
-    //         'Idproof', 'IdproofNo', 'AadharNumber', 'Caste', 'MobileNumber', 'ZipCode',
-    //         'City', 'Paraddress'
-    //     ];
-
-    //     requiredFields.forEach(field => {
-    //         if (!formData[field]) {
-    //             newErrors[field] = 'This field is required';
-    //         }
-    //     });
-
-    //     // Email validation
-    //     if (formData.Email && !/\S+@\S+\.\S+/.test(formData.Email)) {
-    //         newErrors.Email = 'Please enter a valid Email address';
-    //     }
-
-    //     // Mobile number validation
-    //     if (formData.MobileNumber && !/^[0-9]{10}$/.test(formData.MobileNumber)) {
-    //         newErrors.MobileNumber = 'Please enter a valid 10-digit mobile number';
-    //     }
-
-    //     // Aadhaar validation
-    //     if (formData.AadharNumber && !/^[0-9]{12}$/.test(formData.AadharNumber)) {
-    //         newErrors.AadharNumber = 'Please enter a valid 12-digit Aadhaar number';
-    //     }
-
-    //     setErrors(newErrors);
-    //     return Object.keys(newErrors).length === 0;
-    // };
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -293,27 +273,53 @@ const PersonalDetailsForm = () => {
     }, []);
 
     // getSingleData_API
+    // const fetchSingleData = async () => {
+    //     try {
+    //         const userID = localStorage.getItem("UserID");
+    //         const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
+    //         // console.log("response", response);
+    //         if (response) {
+    //             // console.log(defaultFormStructure);
+    //             const normalizedData = { ...defaultFormStructure, ...response[0] };
+    //             // console.log(normalizedData.PaymentAttachement);
+    //             setFormData(normalizedData);
+    //             localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
+    //             setOriginalMobile(response[0].MobileNumber || "");
+    //             setIsExistingUser(true);
+    //         } else {
+    //             setIsExistingUser(false);
+    //         }
+
+    //     } catch (error) {
+    //         showError("Failed to fetch user data.");
+    //     }
+    // }
+    // getSingleData_API
     const fetchSingleData = async () => {
         try {
             const userID = localStorage.getItem("UserID");
             const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
-            // console.log("response", response);
+
             if (response) {
-                // console.log(defaultFormStructure);
-                const normalizedData = { ...defaultFormStructure, ...response[0] };
-                // console.log(normalizedData.PaymentAttachement);
-                setFormData(normalizedData);
-                localStorage.setItem("applicationFormData", JSON.stringify(normalizedData));
+                const data = { ...defaultFormStructure, ...response[0] };
+                setFormData(data);
+                localStorage.setItem("applicationFormData", JSON.stringify(data));
+
                 setOriginalMobile(response[0].MobileNumber || "");
                 setIsExistingUser(true);
+
+                if (response[0].CoapplicantName && response[0].CoapplicantName.trim() !== "") {
+                    setCoApplicantAdd(true);
+                } else {
+                    setCoApplicantAdd(false);
+                }
             } else {
                 setIsExistingUser(false);
             }
-
         } catch (error) {
             showError("Failed to fetch user data.");
         }
-    }
+    };
 
     //Update-address when typing
     useEffect(() => {
@@ -328,6 +334,21 @@ const PersonalDetailsForm = () => {
     useEffect(() => {
         localStorage.setItem("sameAddress", JSON.stringify(sameAddress))
     }, [sameAddress])
+
+    //Update co-applicant address when typing
+    useEffect(() => {
+        if (coAppliAddress) {
+            setFormData((prev) => ({
+                ...prev,
+                CoPosaddress: prev.CoParaddress
+            }))
+        }
+    }, [formData.CoParaddress, coAppliAddress])
+
+    useEffect(() => {
+        localStorage.setItem("coAppliAddress", JSON.stringify(coAppliAddress))
+    }, [coAppliAddress])
+
 
     useEffect(() => {
         if (formData.State) {
@@ -375,23 +396,6 @@ const PersonalDetailsForm = () => {
         });
     };
 
-
-    // const onChangeDOBDate = (e) => {
-    //     const { name, value, type, checked } = e.target;
-    //     setFormData({
-    //         ...formData,
-    //         [name]: type === "checkbox" ? checked : value,
-    //     });
-
-    //     // Clear error when user starts typing
-    //     if (errors[name]) {
-    //         setErrors({
-    //             ...errors,
-    //             [name]: "",
-    //         });
-    //     }
-    // };
-
     return (
         <div className="container mb-4 px-0">
 
@@ -420,20 +424,16 @@ const PersonalDetailsForm = () => {
                                 {errors.FullName && <div className="invalid-feedback">{errors.FullName}</div>}
                             </div>
 
-                            {/* Co-Applicant-Name */}
+                            {/* Co-Applicant-Check_Box */}
                             <div className="col-md-3">
-                                <label className="form-label fw-semibold mb-1">Co-Applicant Name</label>
+                                <label className="form-label fw-semibold mb-1">Co-Applicant Name</label><b />
                                 <input
-                                    type="text"
-                                    className={`form-control ${errors.FullName ? 'is-invalid' : ''}`}
-                                    name="FullName"
-                                    autoComplete="off"
-                                    placeholder="Enter Co-Applicant Name"
-                                    value={formData.CoapplicantName}
-                                    maxLength="30"
-                                    onChange={(e) => setFormData({ ...formData, CoapplicantName: handleOnlyAlphabet(e.target.value) })}
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="sameAddress"
+                                    checked={coapplicantAdd}
+                                    onChange={(e) => setCoApplicantAdd(e.target.checked)}
                                 />
-                                {/* {errors.CoapplicantName && <div className="invalid-feedback">{errors.CoapplicantName}</div>} */}
                             </div>
 
                             {/* Gender */}
@@ -540,18 +540,13 @@ const PersonalDetailsForm = () => {
                                 <label className="form-label fw-semibold mb-1">Father/Husband Name <span className="text-danger">*</span></label>
                                 <input type="text" autoComplete="off" className="form-control" placeholder="Enter Name" maxLength="30" value={formData.Fhname} onChange={(e) => setFormData({ ...formData, Fhname: handleOnlyAlphabet(e.target.value) })} />
                             </div>
+
                             {/* Select-Cast */}
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">Select Cast <span className="text-danger">*</span></label>
                                 <Select
                                     className={`${errors.Caste ? 'is-invalid' : ''}`}
                                     name="Caste"
-                                    // value={
-                                    //     casts.find((c) => String(c.CastID) === String(formData.Caste)) ? {
-                                    //         value: String(formData.Caste),
-                                    //         label: casts.find((c) => String(c.CastID) === String(formData.Caste))?.Description,
-                                    //     } : null
-                                    // }
                                     value={selectValue(casts, 'CastID', formData.Caste, 'Description')}
                                     onChange={(event) => onChangeDropdown(event, setFormData, formData, 'Caste')}
                                     options={ChangeArrayFormat(casts, 'CastID', 'Description')}
@@ -673,19 +668,9 @@ const PersonalDetailsForm = () => {
                             <div className="col-md-3">
                                 <label className="form-label fw-semibold mb-1">State <span className="text-danger">*</span></label>
                                 <Select
-                                    // value={states.find((s) => String(s.StateID) === String(formData.State)) ?
-                                    //     {
-                                    //         value: String(formData.State),
-                                    //         label: states.find((st) => String(st.StateID) === String(formData.State))?.Description || '',
-                                    //     } : null
-                                    // }
                                     value={selectValue(states, 'StateID', formData.State, 'Description')}
                                     className="w-full"
                                     placeholder="Select State"
-                                    // options={states.map((st) => ({
-                                    //     value: st.StateID,
-                                    //     label: st.Description,
-                                    // }))}
                                     options={ChangeArrayFormat(states, 'StateID', 'Description')}
                                     default={formData.State}
                                     onChange={(event) => {
@@ -707,17 +692,7 @@ const PersonalDetailsForm = () => {
                                 <Select
                                     className="w-full"
                                     placeholder="Select City"
-                                    // value={cityies.find((c) => String(c.CityID) === String(formData.City))
-                                    //     ? {
-                                    //         value: String(formData.City),
-                                    //         label: cityies.find((d) => String(d.CityID) === String(formData.City))?.Description || '',
-                                    //     } : null
-                                    // }
                                     value={selectValue(cityies, 'CityID', formData.City, 'Description')}
-                                    // options={cityies.map((d) => ({
-                                    //     value: d.CityID,
-                                    //     label: d.Description,
-                                    // }))}
                                     options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
                                     onChange={(selectedOption) => {
                                         onChangeDropdown(selectedOption, setFormData, formData, 'City');
@@ -804,6 +779,270 @@ const PersonalDetailsForm = () => {
                     </form>
                 )}
             </div>
+            {coapplicantAdd && (
+                <div className="row g-2 p-3">
+
+                    {/* Co-Applicant Name */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Applicant Name *</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={formData.CoapplicantName}
+                            maxLength="30"
+                            onChange={(e) =>
+                                setFormData({ ...formData, CoapplicantName: handleOnlyAlphabet(e.target.value) })
+                            }
+                        />
+                    </div>
+
+                    {/* Co-Gender */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Gender *</label>
+                        <div className="d-flex">
+                            <div className="form-check me-3">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="CoGender"
+                                    value="male"
+                                    checked={formData.CoGender === 'male'}
+                                    onChange={(e) => setFormData({ ...formData, CoGender: e.target.value })}
+                                />
+                                <label className="form-check-label">Male</label>
+                            </div>
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="CoGender"
+                                    value="female"
+                                    checked={formData.CoGender === 'female'}
+                                    onChange={(e) => setFormData({ ...formData, CoGender: e.target.value })}
+                                />
+                                <label className="form-check-label">Female</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Co-DOB */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Date of Birth *</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={formData.CoDob}
+                            max={new Date().toISOString().split('T')[0]}
+                            onChange={(e) => setFormData({ ...formData, CoDob: e.target.value })}
+                        />
+                    </div>
+
+                    {/* Co-Email */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Email *</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={formData.CoEmail}
+                            onChange={(e) => setFormData({ ...formData, CoEmail: e.target.value })}
+                        />
+                    </div>
+
+                    {/* Co-Father / Husband */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Select One *</label>
+                        <div className="d-flex">
+                            <div className="form-check me-3">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="CoNameSelect"
+                                    value="father"
+                                    checked={formData.CoNameSelect === 'father'}
+                                    onChange={(e) => setFormData({ ...formData, CoNameSelect: e.target.value })}
+                                />
+                                <label className="form-check-label">Father</label>
+                            </div>
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="CoNameSelect"
+                                    value="husband"
+                                    checked={formData.CoNameSelect === 'husband'}
+                                    onChange={(e) => setFormData({ ...formData, CoNameSelect: e.target.value })}
+                                />
+                                <label className="form-check-label">Husband</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Co-Father / Husband Name */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Father/Husband Name *</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={formData.CoFhname}
+                            onChange={(e) =>
+                                setFormData({ ...formData, CoFhname: handleOnlyAlphabet(e.target.value) })
+                            }
+                        />
+                    </div>
+
+                    {/* Co-Caste */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Caste *</label>
+                        <Select
+                            value={selectValue(casts, 'CastID', formData.CoCaste, 'Description')}
+                            onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCaste')}
+                            options={ChangeArrayFormat(casts, 'CastID', 'Description')}
+                            isClearable
+                        />
+                    </div>
+
+                    {/* Co-ID Proof */}
+                    <div className="col-md-6">
+                        <label className="form-label fw-semibold">ID Proof *</label>
+                        {['pan', 'drivingLicense', 'voterId', 'rashanCard'].map((id) => (
+                            <div className="form-check form-check-inline" key={id}>
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="CoIdproof"
+                                    value={id}
+                                    checked={formData.CoIdproof === id}
+                                    onChange={(e) => setFormData({ ...formData, CoIdproof: e.target.value })}
+                                />
+                                <label className="form-check-label">{id}</label>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Co-ID No */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">ID No *</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={formData.CoIdproofNo}
+                            onChange={(e) => setFormData({ ...formData, CoIdproofNo: e.target.value })}
+                        />
+                    </div>
+
+                    {/* Co-Aadhaar */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Aadhaar *</label>
+                        <input
+                            type="text"
+                            maxLength="14"
+                            className="form-control"
+                            value={formData.CoAadharNumber}
+                            onChange={(e) =>
+                                setFormData({ ...formData, CoAadharNumber: formatTextwithSpace(e.target.value) })
+                            }
+                        />
+                    </div>
+
+                    {/* Co-Mobile */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Mobile *</label>
+                        <input
+                            type="text"
+                            maxLength="10"
+                            className="form-control"
+                            value={formData.CoMobileNumber}
+                            onChange={(e) =>
+                                setFormData({ ...formData, CoMobileNumber: mobileNoValidation(e.target.value) })
+                            }
+                        />
+                    </div>
+
+                    {/* Co-ZIP */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">ZIP *</label>
+                        <input
+                            type="text"
+                            maxLength="6"
+                            className="form-control"
+                            value={formData.CoZipCode}
+                            onChange={(e) =>
+                                setFormData({ ...formData, CoZipCode: onlyDigitsWithLimit(e.target.value, 6) })
+                            }
+                        />
+                    </div>
+
+                    {/* Co-State */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">State *</label>
+                        <Select
+                            value={selectValue(states, 'StateID', formData.CoState, 'Description')}
+                            options={ChangeArrayFormat(states, 'StateID', 'Description')}
+                            onChange={(e) => {
+                                onChangeDropdown(e, setFormData, formData, 'CoState');
+                                fetchCity(e.value);
+                                setFormData(prev => ({ ...prev, CoCity: null }));
+                            }}
+                            isClearable
+                        />
+                    </div>
+
+                    {/* Co-City */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">City *</label>
+                        <Select
+                            value={selectValue(cityies, 'CityID', formData.CoCity, 'Description')}
+                            options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
+                            onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCity')}
+                            isClearable
+                        />
+                    </div>
+
+                    {/* Co-Country */}
+                    <div className="col-md-3">
+                        <label className="form-label fw-semibold">Country</label>
+                        <input className="form-control" value="INDIA" disabled />
+                    </div>
+
+                    {/* Co-Address */}
+                    <div className="col-md-12">
+                        <label className="form-label fw-semibold">Permanent Address *</label>
+                        <textarea
+                            className="form-control"
+                            value={formData.CoParaddress}
+                            onChange={(e) => setFormData({ ...formData, CoParaddress: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="col-md-12">
+                        <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                checked={coAppliAddress}
+                                onChange={(e) => {
+                                    setCoAppliAddress(e.target.checked);
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        CoPosaddress: e.target.checked ? prev.CoParaddress : ''
+                                    }));
+                                }}
+                            />
+                            <label className="form-check-label">Same as above</label>
+                        </div>
+                    </div>
+
+                    <div className="col-md-12">
+                        <label className="form-label fw-semibold">Postal Address *</label>
+                        <textarea
+                            className="form-control"
+                            value={formData.CoPosaddress}
+                            onChange={(e) => setFormData({ ...formData, CoPosaddress: e.target.value })}
+                        />
+                    </div>
+                </div>
+            )}
+
             {
                 activeTab === "bank" && (
                     <BankDetailsForm onBack={() => setActiveTab("personal")} />

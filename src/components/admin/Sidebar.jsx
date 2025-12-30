@@ -47,7 +47,7 @@ const Sidebar = ({ sidebarOpen, isMobile, setSidebarOpen, onLogout }) => {
     useEffect(() => {
         getProjectName();
     }, []);
-//In this why getProjectName is not getting called at page refresh
+    //In this why getProjectName is not getting called at page refresh
     return (
         <>
             {/* Sidebar */}
