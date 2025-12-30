@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { AddDeleteUpdateData, fetchPostData } from "../../components/hooks/Api";
 import toast, { showWarning, showSuccess, showError } from '../../utils/toast';
+import VerifyStatusModal from "../../components/admin/VerifyStatusModal";
 
 
 function useTableHeight() {
@@ -29,6 +30,9 @@ const Application = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [checkedRows, setCheckedRows] = useState({});
+    const [showVerifyModal, setShowVerifyModal] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+
 
     const CompanyID = localStorage.getItem("companyID") ?? 1;
     const UserID = localStorage.getItem('AdminUserID') || 1
@@ -66,19 +70,27 @@ const Application = () => {
 
     const columns = [
         {
-            name: "Verify/Unverify",
+            name: "Verify / Unverify",
             cell: (row) => (
-                <button type="button" className={`btn my-1 btn-sm text-white ${String(row?.Status || "").toLowerCase() === "verify" ? "btn-success" : "btn-danger"}`}
-                    onClick={(e, row) => handleCheckBox(row)}
+                <button
+                    type="button"
+                    className={`btn my-1 btn-sm text-white ${String(row?.Status || "").toLowerCase() === "verify"
+                        ? "btn-success"
+                        : "btn-danger"
+                        }`}
+                    onClick={() => openVerifyModal(row)}
                     style={{ width: "clamp(70px, 8vw, 85px)" }}
                 >
-                    {String(row?.Status || "").toLowerCase() === "verify" ? "Verified" : "Unverified"}
+                    {String(row?.Status || "").toLowerCase() === "verify"
+                        ? "Verified"
+                        : "Unverified"}
                 </button>
             ),
             width: "150px",
             grow: 0,
             wrap: false,
         },
+
 
         {
             name: "S.No",
@@ -249,15 +261,10 @@ const Application = () => {
     const tableHeight = useTableHeight();
 
 
-    // User/Update_UserStatus
-    // Status
-    // ModifiedByUser
-    // UserID
-
-    // User/GetData_User
-    // Status
-    // CompanyID
-    // IsActive
+    const openVerifyModal = (row) => {
+        setSelectedRow(row);
+        setShowVerifyModal(true);
+    };
 
 
     return (
@@ -291,6 +298,14 @@ const Application = () => {
                     />
                 </div>
             </div>
+
+            <VerifyStatusModal
+                show={showVerifyModal}
+                row={selectedRow}
+                onClose={() => setShowVerifyModal(false)}
+                // onConfirm={handleVerifyConfirm}
+            />
+
         </div>
 
     );
