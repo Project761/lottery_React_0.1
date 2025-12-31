@@ -1,8 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const ThankYouPage = () => {
     const applicantNumber = localStorage.getItem('ApplicantNumber');
+    const navigate = useNavigate();
+
+    const handleDownloadReceipt = () => {
+        navigate('/personal-details');
+    };
 
     return (
         <div
@@ -26,12 +31,14 @@ const ThankYouPage = () => {
 
                         <hr />
 
-                        <Link 
+                        <button className="btn btn-secondary me-2" onClick={handleDownloadReceipt}>Download Receipt</button>
+                        
+                        <Link
                             to={`/login?applicantNumber=${applicantNumber}`}
                             className="btn btn-primary px-4"
                             style={{ backgroundColor: '#A992F7', border: 'none' }}
                         >
-                            Login 
+                            Login
                         </Link>
                     </div>
                 </div>
