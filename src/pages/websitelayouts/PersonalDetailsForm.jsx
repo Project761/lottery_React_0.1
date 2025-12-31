@@ -789,9 +789,7 @@ const PersonalDetailsForm = () => {
                                 />
                             </div>
 
-                            <div className="col-md-12">
-                                <div className="mb-2 fw-semibold fs-5 text-center">Co-Applicant Information</div>
-                            </div>
+
                         </div>
 
 
@@ -806,6 +804,9 @@ const PersonalDetailsForm = () => {
 
                 {coapplicantAdd && (
                     <div className="row g-2 p-3">
+                        <div className="col-md-12">
+                            <div className="mb-2 fw-semibold fs-5 text-center">Co-Applicant Information</div>
+                        </div>
                         {/* Co-Applicant Name */}
                         <div className="col-md-3">
                             <label className="form-label fw-semibold">Applicant Name <span className="text-danger">*</span></label>
