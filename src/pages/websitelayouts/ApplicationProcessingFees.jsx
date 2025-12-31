@@ -37,13 +37,15 @@ const ApplicationProcessingFees = () => {
     return (
         <div className="container px-0">
             <div className="card shadow-sm">
-                <div className="text-center text-white py-1" style={{ backgroundColor: "#6c757d", fontSize: "14px" }}>
-                    <div className="row g-3 align-items-center">
-                        <div className="col-md-12">
-                            <div className="text-center text-white fw-semibold py-1 mb-2">Application Processing Fee 1000</div>
-                        </div>
-                    </div>
+                <div className="text-center text-white fw-semibold py-1 mb-2" style={{ backgroundColor: "#6c757d" }}>
+                    Application Processing Fee
                 </div>
+
+
+                <div className="text-center text-dark fw-semibold py-1 mb-2" style={{ backgroundColor: "#ffc107", color: "#000" }}>
+                    Application Fee: ₹1,000
+                </div>
+
                 <div className="card-body">
                     <form>
                         <div className="row g-3">
