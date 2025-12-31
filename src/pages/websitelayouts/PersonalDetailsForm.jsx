@@ -340,7 +340,7 @@ const PersonalDetailsForm = () => {
         try {
             const userID = localStorage.getItem("UserID");
             const response = await fetchPostData('User/GetSingleData_User', { UserID: userID });
-
+            console.log("response", response);
             if (response) {
                 const data = { ...defaultFormStructure, ...response[0] };
                 setFormData(data);

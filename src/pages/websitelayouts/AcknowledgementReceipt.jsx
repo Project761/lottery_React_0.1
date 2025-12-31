@@ -8,6 +8,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
   const [bank, setBank] = useState("");
 
   const userData = JSON.parse(localStorage.getItem('applicationFormData'));
+  const applicantNumber = localStorage.getItem('ApplicantNumber');
 
   //---------------------- Dropdowns -----------------------
   const fetchCategory = async () => {
@@ -89,7 +90,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
         <tbody>
           <tr>
             <th>Application Reference Number</th>
-            <td>{userData.ApplicantNumber}</td>
+            <td>{userData.ApplicantNumber || applicantNumber}</td>
           </tr>
           <tr>
             <th>Application Status</th>

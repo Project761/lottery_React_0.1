@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from '../../../node_modules/react-select/dist/react-select.esm.js';
 import { fetchPostData } from "../../components/hooks/Api.js";
 import { showError } from "../../utils/toast.js";
-import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue, handleOnlyAlphabet, onlyDigitsWithLimit} from "../../utils/Comman.js";
+import { onChangeDropdown, upperCaseValue, ChangeArrayFormat, selectValue, handleOnlyAlphabet, onlyDigitsWithLimit } from "../../utils/Comman.js";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -34,26 +34,26 @@ const BankDetailsForm = () => {
     }
 
     const handleNext = () => {
-    const requiredFields = [
-        "BankUserName",
-        "AccountNumber",
-        "BankName",
-        "IfscCode",
-        "BranchAddress",
-    ];
+        const requiredFields = [
+            "BankUserName",
+            "AccountNumber",
+            "BankName",
+            "IfscCode",
+            "BranchAddress",
+        ];
 
-    const isAnyFieldMissing = requiredFields.some(
-        (field) =>
-            !formData[field] || formData[field].toString().trim() === ""
-    );
+        const isAnyFieldMissing = requiredFields.some(
+            (field) =>
+                !formData[field] || formData[field].toString().trim() === ""
+        );
 
-    if (isAnyFieldMissing) {
-        showError("Please fill all mandatory Fields");
-        return;
-    }
+        if (isAnyFieldMissing) {
+            showError("Please fill all mandatory Fields");
+            return;
+        }
 
-    navigate("/application-processing-fees");
-    // navigate("/dd-details");
+        navigate("/application-processing-fees");
+        // navigate("/dd-details");
     };
 
     const onBack = () => {
@@ -80,7 +80,7 @@ const BankDetailsForm = () => {
                         <label className="form-label fw-semibold mb-1">
                             Applicant Name <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Applicant Name" value={formData.BankUserName} maxLength="30" onChange={(e) => setFormData({...formData, BankUserName: handleOnlyAlphabet(e.target.value)})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Applicant Name" value={formData.BankUserName} maxLength="30" onChange={(e) => setFormData({ ...formData, BankUserName: handleOnlyAlphabet(e.target.value) })} />
                     </div>
 
                     {/* Account Number */}
@@ -88,7 +88,7 @@ const BankDetailsForm = () => {
                         <label className="form-label fw-semibold mb-1">
                             Bank Account Number <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} maxLength="20" onChange={(e) => setFormData({...formData, AccountNumber: onlyDigitsWithLimit((e.target.value), 20)})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} maxLength="20" onChange={(e) => setFormData({ ...formData, AccountNumber: onlyDigitsWithLimit((e.target.value), 20) })} />
                     </div>
                     {/* Select Bank */}
                     <div className="col-md-4">
@@ -117,7 +117,7 @@ const BankDetailsForm = () => {
                             IFSC Code <span className="text-danger">*</span>
                         </label>
                         {/* <input type="text"maxLength={11} className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} onChange={(e) => setFormData({...formData, IfscCode: upperCaseValue(e.target.value)})}/> */}
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} maxLength="11" onChange={(e) => setFormData({...formData, IfscCode: upperCaseValue(e.target.value)})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter IFSC Code" value={formData.IfscCode} maxLength="11" onChange={(e) => setFormData({ ...formData, IfscCode: upperCaseValue(e.target.value) })} />
                     </div>
 
                     {/* Bank Branch Address */}
@@ -125,7 +125,7 @@ const BankDetailsForm = () => {
                         <label className="form-label fw-semibold mb-1">
                             Bank Branch Address <span className="text-danger">*</span>
                         </label>
-                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Branch Address" value={formData.BranchAddress} maxLength="250" onChange={(e) => setFormData({...formData, BranchAddress: e.target.value})}/>
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Branch Address" value={formData.BranchAddress} maxLength="250" onChange={(e) => setFormData({ ...formData, BranchAddress: e.target.value })} />
                     </div>
                 </div>
 
