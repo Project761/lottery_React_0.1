@@ -6,7 +6,6 @@ import { mobileNoValidation } from "../../utils/Comman";
 
 const LoginPage = () => {
 
-
   const [mobile, setMobile] = useState("");
   const [applicant, setApplicant] = useState("");
   const navigate = useNavigate();
@@ -58,7 +57,6 @@ const LoginPage = () => {
         navigate("/apply");
       } else {
         showError("Login failed. Please try again.");
-
       }
     } catch (err) {
       showError("Network error, please try again later.");
