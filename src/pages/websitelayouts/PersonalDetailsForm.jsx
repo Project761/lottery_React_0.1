@@ -775,7 +775,7 @@ const PersonalDetailsForm = () => {
 
                             {/* Co-Applicant-Check_Box */}
                             <div className="col-md-12 mt-4 pt-2" style={{ borderTop: "1px solid #ccc" }}>
-                                <label className="form-label fw-semibold mb-2 mr-2">Co-Applicant Name</label><b />
+                                <label className="form-label fw-semibold mb-2 mr-2">Co-Applicant Details</label><b />
                                 <input
                                     style={{ marginLeft: "10px" }}
                                     className="form-check-input"
@@ -787,6 +787,10 @@ const PersonalDetailsForm = () => {
                                         localStorage.setItem("coApplicantData", JSON.stringify(e.target.checked));
                                     }}
                                 />
+                            </div>
+
+                            <div className="col-md-12">
+                                <div className="mb-2 fw-semibold fs-5 text-center">Co-Applicant Information</div>
                             </div>
                         </div>
 
@@ -804,7 +808,7 @@ const PersonalDetailsForm = () => {
                     <div className="row g-2 p-3">
                         {/* Co-Applicant Name */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Applicant Name *</label>
+                            <label className="form-label fw-semibold">Applicant Name <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -819,7 +823,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Gender */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Gender *</label>
+                            <label className="form-label fw-semibold">Gender <span className="text-danger">*</span></label>
                             <div className="d-flex">
                                 <div className="form-check me-3">
                                     <input
@@ -848,7 +852,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-DOB */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Date of Birth *</label>
+                            <label className="form-label fw-semibold">Date of Birth <span className="text-danger">*</span></label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -860,7 +864,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Email */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Email *</label>
+                            <label className="form-label fw-semibold">Email <span className="text-danger">*</span></label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -872,7 +876,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Father / Husband */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Select One *</label>
+                            <label className="form-label fw-semibold">Select One <span className="text-danger">*</span></label>
                             <div className="d-flex">
                                 <div className="form-check me-3">
                                     <input
@@ -901,7 +905,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Father / Husband Name */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Father/Husband Name *</label>
+                            <label className="form-label fw-semibold">Father/Husband Name <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -916,7 +920,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Caste */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Caste *</label>
+                            <label className="form-label fw-semibold">Caste <span className="text-danger">*</span></label>
                             <Select
                                 value={selectValue(casts, 'CastID', formData.CoCaste, 'Description')}
                                 onChange={(e) => onChangeDropdown(e, setFormData, formData, 'CoCaste')}
@@ -926,7 +930,7 @@ const PersonalDetailsForm = () => {
                         </div>
                         {/* Co-Mobile */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Mobile *</label>
+                            <label className="form-label fw-semibold">Mobile <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 maxLength="10"
@@ -941,7 +945,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-ID Proof */}
                         <div className="col-md-6">
-                            <label className="form-label fw-semibold d-block">ID Proof *</label>
+                            <label className="form-label fw-semibold d-block">ID Proof <span className="text-danger">*</span></label>
                             {['PAN', 'Driving License', 'Voter ID', 'Rashan Card'].map((id) => (
                                 <div className="form-check form-check-inline" key={id}>
                                     <input
@@ -959,7 +963,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-ID No */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">ID No *</label>
+                            <label className="form-label fw-semibold">ID No <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -971,7 +975,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Aadhaar */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Aadhaar *</label>
+                            <label className="form-label fw-semibold">Aadhaar <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 maxLength="14"
@@ -988,7 +992,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-ZIP */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">ZIP *</label>
+                            <label className="form-label fw-semibold">ZIP <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 maxLength="6"
@@ -1003,7 +1007,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-State */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">State *</label>
+                            <label className="form-label fw-semibold">State <span className="text-danger">*</span></label>
                             <Select
                                 value={selectValue(states, 'StateID', formData.CoState, 'Description')}
                                 options={ChangeArrayFormat(states, 'StateID', 'Description')}
@@ -1018,7 +1022,7 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-City */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">City *</label>
+                            <label className="form-label fw-semibold">City <span className="text-danger">*</span></label>
                             <Select
                                 value={selectValue(cityies, 'CityID', formData.CoCity, 'Description')}
                                 options={ChangeArrayFormat(cityies, 'CityID', 'Description')}
@@ -1029,13 +1033,13 @@ const PersonalDetailsForm = () => {
 
                         {/* Co-Country */}
                         <div className="col-md-3">
-                            <label className="form-label fw-semibold">Country</label>
+                            <label className="form-label fw-semibold">Country <span className="text-danger">*</span></label>
                             <input className="form-control" value="INDIA" disabled />
                         </div>
 
                         {/* Co-Address */}
                         <div className="col-md-12">
-                            <label className="form-label fw-semibold">Permanent Address *</label>
+                            <label className="form-label fw-semibold">Permanent Address <span className="text-danger">*</span></label>
                             <textarea
                                 className="form-control"
                                 value={formData.CoParaddress}
@@ -1064,7 +1068,7 @@ const PersonalDetailsForm = () => {
                         </div>
 
                         <div className="col-md-12">
-                            <label className="form-label fw-semibold">Postal Address *</label>
+                            <label className="form-label fw-semibold">Postal Address <span className="text-danger">*</span></label>
                             <textarea
                                 className="form-control"
                                 value={formData.CoPosaddress}
