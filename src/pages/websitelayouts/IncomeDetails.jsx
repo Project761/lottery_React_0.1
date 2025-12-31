@@ -370,8 +370,8 @@ const IncomeDetails = () => {
               Project Name <span className="text-danger">*</span>
             </label>
             <div className="form-check">
-              <input className="form-check-input" type="radio" id="project1" name="project" value="SERENITY RESIDENCY"
-                checked={formData.ProjectName === "SERENITY RESIDENCY"}
+              <input className="form-check-input" type="radio" id="project1" name="project" value="Infiniti Homes"
+                checked={formData.ProjectName === "Infiniti Homes"}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
