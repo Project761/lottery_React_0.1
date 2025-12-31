@@ -1,38 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFormData } from "../../context/FormDataContext.jsx";
+import { showError, showSuccess } from "../../utils/toast.js";
 
 const ApplicationProcessingFees = () => {
 
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-        applicationId: "",
-        applicantName: "",
-        feeAmount: "1000",
-        paymentMode: "",
-        paymentDate: "",
-        attachment: null,
-    });
+    const { formData, setFormData } = useFormData();
+    const [isAppliFeeAttach, setIsAppliFeeAttach] = useState(false);
 
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (name === "attachment" && files.length > 0) {
-            setForm((prev) => ({ ...prev, [name]: files[0] }));
-        } else {
-            setForm((prev) => ({ ...prev, [name]: value }));
-        }
-    };
+    useEffect(() => {
+        const copy = { ...formData };
+        delete copy.PaymentAttachement;
+        localStorage.setItem("applicationFormData", JSON.stringify(copy));
+    }, [formData]);
+
+    useEffect(() => {
+        localStorage.setItem("IsAppliFeeAttach", isAppliFeeAttach.toString());
+    }, [isAppliFeeAttach]);
 
     const handleNext = () => {
+        const requiredFields = [
+            "ApplicationFeePaymentRefNum",
+            "ApplicationFeePaymentDate"
+        ];
+
+        const isAnyFieldMissing = requiredFields.some(
+            (field) =>
+                !formData[field] || formData[field].toString().trim() === ""
+        );
+
+        if (isAnyFieldMissing) {
+            showError("Please fill all mandatory Fields");
+            return;
+        }
+
         navigate("/dd-details");
     };
 
     const onBack = () => {
         navigate("/bank-details");
     }
-
-
-
-
 
     return (
         <div className="container px-0">
@@ -50,41 +58,53 @@ const ApplicationProcessingFees = () => {
                     <form>
                         <div className="row g-3">
 
+                            {/* Payment-Reference Number */}
                             <div className="col-md-6">
                                 <label className="form-label"> Payment Reference Number</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     name="applicationId"
-                                    value={form.applicationId}
-                                    onChange={handleChange}
+                                    value={formData.ApplicationFeePaymentRefNum}
+                                    onChange={(e) => setFormData({ ...formData, ApplicationFeePaymentRefNum: e.target.value })}
                                     required
                                     placeholder="Enter transfer number"
                                 />
                             </div>
 
+                            {/* Payment Date */}
                             <div className="col-md-6">
                                 <label className="form-label"> Online Payment Date</label>
                                 <input
                                     type="date"
                                     className="form-control"
                                     name="paymentDate"
-                                    value={form.paymentDate}
-                                    onChange={handleChange}
+                                    value={formData.ApplicationFeePaymentDate}
+                                    onChange={(e) => setFormData({ ...formData, ApplicationFeePaymentDate: e.target.value })}
                                     required
                                 />
                             </div>
 
+                            {/* Payment Attachment */}
                             <div className="col-md-4">
-                                <label className="form-label">Payment Attachment</label>
-                                <input
-                                    type="file"
-                                    className="form-control"
-                                    name="attachment"
-                                    onChange={handleChange}
-                                    accept=".pdf,.jpg,.jpeg,.png"
-                                    required
-                                />
+                                <label className="form-label fw-semibold">Payment Attachment</label>
+                                <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
+                                    onChange={(e) => {
+                                        const file = e.target.files[0];
+                                        // console.log(file);
+                                        if (file) {
+                                            setFormData({ ...formData, ApplicationFeeAttachment: file })
+                                            setFileObject(file);
+                                            setIsAppliFeeAttach(true);
+                                        }
+                                    }} />
+                                {
+                                    formData.ApplicationFeeAttachment && (
+                                        <span>
+                                            Uploaded file: <span>{formData.ApplicationFeeAttachment?.name || formData.ApplicationFeeAttachment}</span>
+                                        </span>
+                                    )
+                                }
                             </div>
 
                         </div>

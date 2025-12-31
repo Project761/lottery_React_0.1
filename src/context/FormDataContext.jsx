@@ -49,6 +49,11 @@ export const defaultFormStructure = {
   IfscCode: '',
   BranchAddress: '',
 
+  // Application Processing Fees
+  ApplicationFeePaymentRefNum: '',
+  ApplicationFeePaymentDate: '',
+  ApplicationFeeAttachment: '',
+
   // Payment Details
   PaymentTrasnum: '',
   PaymentDate: '',
@@ -61,6 +66,7 @@ export const defaultFormStructure = {
   AnnualIncome: '',
   ProjectName: '',
   PolicyName: '',
+  IncomeDetailsAttachment : '',
 
   Status: 'Active',
   // CreatedByUser: 'Admin',
@@ -104,6 +110,7 @@ export const FormDataProvider = ({ children }) => {
     localStorage.removeItem("token_expiry");
     localStorage.removeItem("coApplicantData");
     localStorage.removeItem("coAppliAddress");
+    localStorage.removeItem("verifiedMobile");
   }
 
   return (
@@ -115,3 +122,6 @@ export const FormDataProvider = ({ children }) => {
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useFormData = () => useContext(FormDataContext);
+
+//But now still there is problem that when we are changing value of ApplicationFeeAttachment , IncomeDetailsAttachment	then on our User/Update_PaymentAttachement only Files data is going not the other two. Why 
+//Give me only solution

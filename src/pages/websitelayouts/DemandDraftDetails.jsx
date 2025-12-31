@@ -133,28 +133,10 @@ const DemandDraftDetails = () => {
         navigate("/income-details");
     };
 
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === "checkbox" ? checked : value,
-        });
-
-        // Clear error when user starts typing
-        if (errors[name]) {
-            setErrors({
-                ...errors,
-                [name]: "",
-            });
-        }
-    };
-
     const onBack = () => {
         // navigate("/bank-details");
          navigate("/application-processing-fees");
     }
-
-
 
 
     useEffect(() => {
@@ -225,19 +207,9 @@ const DemandDraftDetails = () => {
                             </label>
 
                             <Select
-                                // value={bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank)) ?
-                                //     {
-                                //         value: formData.PaymentBank,
-                                //         label: bankDetails.find((b) => String(b.BankID) === String(formData.PaymentBank))?.Description || ''
-                                //     } : null
-                                // }
                                 value={selectValue(bankDetails, 'BankID', formData.PaymentBank, 'Description')}
                                 className="w-full"
                                 placeholder="Select Bank"
-                                // options={bankDetails.map((b) => ({
-                                //     value: b.BankID,
-                                //     label: b.Description
-                                // }))}
                                 options={ChangeArrayFormat(bankDetails, 'BankID', 'Description')}
                                 onChange={(event) => { onChangeDropdown(event, setFormData, formData, 'PaymentBank'); }}
                                 styles={{
@@ -256,19 +228,9 @@ const DemandDraftDetails = () => {
                                 Select Amount <span className="text-danger">*</span>
                             </label>
                             <Select
-                                //   value = {amount.find((a) => String(a.AmountID) === String(formData.BankAmount)) ?
-                                //     {
-                                //         value: String(formData.BankAmount),
-                                //         label: amount.find((a) => String(a.AmountID) === String(formData.BankAmount))?.Description || ''
-                                //     } : null
-                                //   }
                                 value={selectValue(amount, 'AmountID', formData.BankAmount, 'Description')}
                                 className="w-full"
                                 placeholder="Select Amount"
-                                //   options={amount.map((a) => ({
-                                //     value: a.AmountID,
-                                //     label: a.Description
-                                //   }))}
                                 options={ChangeArrayFormat(amount, 'AmountID', 'Description')}
                                 onChange={(event) => {
                                     onChangeDropdown(event, setFormData, formData, 'BankAmount');

@@ -87,6 +87,7 @@ const PersonalDetailsPage = () => {
             setBank("");
         }
     }
+    const applicantNumber = localStorage.getItem('ApplicantNumber');
  
     useEffect(() => {
         fetchBank();
@@ -114,7 +115,7 @@ const PersonalDetailsPage = () => {
                 <div className="card-body text-center border-bottom">
                     <h4 className="fw-bold">{userData.FullName}</h4>
                     <p className="mb-1">
-                        <strong>Applicant Number:</strong> {userData.ApplicantNumber}
+                        <strong>Applicant Number:</strong> {userData.ApplicantNumber || applicantNumber}
                     </p>
                     <p className="mb-1">
                         <strong>Email:</strong> {userData.Email}

@@ -16,6 +16,7 @@ const IncomeDetails = () => {
   const [category, setcategory] = useState([]);
   const [income, setIncome] = useState([]);
   const [projName, setProjName] = useState("");
+  const [isIncomeDetAttac, setIsIncomeDetAttac] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -26,9 +27,13 @@ const IncomeDetails = () => {
 
   useEffect(() => {
     const copy = { ...formData };
-    delete copy.PaymentAttachement;
+    delete copy.IncomeDetailsAttachment;
     localStorage.setItem("applicationFormData", JSON.stringify(copy));
   }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem("IsIncomeDetAttac", isIncomeDetAttac.toString());
+  }, [isIncomeDetAttac]);
 
   //---------------------- Dropdowns -----------------------
   const fetchCategory = async () => {
@@ -91,7 +96,7 @@ const IncomeDetails = () => {
   const userID = localStorage.getItem("UserID");
   const insertFormData = async () => {
     try {
-      const payload = buildFormData(formData, formData.PaymentAttachement);
+      const payload = buildFormData(formData);
 
       const response = await fetchPostFormData("User/Insert_User", payload);
 
@@ -99,7 +104,7 @@ const IncomeDetails = () => {
       showSuccess("Application submitted successfully!");
 
       // localStorage.removeItem("applicationFormData");
-      setFormData({});
+      // setFormData({});
       setTimeout(() => navigate("/thank-you"), 1000);
 
     } catch (error) {
@@ -112,13 +117,16 @@ const IncomeDetails = () => {
     try {
       const userID = localStorage.getItem("UserID");
       const isPaymentAttachmentChanged = localStorage.getItem("IsPaymentAttachmentChanged") === "true";
-      // console.log(isPaymentAttachmentChanged);
-      // console.log(formData.PaymentAttachement);
-      if (isPaymentAttachmentChanged && formData.PaymentAttachement instanceof File) {
+      const IsIncomeDetAttac = localStorage.getItem("IsIncomeDetAttac") === "true";
+      const IsAppliFeeAttach = localStorage.getItem("IsAppliFeeAttach") === "true";
+
+      if (isPaymentAttachmentChanged && formData.PaymentAttachement instanceof File || IsAppliFeeAttach && formData.ApplicationFeeAttachment instanceof File || IsIncomeDetAttac && formData.IncomeDetailsAttachment instanceof File) {
         const fd = new FormData();
         const data = { UserID: userID };
         fd.append("Data", JSON.stringify(data));
         fd.append("Files", formData.PaymentAttachement);
+        fd.append("ApplicationFeeAttachment", formData.ApplicationFeeAttachment);
+        fd.append("IncomeDetailsAttachment", formData.IncomeDetailsAttachment);
 
         await fetchPostFormData("User/Update_PaymentAttachement", fd);
         setFormData((prev) => ({
@@ -149,6 +157,137 @@ const IncomeDetails = () => {
       showError("Error submitting form. Please try again!");
     }
   };
+
+  // const updateFormData = async () => {
+  //   try {
+  //     const userID = localStorage.getItem("UserID");
+
+  //     const isPaymentAttachmentChanged = localStorage.getItem("IsPaymentAttachmentChanged") === "true";
+  //     const IsAppliFeeAttach = localStorage.getItem("IsAppliFeeAttach") === "true";
+  //     const IsIncomeDetAttac = localStorage.getItem("IsIncomeDetAttac") === "true";
+
+  //     const shouldUpdateAttachment = isPaymentAttachmentChanged || IsAppliFeeAttach || IsIncomeDetAttac;
+
+  //     if (shouldUpdateAttachment) {
+  //       const fd = new FormData();
+  //       fd.append("Data", JSON.stringify({ UserID: userID }));
+
+  //       if (isPaymentAttachmentChanged && formData.PaymentAttachement instanceof File) {
+  //         fd.append("Files", formData.PaymentAttachement);
+  //       }
+
+  //       if (IsAppliFeeAttach && formData.ApplicationFeeAttachment instanceof File) {
+  //         fd.append("Files", formData.ApplicationFeeAttachment);
+  //       }
+
+  //       if (IsIncomeDetAttac && formData.IncomeDetailsAttachment instanceof File) {
+  //         fd.append("Files", formData.IncomeDetailsAttachment);
+  //       }
+
+  //       await fetchPostFormData("User/Update_PaymentAttachement", fd);
+
+  //       localStorage.setItem("IsPaymentAttachmentChanged", "false");
+  //       localStorage.setItem("IsAppliFeeAttach", "false");
+  //       localStorage.setItem("IsIncomeDetAttac", "false");
+  //     }
+
+
+  //     const payload = { ...formData };
+
+  //     payload.PaymentAttachement = formData.PaymentAttachement?.name || formData.PaymentAttachement || "";
+  //     payload.ApplicationFeeAttachment = formData.ApplicationFeeAttachment?.name || formData.ApplicationFeeAttachment || "";
+  //     payload.IncomeDetailsAttachment = formData.IncomeDetailsAttachment?.name || formData.IncomeDetailsAttachment || "";
+
+  //     const response = await fetchPostData("User/Update_User", payload);
+
+  //     if (!response) {
+  //       showError("Something went wrong!");
+  //       return;
+  //     }
+
+  //     showSuccess("Application Updated successfully!");
+
+  //     localStorage.removeItem("applicationFormData");
+  //     localStorage.removeItem("UserID");
+  //     localStorage.removeItem("sameAddress");
+  //     setFormData({});
+
+  //     setTimeout(() => navigate("/"), 1000);
+  //   } catch (error) {
+  //     showError("Error submitting form. Please try again!");
+  //   }
+  // };
+
+  // const updateFormData = async () => {
+  //   try {
+  //     const userID = localStorage.getItem("UserID");
+
+  //     const isPaymentAttachmentChanged =
+  //       localStorage.getItem("IsPaymentAttachmentChanged") === "true";
+  //     const IsAppliFeeAttach =
+  //       localStorage.getItem("IsAppliFeeAttach") === "true";
+  //     const IsIncomeDetAttac =
+  //       localStorage.getItem("IsIncomeDetAttac") === "true";
+
+  //     // 🔹 PAYMENT ATTACHMENT
+  //     if (isPaymentAttachmentChanged && formData.PaymentAttachement instanceof File) {
+  //       const fd = new FormData();
+  //       fd.append("Data", JSON.stringify({ UserID: userID }));
+  //       fd.append("Files", formData.PaymentAttachement);
+
+  //       await fetchPostFormData("User/Update_PaymentAttachement", fd);
+  //       localStorage.setItem("IsPaymentAttachmentChanged", "false");
+  //     }
+
+  //     // 🔹 APPLICATION FEE ATTACHMENT
+  //     if (IsAppliFeeAttach && formData.ApplicationFeeAttachment instanceof File) {
+  //       const fd = new FormData();
+  //       fd.append("Data", JSON.stringify({ UserID: userID }));
+  //       fd.append("ApplicationFeeAttachment", formData.ApplicationFeeAttachment);
+
+  //       await fetchPostFormData("User/Update_PaymentAttachement", fd);
+  //       localStorage.setItem("IsAppliFeeAttach", "false");
+  //     }
+
+  //     // 🔹 INCOME DETAILS ATTACHMENT
+  //     if (IsIncomeDetAttac && formData.IncomeDetailsAttachment instanceof File) {
+  //       const fd = new FormData();
+  //       fd.append("Data", JSON.stringify({ UserID: userID }));
+  //       fd.append("IncomeDetailsAttachment", formData.IncomeDetailsAttachment);
+
+  //       await fetchPostFormData("User/Update_PaymentAttachement", fd);
+  //       localStorage.setItem("IsIncomeDetAttac", "false");
+  //     }
+
+  //     // 🔹 Update normal form data
+  //     const payload = {
+  //       ...formData,
+  //       PaymentAttachement:
+  //         formData.PaymentAttachement?.name || formData.PaymentAttachement || "",
+  //       ApplicationFeeAttachment:
+  //         formData.ApplicationFeeAttachment?.name ||
+  //         formData.ApplicationFeeAttachment ||
+  //         "",
+  //       IncomeDetailsAttachment:
+  //         formData.IncomeDetailsAttachment?.name ||
+  //         formData.IncomeDetailsAttachment ||
+  //         "",
+  //     };
+
+  //     const response = await fetchPostData("User/Update_User", payload);
+  //     if (!response) {
+  //       showError("Something went wrong!");
+  //       return;
+  //     }
+
+  //     showSuccess("Application Updated successfully!");
+  //     setTimeout(() => navigate("/"), 1000);
+  //   } catch {
+  //     showError("Error submitting form. Please try again!");
+  //   }
+  // };
+
+
 
   const onBack = () => {
     navigate("/dd-details");
@@ -202,19 +341,26 @@ const IncomeDetails = () => {
             />
           </div>
         </div>
-        <div className="row my-2">
-          <div className="col-md-6">
-            <label className="form-label">Payment Attachment</label>
-            <input
-              type="file"
-              className="form-control"
-              name="attachment"
-              // onChange={handleChange}
-              accept=".pdf,.jpg,.jpeg,.png"
-              required
-            />
-          </div>
-
+        {/* IncomeDetailsAttachment */}
+        <div className="col-md-4">
+          <label className="form-label fw-semibold">Payment Attachment</label>
+          <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              // console.log(file);
+              if (file) {
+                setFormData({ ...formData, IncomeDetailsAttachment: file })
+                setFileObject(file);
+                setIsIncomeDetAttac(true);
+              }
+            }} />
+          {
+            formData.IncomeDetailsAttachment && (
+              <span>
+                Uploaded file: <span>{formData.IncomeDetailsAttachment?.name || formData.IncomeDetailsAttachment}</span>
+              </span>
+            )
+          }
         </div>
 
         {/* Project Name */}
