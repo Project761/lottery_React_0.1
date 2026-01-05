@@ -152,9 +152,11 @@ const IncomeDetails = () => {
         setTimeout(() => navigate("/"), 1000);
       } else {
         showError(response?.Message || "Something went wrong!");
+
       }
     } catch (error) {
       showError("Error submitting form. Please try again!");
+
     }
   };
 
@@ -287,8 +289,6 @@ const IncomeDetails = () => {
   //   }
   // };
 
-
-
   const onBack = () => {
     navigate("/dd-details");
   }
@@ -385,8 +385,6 @@ const IncomeDetails = () => {
               </label>
             </div>
           </div>
-
-
 
         </div>
 
