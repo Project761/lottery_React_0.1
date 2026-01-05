@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { showError, showSuccess } from "../../utils/toast.js";
+import { fetchPostData } from "../../components/hooks/Api.js";
 
 const ApplicationProcessingFees = () => {
-
+    const CompanyID = localStorage.getItem('companyID') ?? 1
     const navigate = useNavigate();
     const { formData, setFormData } = useFormData();
     const [isAppliFeeAttach, setIsAppliFeeAttach] = useState(false);
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
         const copy = { ...formData };
@@ -41,6 +43,26 @@ const ApplicationProcessingFees = () => {
     const onBack = () => {
         navigate("/bank-details");
     }
+
+
+
+    useEffect(() => {
+        getPaperImage();
+    }, [CompanyID]);
+
+    const getPaperImage = async () => {
+        const response = await fetchPostData("ButtonDetails/GETALL_ButtonDetails", {
+            "IsActive": true,
+            "ButtonType": "APPLICATION PROCESSING FEES",
+            "CompanyID": localStorage.getItem('companyID') || 1,
+        });
+        setImages(response)
+        // console.log("🚀 ~ getPaperImage ~ response:", response)
+    }
+
+
+
+
 
     return (
         <div className="container px-0">
@@ -105,6 +127,16 @@ const ApplicationProcessingFees = () => {
                                         </span>
                                     )
                                 }
+                            </div>
+
+                            <div className="d-flex gap-2 flex-wrap justify-content-center mt-3">
+                                {images?.map((item, index) => (
+                                    <img key={index} src={item?.FilePath} alt="Application Processing Fees"
+                                        style={{
+                                            width: "300px", height: "300px", objectFit: "contain", border: "1px solid #ddd", borderRadius: "8px",
+                                        }}
+                                    />
+                                ))}
                             </div>
 
                         </div>
