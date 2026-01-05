@@ -64,7 +64,7 @@ export const defaultFormStructure = {
   // Income Details
   Category: '',
   AnnualIncome: '',
-  ProjectName: '',
+  ProjectName: 'Infiniti Homes',
   PolicyName: '',
   IncomeDetailsAttachment : '',
 
