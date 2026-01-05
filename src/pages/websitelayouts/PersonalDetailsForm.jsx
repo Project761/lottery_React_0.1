@@ -788,8 +788,6 @@ const PersonalDetailsForm = () => {
                                     }}
                                 />
                             </div>
-
-
                         </div>
 
 

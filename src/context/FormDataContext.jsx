@@ -1,103 +1,135 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext, } from "react";
+import { fetchPostData } from "../components/hooks/Api";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const FormDataContext = createContext();
 
+/* ---------------- DEFAULT FORM STRUCTURE ---------------- */
 export const defaultFormStructure = {
   // Personal Details
-  FullName: '',
-  Gender: '',
-  Dob: '',
-  Email: '',
-  NameSelect: '',
-  Fhname: '',
-  Idproof: '',
-  IdproofNo: '',
-  AadharNumber: '',
+  FullName: "",
+  Gender: "",
+  Dob: "",
+  Email: "",
+  NameSelect: "",
+  Fhname: "",
+  Idproof: "",
+  IdproofNo: "",
+  AadharNumber: "",
   Caste: null,
-  MobileNumber: '',
-  ZipCode: '',
+  MobileNumber: "",
+  ZipCode: "",
   State: null,
   City: null,
-  Country: 'INDIA',
-  Paraddress: '',
-  Posaddress: '',
+  Country: "INDIA",
+  Paraddress: "",
+  Posaddress: "",
 
   // Co-applicant
-  CoapplicantName: '',
-  CoGender: '',
-  CoDob: '',
-  CoEmail: '',
-  CoNameSelect: '',
-  CoFhname: '',
-  CoIdproof: '',
-  CoIdproofNo: '',
-  CoAadharNumber: '',
+  CoapplicantName: "",
+  CoGender: "",
+  CoDob: "",
+  CoEmail: "",
+  CoNameSelect: "",
+  CoFhname: "",
+  CoIdproof: "",
+  CoIdproofNo: "",
+  CoAadharNumber: "",
   CoCaste: null,
-  CoMobileNumber: '',
-  CoZipCode: '',
+  CoMobileNumber: "",
+  CoZipCode: "",
   CoState: null,
   CoCity: null,
-  CoCountry: 'INDIA',
-  CoParaddress: '',
-  CoPosaddress: '',
+  CoCountry: "INDIA",
+  CoParaddress: "",
+  CoPosaddress: "",
 
   // Bank Details
-  BankUserName: '',
-  AccountNumber: '',
+  BankUserName: "",
+  AccountNumber: "",
   BankName: null,
-  IfscCode: '',
-  BranchAddress: '',
+  IfscCode: "",
+  BranchAddress: "",
 
   // Application Processing Fees
-  ApplicationFeePaymentRefNum: '',
-  ApplicationFeePaymentDate: '',
-  ApplicationFeeAttachment: '',
+  ApplicationFeePaymentRefNum: "",
+  ApplicationFeePaymentDate: "",
+  ApplicationFeeAttachment: "",
 
   // Payment Details
-  PaymentTrasnum: '',
-  PaymentDate: '',
-  PaymentBank: '',
-  BankAmount: '',
-  PaymentAttachement: '',
+  PaymentTrasnum: "",
+  PaymentDate: "",
+  PaymentBank: "",
+  BankAmount: "",
+  PaymentAttachement: "",
 
   // Income Details
-  Category: '',
-  AnnualIncome: '',
-  ProjectName: 'Infiniti Homes',
-  PolicyName: '',
-  IncomeDetailsAttachment : '',
+  Category: "",
+  AnnualIncome: "",
+  ProjectName: "",
+  PolicyName: "",
+  IncomeDetailsAttachment: "",
 
-  Status: 'Active',
-  // CreatedByUser: 'Admin',
-  ApplicantNumber: '',
-  CompanyID: localStorage.getItem('companyID') || 1,
+  Status: "Active",
+  ApplicantNumber: "",
+  CompanyID: localStorage.getItem("companyID") || 1,
 };
 
-// export const 
-
+/* ---------------- PROVIDER ---------------- */
 export const FormDataProvider = ({ children }) => {
   const [formData, setFormData] = useState(() => {
     try {
       const saved = localStorage.getItem("applicationFormData");
       if (saved) {
-        return { ...defaultFormStructure, ...JSON.parse(saved) };
+        return {
+          ...defaultFormStructure,
+          ...JSON.parse(saved),
+        };
       }
-    } catch (err) {
-      // console.error("Error parsing saved form data:", err);
+    } catch (error) {
+      console.error("Error reading localStorage:", error);
     }
     return defaultFormStructure;
   });
 
+  /* ---------------- FETCH COMPANY DATA ---------------- */
+  const getSingleData = async () => {
+    try {
+      const resp = await fetchPostData("GetSingleData_Company", {
+        CompanyID: localStorage.getItem("companyID") || 1,
+      }, []);
+
+      if (resp?.success && resp?.data) {
+        const parsedData = JSON.parse(resp.data);
+        const companyData = parsedData?.Table?.[0];
+
+        if (companyData?.ProjectName) {
+          setFormData((prev) => ({
+            ...prev,
+            ProjectName: companyData.ProjectName,
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching company data:", error);
+    }
+  };
+
+  /* ---------------- LOAD COMPANY DATA ONCE ---------------- */
+  useEffect(() => {
+    getSingleData();
+  }, []);
+
+  /* ---------------- SAVE TO LOCAL STORAGE ---------------- */
   useEffect(() => {
     try {
-      const normalized = { ...defaultFormStructure, ...formData };
+      const normalized = { ...defaultFormStructure, ...formData, };
       localStorage.setItem("applicationFormData", JSON.stringify(normalized));
-    } catch (err) {
-      // console.error("Error saving formData to localStorage:", err);
+    } catch (error) {
+      console.error("Error saving formData:", error);
     }
   }, [formData]);
 
+  /* ---------------- RESET FORM ---------------- */
   const resetFormData = () => {
     setFormData(defaultFormStructure);
     localStorage.removeItem("applicationFormData");
@@ -111,17 +143,13 @@ export const FormDataProvider = ({ children }) => {
     localStorage.removeItem("coApplicantData");
     localStorage.removeItem("coAppliAddress");
     localStorage.removeItem("verifiedMobile");
-  }
+  };
 
   return (
-    <FormDataContext.Provider value={{ formData, setFormData, resetFormData }}>
+    <FormDataContext.Provider value={{ formData, setFormData, resetFormData }} >
       {children}
     </FormDataContext.Provider>
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useFormData = () => useContext(FormDataContext);
-
-//But now still there is problem that when we are changing value of ApplicationFeeAttachment , IncomeDetailsAttachment	then on our User/Update_PaymentAttachement only Files data is going not the other two. Why 
-//Give me only solution

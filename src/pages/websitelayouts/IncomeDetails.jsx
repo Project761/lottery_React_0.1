@@ -80,10 +80,9 @@ const IncomeDetails = () => {
     const response = await fetchPostData("Company/GetSingleData_Company", {
       "CompanyID": localStorage.getItem('companyID') || 1,
     });
-    // console.log("🚀 ~ getHeaderImage ~ response:", response);
+
     if (response?.length > 0) {
       setProjName(response[0].ProjectName);
-      // console.log(response[0].ProjectName);
     }
   }
 
@@ -119,6 +118,16 @@ const IncomeDetails = () => {
       const isPaymentAttachmentChanged = localStorage.getItem("IsPaymentAttachmentChanged") === "true";
       const IsIncomeDetAttac = localStorage.getItem("IsIncomeDetAttac") === "true";
       const IsAppliFeeAttach = localStorage.getItem("IsAppliFeeAttach") === "true";
+
+      if (isPaymentAttachmentChanged) {
+        localStorage.removeItem(formData.PaymentAttachement);
+      }
+      if(IsAppliFeeAttach) {
+        localStorage.removeItem(formData.ApplicationFeeAttachment);
+      }
+      if(IsIncomeDetAttac) {
+        localStorage.removeItem(formData.IncomeDetailsAttachment);
+      }
 
       if (isPaymentAttachmentChanged && formData.PaymentAttachement instanceof File || IsAppliFeeAttach && formData.ApplicationFeeAttachment instanceof File || IsIncomeDetAttac && formData.IncomeDetailsAttachment instanceof File) {
         const fd = new FormData();
@@ -287,8 +296,6 @@ const IncomeDetails = () => {
   //   }
   // };
 
-
-
   const onBack = () => {
     navigate("/dd-details");
   }
@@ -434,6 +441,5 @@ const IncomeDetails = () => {
     </div>
   );
 };
-
 
 export default IncomeDetails;
