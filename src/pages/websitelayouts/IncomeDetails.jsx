@@ -317,7 +317,7 @@ const IncomeDetails = () => {
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1"> Select Income Category <span className="text-danger">*</span></label>
             <Select name="Category"
-              value={selectValue(category, 'CategoryID', formData.Category, 'Description')}
+              value={selectValue(category, 'CategoryID', formData.Category, 'plot_range')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "Category")}
               options={ChangeArrayFormat(category, 'CategoryID', 'plot_range')}
               placeholder="Select Category"
@@ -349,9 +349,10 @@ const IncomeDetails = () => {
               }}
             /> */}
 
-            <input type="text" className="form-control" autoComplete="off" placeholder="Enter Annual Income " value={formData.AnnualIncome} onChange={(e) => setFormData({ ...formData, AnnualIncome: e.target.value })} />
+            <input type="number" className="form-control" autoComplete="off" placeholder="Enter Annual Income " value={formData.AnnualIncome} onChange={(e) => setFormData({ ...formData, AnnualIncome: e.target.value })} />
           </div>
         </div>
+
         {/* IncomeDetailsAttachment */}
         <div className="col-md-4">
           <label className="form-label fw-semibold">Payment Attachment</label>
