@@ -225,7 +225,7 @@ const DemandDraftDetails = () => {
                         </div>
 
                         {/* Select Amount */}
-                        <div className="col-md-4">
+                        <div className="col-md-4">  
                             <label className="form-label fw-semibold">
                                 Select Amount <span className="text-danger">*</span>
                             </label>
