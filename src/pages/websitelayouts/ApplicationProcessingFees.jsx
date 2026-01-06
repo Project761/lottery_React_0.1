@@ -73,7 +73,7 @@ const ApplicationProcessingFees = () => {
 
 
                 <div className="text-center text-dark fw-semibold py-1 mb-2" style={{ backgroundColor: "#ffc107", color: "#000" }}>
-                    Application Fee: ₹1,000
+                    Application Fee: ₹500
                 </div>
 
                 <div className="card-body">
@@ -109,7 +109,7 @@ const ApplicationProcessingFees = () => {
 
                             {/* Payment Attachment */}
                             <div className="col-md-4">
-                                <label className="form-label fw-semibold">Payment Attachment</label>
+                                <label className="form-label fw-semibold">Payment Proof</label>
                                 <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
                                     onChange={(e) => {
                                         const file = e.target.files[0];
@@ -144,6 +144,10 @@ const ApplicationProcessingFees = () => {
                         <div className="d-flex justify-content-center gap-3 mt-4">
                             <button type="button" className="btn btn-secondary px-4" onClick={onBack}> Back </button>
                             <button type="button" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}> Next </button>
+                        </div>
+
+                        <div className="mt-3">
+                            <p> <strong>Note:-</strong> उसमें जो handwritten सवाल लिखा है, उसका मतलब और answer नीचे साफ़-साफ़ समझा रहा हूँ</p>
                         </div>
                     </form>
                 </div>

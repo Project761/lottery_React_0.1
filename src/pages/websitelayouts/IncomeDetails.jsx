@@ -122,10 +122,10 @@ const IncomeDetails = () => {
       if (isPaymentAttachmentChanged) {
         localStorage.removeItem(formData.PaymentAttachement);
       }
-      if(IsAppliFeeAttach) {
+      if (IsAppliFeeAttach) {
         localStorage.removeItem(formData.ApplicationFeeAttachment);
       }
-      if(IsIncomeDetAttac) {
+      if (IsIncomeDetAttac) {
         localStorage.removeItem(formData.IncomeDetailsAttachment);
       }
 
@@ -335,7 +335,7 @@ const IncomeDetails = () => {
           {/* Annual Income */}
           <div className="col-md-6">
             <label className="form-label fw-semibold mb-1">Annual Income<span className="text-danger">*</span></label>
-            <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
+            {/* <Select className="basic-single" classNamePrefix="select" placeholder="Select Annual Income" name="income"
               value={selectValue(income, 'AnnualIncomeID', formData.AnnualIncome, 'Description')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "AnnualIncome")}
               options={ChangeArrayFormat(income, 'AnnualIncomeID', 'Description')}
@@ -347,7 +347,9 @@ const IncomeDetails = () => {
                   height: "38px",
                 }),
               }}
-            />
+            /> */}
+
+            <input type="text" className="form-control" autoComplete="off" placeholder="Enter Annual Income " value={formData.AnnualIncome} onChange={(e) => setFormData({ ...formData, AnnualIncome: e.target.value })} />
           </div>
         </div>
         {/* IncomeDetailsAttachment */}

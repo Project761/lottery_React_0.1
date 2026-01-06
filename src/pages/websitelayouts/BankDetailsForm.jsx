@@ -92,8 +92,8 @@ const BankDetailsForm = () => {
                     </div>
                     {/* Select Bank */}
                     <div className="col-md-4">
-                        <label className="form-label fw-semibold mb-1"> Select Bank <span className="text-danger">*</span></label>
-                        <Select
+                        <label className="form-label fw-semibold mb-1"> Enter Bank Name <span className="text-danger">*</span></label>
+                        {/* <Select
                             value={selectValue(bankDetails, 'BankID', formData.BankName, 'Description')}
                             className="w-full"
                             placeholder="Select Bank"
@@ -108,7 +108,8 @@ const BankDetailsForm = () => {
                                     height: '38px',
                                 })
                             }}
-                        />
+                        /> */}
+                        <input type="text" className="form-control" autoComplete="off" placeholder="Enter Bank Name " value={formData.BankName} onChange={(e) => setFormData({ ...formData, BankName: e.target.value })} />
                     </div>
 
                     {/* IFSC Code */}

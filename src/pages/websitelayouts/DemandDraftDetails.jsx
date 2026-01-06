@@ -135,7 +135,7 @@ const DemandDraftDetails = () => {
 
     const onBack = () => {
         // navigate("/bank-details");
-         navigate("/application-processing-fees");
+        navigate("/application-processing-fees");
     }
 
 
@@ -179,7 +179,7 @@ const DemandDraftDetails = () => {
                         {/* Demand Draft / Payment Transfer Number */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold mb-1">
-                                Demand Draft / Payment Transfer Number <span className="text-danger">*</span>
+                                Demand Draft Number <span className="text-danger">*</span>
                             </label>
                             <input type="text" autoComplete="off" placeholder="Enter No" className="form-control" value={formData.PaymentTrasnum} maxLength="15" onChange={(e) => setFormData({ ...formData, PaymentTrasnum: e.target.value })} />
                         </div>
@@ -187,7 +187,7 @@ const DemandDraftDetails = () => {
                         {/* Demand Draft / Online Payment Date */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold mb-1">
-                                Demand Draft / Online Payment Date <span className="text-danger">*</span>
+                                Demand Draft Date <span className="text-danger">*</span>
                             </label>
                             <input
                                 type="date"
@@ -206,7 +206,7 @@ const DemandDraftDetails = () => {
                                 Select Bank <span className="text-danger">*</span>
                             </label>
 
-                            <Select
+                            {/* <Select
                                 value={selectValue(bankDetails, 'BankID', formData.PaymentBank, 'Description')}
                                 className="w-full"
                                 placeholder="Select Bank"
@@ -219,7 +219,9 @@ const DemandDraftDetails = () => {
                                         height: '38px',
                                     })
                                 }}
-                            />
+                            /> */}
+
+                            <input type="text" className="form-control" autoComplete="off" placeholder="Enter Bank Name " value={formData.PaymentBank} onChange={(e) => setFormData({ ...formData, PaymentBank: e.target.value })} />
                         </div>
 
                         {/* Select Amount */}
@@ -269,7 +271,7 @@ const DemandDraftDetails = () => {
                         </div> */}
                         {demandDraft ? (
                             <div className="col-md-4">
-                                <label className="form-label fw-semibold">Attachment</label>
+                                <label className="form-label fw-semibold">Attachment (Scan Copy Of DD)</label>
                                 <input type="file" autoComplete="off" className="form-control" accept=".jpg, .jpeg, .png, .pdf"
                                     onChange={(e) => {
                                         const file = e.target.files[0];
@@ -291,7 +293,7 @@ const DemandDraftDetails = () => {
                         }
                     </div>
 
-                    <div className="d-flex gap-2 flex-wrap justify-content-center mt-3">
+                    {/* <div className="d-flex gap-2 flex-wrap justify-content-center mt-3">
                         {images?.map((item, index) => (
                             <img key={index} src={item?.FilePath} alt="QR Code"
                                 style={{
@@ -299,7 +301,7 @@ const DemandDraftDetails = () => {
                                 }}
                             />
                         ))}
-                    </div>
+                    </div> */}
 
 
 
