@@ -12,6 +12,7 @@ import AdminInfo from "./AdminInfo";
 import DemandDraft from "./DemandDraft";
 import Paymentqrcode from "./Paymentqrcode";
 import IsOtpVerified from "./isOtpVerified";
+import ApplicationProcessingFees from "./ApplicationProcessingFees";
 
 /* =======================
    Admin Settings (Single File)
@@ -31,7 +32,10 @@ export default function AdminSettings() {
         { key: "logo", label: "LOGO" },
         { key: "admin", label: "CHANGE ADMIN INFO" },
         { key: "Paymentqrcode", label: "PAYMENT QR CODE" },
-        { key: "isOtpVerified", label: "IS OTP VERIFIED" }
+        { key: "applicationProcessingFees", label: "APPLICATION PROCESSING FEES" },
+        { key: "isOtpVerified", label: "IS OTP VERIFIED" },
+
+
 
     ];
 
@@ -73,6 +77,7 @@ export default function AdminSettings() {
                     {activeTab === "admin" && <AdminInfo />}
                     {activeTab === "Paymentqrcode" && <Paymentqrcode />}
                     {activeTab === "isOtpVerified" && <IsOtpVerified />}
+                    {activeTab === "applicationProcessingFees" && <ApplicationProcessingFees />}
                 </div>
             </div>
         </div>
