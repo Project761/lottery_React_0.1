@@ -26,7 +26,7 @@ function useTableHeight() {
 }
 
 const BankDetailsForm = () => {
-    
+
     const [bankDetails, setBankDetails] = useState([]);
     const [loading, setLoading] = useState(true);
 

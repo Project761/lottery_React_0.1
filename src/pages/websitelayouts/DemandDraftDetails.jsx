@@ -225,7 +225,7 @@ const DemandDraftDetails = () => {
                         </div>
 
                         {/* Select Amount */}
-                        <div className="col-md-4">
+                        <div className="col-md-4">  
                             <label className="form-label fw-semibold">
                                 Select Amount <span className="text-danger">*</span>
                             </label>
@@ -304,10 +304,6 @@ const DemandDraftDetails = () => {
                     </div> */}
 
 
-
-
-
-
                     {/* Buttons */}
                     <div className="d-flex justify-content-center gap-3 mt-4">
                         <button type="button" className="btn btn-secondary px-4" onClick={onBack}>
@@ -317,6 +313,14 @@ const DemandDraftDetails = () => {
                             Next
                         </button>
                     </div>
+
+                    <div class="note-texts mt-3">
+                        <strong>Note :- </strong>
+                        अगर DD Applicant Form के समय Payment का attachment
+                        तथा original receipt verification के समय लाना अनिवार्य है।
+                    </div>
+
+
                 </form>
             </div>
         </div>

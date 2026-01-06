@@ -137,7 +137,7 @@ const ApplicationProcessingFees = () => {
                                         }}
                                     />
                                 ))}
-                            </div>
+                            </div>  
 
                         </div>
 
@@ -146,9 +146,10 @@ const ApplicationProcessingFees = () => {
                             <button type="button" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}> Next </button>
                         </div>
 
-                        <div className="mt-3">
-                            <p> <strong>Note:-</strong> उसमें जो handwritten सवाल लिखा है, उसका मतलब और answer नीचे साफ़-साफ़ समझा रहा हूँ</p>
+                        <div class="note-texts mt-3">
+                            <strong>Notes : -</strong> आवेदनकर्ता प्रक्रिया शुल्क राशि 500/- ऊपर दर्शाए गए QR Code पर ऑनलाइन अदा किए जाने है तथा भुगतान की रसीद को Payment Proof Attachment पर अपलोड किया जाना अनिवार्य है।
                         </div>
+
                     </form>
                 </div>
             </div>
