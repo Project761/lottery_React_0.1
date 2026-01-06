@@ -774,7 +774,7 @@ const PersonalDetailsForm = () => {
                             </div>
 
                             {/* Co-Applicant-Check_Box */}
-                            <div className="col-md-12 mt-4 pt-2" style={{ borderTop: "1px solid #ccc" }}>
+                            {/* <div className="col-md-12 mt-4 pt-2" style={{ borderTop: "1px solid #ccc" }}>
                                 <label className="form-label fw-semibold mb-2 mr-2">Co-Applicant Details</label><b />
                                 <input
                                     style={{ marginLeft: "10px" }}
@@ -787,7 +787,7 @@ const PersonalDetailsForm = () => {
                                         localStorage.setItem("coApplicantData", JSON.stringify(e.target.checked));
                                     }}
                                 />
-                            </div>
+                            </div> */}
                         </div>
 
 
@@ -927,6 +927,7 @@ const PersonalDetailsForm = () => {
                                 isClearable
                             />
                         </div>
+
                         {/* Co-Mobile */}
                         <div className="col-md-3">
                             <label className="form-label fw-semibold">Mobile <span className="text-danger">*</span></label>
@@ -986,8 +987,6 @@ const PersonalDetailsForm = () => {
                                 }
                             />
                         </div>
-
-
 
                         {/* Co-ZIP */}
                         <div className="col-md-3">
