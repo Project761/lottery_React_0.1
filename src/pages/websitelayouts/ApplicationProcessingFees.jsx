@@ -137,7 +137,7 @@ const ApplicationProcessingFees = () => {
                                         }}
                                     />
                                 ))}
-                            </div>
+                            </div>  
 
                         </div>
 
