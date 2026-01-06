@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { showError } from "../../utils/toast";
 import { fetchPostData } from "../../components/hooks/Api";
+import { formattedDate } from "../../utils/Comman";
 // import { fetchPostData } from "../../components/hooks/Api";
 
 function useTableHeight() {
@@ -25,6 +26,7 @@ function useTableHeight() {
 }
 
 const BankDetailsForm = () => {
+    
     const [bankDetails, setBankDetails] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -66,7 +68,7 @@ const BankDetailsForm = () => {
         { name: "IFSC Code", grow: 2, selector: r => r?.IfscCode ?? "", sortable: true, minWidth: "160px", wrap: false, },
         { name: "Branch Address", grow: 2, selector: r => r?.BranchAddress ?? "", sortable: true, minWidth: "180px", wrap: false, },
         { name: "Demand Draft Number", grow: 2, selector: r => r?.PaymentTrasnum ?? "", sortable: true, minWidth: "200px", wrap: false, },
-        { name: "Demand Draft Date", grow: 2, selector: r => r?.PaymentDate ?? "", sortable: true, minWidth: "200px", wrap: false, },
+        { name: "Demand Draft Date", grow: 2, selector: r => r?.PaymentDate ? formattedDate(r?.PaymentDate) : "", sortable: true, minWidth: "200px", wrap: false, },
         { name: "Demand Draft Bank", grow: 2, selector: r => r?.BankName ?? "", sortable: true, minWidth: "200px", wrap: false, },
         { name: "Demand Draft Amount", grow: 2, selector: r => r?.BankAmountName ?? "", sortable: true, minWidth: "200px", wrap: false, },
     ];

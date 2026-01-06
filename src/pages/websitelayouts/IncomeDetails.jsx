@@ -122,10 +122,10 @@ const IncomeDetails = () => {
       if (isPaymentAttachmentChanged) {
         localStorage.removeItem(formData.PaymentAttachement);
       }
-      if(IsAppliFeeAttach) {
+      if (IsAppliFeeAttach) {
         localStorage.removeItem(formData.ApplicationFeeAttachment);
       }
-      if(IsIncomeDetAttac) {
+      if (IsIncomeDetAttac) {
         localStorage.removeItem(formData.IncomeDetailsAttachment);
       }
 
