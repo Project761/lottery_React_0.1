@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormData } from "../../context/FormDataContext.jsx";
 import { showError, showSuccess } from "../../utils/toast.js";
 import { fetchPostData } from "../../components/hooks/Api.js";
+import { formattedDate } from "../../utils/Comman.js";
 
 const ApplicationProcessingFees = () => {
     const CompanyID = localStorage.getItem('companyID') ?? 1
@@ -10,6 +11,7 @@ const ApplicationProcessingFees = () => {
     const { formData, setFormData } = useFormData();
     const [isAppliFeeAttach, setIsAppliFeeAttach] = useState(false);
     const [images, setImages] = useState([]);
+    const [paymentDate, setPaymentDate] = useState("");
 
     useEffect(() => {
         const copy = { ...formData };
@@ -44,8 +46,6 @@ const ApplicationProcessingFees = () => {
         navigate("/bank-details");
     }
 
-
-
     useEffect(() => {
         getPaperImage();
     }, [CompanyID]);
@@ -60,9 +60,24 @@ const ApplicationProcessingFees = () => {
         // console.log("🚀 ~ getPaperImage ~ response:", response)
     }
 
+    const getPaymentDate = async () => {
+        try {
+            const resp = await fetchPostData("Button/GETALL_BUTTON", {
+                "CompanyID": localStorage.getItem("companyID") || 1
+            });
+            if (resp?.length) {
+                const regData = resp[0]?.FromStartDtTm;
+                const formateddate = formattedDate(regData);
+                setPaymentDate(formateddate);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-
-
+    useEffect(() => {
+        getPaymentDate();
+    }, []);
 
     return (
         <div className="container px-0">
@@ -70,7 +85,6 @@ const ApplicationProcessingFees = () => {
                 <div className="text-center text-white fw-semibold py-1 mb-2" style={{ backgroundColor: "#6c757d" }}>
                     Application Processing Fee
                 </div>
-
 
                 <div className="text-center text-dark fw-semibold py-1 mb-2" style={{ backgroundColor: "#ffc107", color: "#000" }}>
                     Application Fee: ₹500
@@ -103,6 +117,8 @@ const ApplicationProcessingFees = () => {
                                     name="paymentDate"
                                     value={formData.ApplicationFeePaymentDate}
                                     onChange={(e) => setFormData({ ...formData, ApplicationFeePaymentDate: e.target.value })}
+                                    min={paymentDate}
+                                    max={new Date().toISOString().split("T")[0]}
                                     required
                                 />
                             </div>
@@ -116,7 +132,7 @@ const ApplicationProcessingFees = () => {
                                         // console.log(file);
                                         if (file) {
                                             setFormData({ ...formData, ApplicationFeeAttachment: file })
-                                            setFileObject(file);
+                                            // setFileObject(file);
                                             setIsAppliFeeAttach(true);
                                         }
                                     }} />
@@ -137,7 +153,7 @@ const ApplicationProcessingFees = () => {
                                         }}
                                     />
                                 ))}
-                            </div>  
+                            </div>
 
                         </div>
 
@@ -146,7 +162,7 @@ const ApplicationProcessingFees = () => {
                             <button type="button" className="btn text-white px-4" style={{ backgroundColor: "#A992F7" }} onClick={handleNext}> Next </button>
                         </div>
 
-                        <div class="note-texts mt-3">
+                        <div className="note-texts mt-3">
                             <strong>Notes : -</strong> आवेदनकर्ता प्रक्रिया शुल्क राशि 500/- ऊपर दर्शाए गए QR Code पर ऑनलाइन अदा किए जाने है तथा भुगतान की रसीद को Payment Proof Attachment पर अपलोड किया जाना अनिवार्य है।
                         </div>
 

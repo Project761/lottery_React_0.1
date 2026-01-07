@@ -320,7 +320,6 @@ const DemandDraftDetails = () => {
                         तथा original receipt verification के समय लाना अनिवार्य है।
                     </div>
 
-
                 </form>
             </div>
         </div>
