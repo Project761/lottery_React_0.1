@@ -163,7 +163,7 @@ const ApplicationProcessingFees = () => {
                         </div>
 
                         <div className="note-texts mt-3">
-                            <strong>Notes : -</strong> आवेदनकर्ता प्रक्रिया शुल्क राशि 500/- ऊपर दर्शाए गए QR Code पर ऑनलाइन अदा किए जाने है तथा भुगतान की रसीद को Payment Proof Attachment पर अपलोड किया जाना अनिवार्य है।
+                            <strong>Note : -</strong> आवेदनकर्ता द्वारा प्रक्रिया शुल्क राशि 500/- रुपये ऊपर दर्शाये गये क्यू.आर. कोड के माध्यम से ऑनलाइन भुगतान किये जाने है तथा भुगतान की रसीद का विवरण अंकित करते हुए रसीद को Payment Proof Attachment पर अपलोड किया जाना आवश्यक है।
                         </div>
 
                     </form>

@@ -314,7 +314,7 @@ const IncomeDetails = () => {
 
           {/* Category */}
           <div className="col-md-6">
-            <label className="form-label fw-semibold mb-1"> Select Income Category <span className="text-danger">*</span></label>
+            <label className="form-label fw-semibold mb-1"> "Category Applied for <span className="text-danger">*</span></label>
             <Select name="Category"
               value={selectValue(category, 'CategoryID', formData.Category, 'plot_range')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "Category")}
@@ -439,6 +439,29 @@ const IncomeDetails = () => {
             {" "} Back{" "}
           </button>
         </div>
+
+        <div className="note-texts mt-3">
+          <strong>Note : -</strong>
+          <ol className="mt-2">
+            <li>
+              मेरे द्वारा आवेदन की समस्त शर्तों को पढ़, सुन, सोच समझ लिया है एवं इससे मैं इससे सहमत हूँ।
+            </li>
+            <li>
+              इस लॉटरी प्रक्रिया के सम्बन्ध में समस्त अधिकार विकासकर्ता के पास सुरक्षित है एवं आवेदक का आवेदन नियम व शर्तों के अधीन है।
+            </li>
+            <li>
+              लॉटरी के सम्बन्ध में किसी भी प्रकार की विसंगति के सम्बन्ध में विकासकर्ता/स्थानीय निकाय का निर्णय अन्तिम होगा।
+            </li>
+            <li>
+              आवेदक द्वारा आवेदन सफल होने से उक्त योजना की आवंटन/लॉटरी के सफल और असफल होने से किसी भी प्रकार के अधिकार सृजित नहीं होंगे जो नियमों से अन्यथा हो।
+            </li>
+            <li>
+              किसी भी अवांछनीय स्थिति में लॉटरी की तिथि में परिवर्तन होने की सूचना वेबसाइट के माध्यम से प्रकाशित की जायेगी।
+            </li>
+          </ol>
+        </div>
+
+
       </form>
     </div>
   );

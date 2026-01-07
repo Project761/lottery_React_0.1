@@ -6,6 +6,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
   const [category, setcategory] = useState("");
   const [income, setIncome] = useState("");
   const [bank, setBank] = useState("");
+  const [projName, setProjName] = useState("");
 
   const userData = JSON.parse(localStorage.getItem('applicationFormData'));
   const applicantNumber = localStorage.getItem('ApplicantNumber');
@@ -69,10 +70,21 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
     }
   }
 
+  const getProjectName = async () => {
+    const response = await fetchPostData("Company/GetSingleData_Company", {
+      "CompanyID": localStorage.getItem('companyID') || 1,
+    });
+
+    if (response?.length > 0) {
+      setProjName(response[0].ProjectName);
+    }
+  }
+
   useEffect(() => {
     fetchCategory();
     fetchAnnualIncome();
     fetchBank();
+    getProjectName();
   }, []);
 
   return (
@@ -81,7 +93,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
       <div className="text-center">
         <h5 className="fw-bold text-danger mb-1">JAIPUR DEVELOPMENT AUTHORITY</h5>
         <p className="fw-semibold mb-0 hindi-text">
-          जयपुर की आवासीय योजना अंतर विहार में भूखण्डों के आवंटन हेतु ऑनलाइन आवेदन
+          जयपुर की आवासीय योजना {projName} में भूखण्डों के आवंटन हेतु ऑनलाइन आवेदन
         </p>
       </div>
 
@@ -191,8 +203,12 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
           </tr> */}
         </tbody>
       </table>
+      <div className="note-texts mt-3 text-justify">
+        <strong>Note : -</strong> आवेदक द्वारा इस आवेदन की एक प्रति मय वांछित दस्तावेजात जैसे कि पहचान पत्र, आरक्षण सम्बन्धी दस्तावेज, आय प्रमाण पत्र/इनकम टैक्स सर्टिफिकेट, निवास प्रमाण पत्र, 4 फोटो, असल डीडी, प्रक्रिया शुल्क भुगतान रसीद व अन्य सभी दस्तावेज जिनका विवरण शर्तों में दिया गया है, को विकासकर्ता के कार्यालय में दिनांक 01.02.2026 तक जमा कराया जाना अनिवार्य है। दिनांक 01.02.2026 के पश्चात प्राप्त होने वाले आवेदन स्वीकार्य नहीं होंगे।
+      </div>
     </div>
   );
 });
 
 export default AcknowledgementReceipt;
+

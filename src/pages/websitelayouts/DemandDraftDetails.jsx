@@ -225,7 +225,7 @@ const DemandDraftDetails = () => {
                         </div>
 
                         {/* Select Amount */}
-                        <div className="col-md-4">  
+                        <div className="col-md-4">
                             <label className="form-label fw-semibold">
                                 Select Amount <span className="text-danger">*</span>
                             </label>
@@ -316,8 +316,7 @@ const DemandDraftDetails = () => {
 
                     <div class="note-texts mt-3">
                         <strong>Note :- </strong>
-                        अगर DD Applicant Form के समय Payment का attachment
-                        तथा original receipt verification के समय लाना अनिवार्य है।
+                        असल डिमाण्ड ड्राफ्ट को आवेदन के साथ संलग्न कर विकासकर्ता के कार्यालय पर सबमिट किया जाना अनिवार्य है।
                     </div>
 
                 </form>
