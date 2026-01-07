@@ -45,7 +45,7 @@ const IncomeDetails = () => {
           CompanyID: localStorage.getItem('companyID') || 1,
         }
       );
-      console.log(response);
+      // console.log(response);
 
       if (response && Array.isArray(response)) {
         setcategory(response);
@@ -108,7 +108,6 @@ const IncomeDetails = () => {
 
     } catch (error) {
       showError("Error submitting form. Please try again!");
-
     }
   };
 

@@ -94,7 +94,7 @@ export const FormDataProvider = ({ children }) => {
   /* ---------------- FETCH COMPANY DATA ---------------- */
   const getSingleData = async () => {
     try {
-      const resp = await fetchPostData("GetSingleData_Company", {
+      const resp = await fetchPostData("Company/GetSingleData_Company", {
         CompanyID: localStorage.getItem("companyID") || 1,
       }, []);
 

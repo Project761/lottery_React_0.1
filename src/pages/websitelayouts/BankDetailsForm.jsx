@@ -7,8 +7,6 @@ import { useFormData } from "../../context/FormDataContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 const BankDetailsForm = () => {
-    const [selectedBank, setSelectedBank] = useState(null);
-    const [activeTab, setActiveTab] = useState("bank");
     const { formData, setFormData } = useFormData();
     const [bankDetails, setBankDetails] = useState([]);
     const navigate = useNavigate();
@@ -90,6 +88,7 @@ const BankDetailsForm = () => {
                         </label>
                         <input type="text" className="form-control" autoComplete="off" placeholder="Enter Account Number" value={formData.AccountNumber} maxLength="20" onChange={(e) => setFormData({ ...formData, AccountNumber: onlyDigitsWithLimit((e.target.value), 20) })} />
                     </div>
+
                     {/* Select Bank */}
                     <div className="col-md-4">
                         <label className="form-label fw-semibold mb-1"> Enter Bank Name <span className="text-danger">*</span></label>
