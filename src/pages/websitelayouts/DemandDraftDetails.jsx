@@ -203,7 +203,7 @@ const DemandDraftDetails = () => {
                         {/* Select Bank */}
                         <div className="col-md-4">
                             <label className="form-label fw-semibold">
-                                Select Bank <span className="text-danger">*</span>
+                              Bank Name <span className="text-danger">*</span>
                             </label>
 
                             {/* <Select
