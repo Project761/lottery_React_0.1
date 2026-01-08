@@ -7,6 +7,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
   const [income, setIncome] = useState("");
   const [bank, setBank] = useState("");
   const [projName, setProjName] = useState("");
+  const [plotCategory, setPlotCategory] = useState("");
 
   const userData = JSON.parse(localStorage.getItem('applicationFormData'));
   const applicantNumber = localStorage.getItem('ApplicantNumber');
@@ -24,8 +25,9 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
       // console.log(response);
 
       if (response && Array.isArray(response)) {
-        const data = response.find((arr) => String(arr.CategoryID) === String(userData.Category))?.Description;
-        setcategory(data);
+        const data = response.find((arr) => String(arr.CategoryID) === String(userData.Category));
+        setPlotCategory(data?.plot_range);
+        setcategory(data?.Description);
         // console.log(data);
       } else {
         setcategory("");
@@ -114,7 +116,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
           </tr>
           <tr>
             <th>Reservation of Plot Category</th>
-            <td>{income}</td>
+            <td>{plotCategory}</td>
           </tr>
         </tbody>
       </table>
@@ -191,7 +193,7 @@ const AcknowledgementReceipt = forwardRef((props, ref) => {
           </tr>
           <tr>
             <th>Bank Name</th>
-            <td>{bank}</td>
+            <td>{userData.BankName}</td>
           </tr>
           <tr>
             <th>Branch Address</th>
