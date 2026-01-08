@@ -314,7 +314,7 @@ const IncomeDetails = () => {
 
           {/* Category */}
           <div className="col-md-6">
-            <label className="form-label fw-semibold mb-1"> "Category Applied for <span className="text-danger">*</span></label>
+            <label className="form-label fw-semibold mb-1">Category Applied for <span className="text-danger">*</span></label>
             <Select name="Category"
               value={selectValue(category, 'CategoryID', formData.Category, 'plot_range')}
               onChange={(event) => onChangeDropdown(event, setFormData, formData, "Category")}
