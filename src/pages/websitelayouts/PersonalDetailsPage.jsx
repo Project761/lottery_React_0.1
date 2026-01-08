@@ -9,7 +9,8 @@ const PersonalDetailsPage = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("basic");
     const receiptRef = useRef();
-    const [bank, setBank] = useState("");
+    // const [bank, setBank] = useState("");
+    const [category, setCategory] = useState("");
  
     const handlePrint = () => {
         const receiptContent = document.getElementById("receipt-content").innerHTML;
@@ -71,26 +72,40 @@ const PersonalDetailsPage = () => {
     };
    
     const userData = JSON.parse(localStorage.getItem('applicationFormData'));
- 
-    const fetchBank = async () => {
-        const response = await fetchPostData('Bank/GetDataDropDown_Bank',
-            {
-                CompanyID: localStorage.getItem('companyID') || 1
-            }
-        );
-        // console.log(response);
- 
-        if(response && Array.isArray(response)){
-            const data = response.find((arr) => String(arr.BankID) === String(userData.BankName))?.Description
-            setBank(data);
-        }else{
-            setBank("");
+
+    const fetchCategory = async () => {
+        const response = await fetchPostData('Category/GetDataDropDown_Category', {
+            CompanyID: localStorage.getItem('companyID') || 1
+        });
+        console.log(response);
+        if (response && Array.isArray(response)) {
+            const data = response.find((arr) => String(arr.CategoryID) === String(userData.Category))?.plot_range;
+            setCategory(data);
+        } else {
+            setCategory("");
         }
     }
+ 
+    // const fetchBank = async () => {
+    //     const response = await fetchPostData('Bank/GetDataDropDown_Bank',
+    //         {
+    //             CompanyID: localStorage.getItem('companyID') || 1
+    //         }
+    //     );
+    //     // console.log(response);
+ 
+    //     if(response && Array.isArray(response)){
+    //         const data = response.find((arr) => String(arr.BankID) === String(userData.BankName))?.Description
+    //         setBank(data);
+    //     }else{
+    //         setBank("");
+    //     }
+    // }
     const applicantNumber = localStorage.getItem('ApplicantNumber');
  
     useEffect(() => {
-        fetchBank();
+        // fetchBank();
+        fetchCategory();
     }, []);
  
     return (
@@ -191,7 +206,7 @@ const PersonalDetailsPage = () => {
                                 </tr>
                                 <tr>
                                     <th>Bank Name</th>
-                                    <td>{bank}</td>
+                                    <td>{userData.BankName}</td>
                                 </tr>
                                 <tr>
                                     <th>Branch Address</th>
