@@ -91,7 +91,7 @@ const BankDetailsForm = () => {
 
                     {/* Select Bank */}
                     <div className="col-md-4">
-                        <label className="form-label fw-semibold mb-1"> Enter Bank Name <span className="text-danger">*</span></label>
+                        <label className="form-label fw-semibold mb-1">Bank Name <span className="text-danger">*</span></label>
                         {/* <Select
                             value={selectValue(bankDetails, 'BankID', formData.BankName, 'Description')}
                             className="w-full"
