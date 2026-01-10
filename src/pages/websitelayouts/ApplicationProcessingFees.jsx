@@ -154,7 +154,6 @@ const ApplicationProcessingFees = () => {
                                     />
                                 ))}
                             </div>
-
                         </div>
 
                         <div className="d-flex justify-content-center gap-3 mt-4">

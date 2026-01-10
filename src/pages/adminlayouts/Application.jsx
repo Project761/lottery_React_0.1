@@ -51,7 +51,7 @@ const Application = () => {
                 IsActive: true,
             });
 
-            // console.log("response:", response);
+            console.log("response:", response);
             const list =
                 Array.isArray(response) ? response :
                     Array.isArray(response?.data) ? response.data :
@@ -96,25 +96,63 @@ const Application = () => {
             grow: 0,
             wrap: false,
         },
+        // {
+        //     name: "Attachment",
+        //     cell: (row) =>
+        //         row?.PaymentAttachement ? (
+        //             <a
+        //                 href={row.PaymentAttachement}
+        //                 target="_blank"
+        //                 rel="noreferrer"
+        //                 className="text-primary"
+        //             >
+        //                 Attachment
+        //             </a>
+        //         ) : (
+        //             "-"
+        //         ),
+        //     width: "120px",
+        //     grow: 0,
+        //     wrap: false,
+        // },
         {
-            name: "Attachment",
-            cell: (row) =>
-                row?.PaymentAttachement ? (
-                    <a
-                        href={row.PaymentAttachement}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary"
-                    >
-                        Attachment
-                    </a>
-                ) : (
-                    "-"
-                ),
-            width: "120px",
+            name: "Payment Proof",
+            cell: (row) => (
+                row?.ApplicationFeeAttachment ? (
+                <a href={row?.ApplicationFeeAttachment} target="_blank" rel="noreferrer" className="text-primary text-decoration-underline">
+                    {row?.ApplicationFeeAttachment}
+                </a> ) : "-"
+            ),
+            width: "250px",
             grow: 0,
             wrap: false,
         },
+        {
+            name: "Attachment(Scan Copy of DD)",
+            cell: (row) => (
+                row?.PaymentAttachement ? (
+                <a href={row?.PaymentAttachement} target="_blank" rel="noreferrer" className="text-primary text-decoration-underline">
+                    {row?.PaymentAttachement}
+                </a> ) : "-"
+            ),
+            width: "250px",
+            grow: 0,
+            wrap: false,
+        },
+        {
+            name: "Payment Attachment",
+            cell: (row) => (
+                row?.IncomeDetailsAttachment ? (
+                <a href={row?.IncomeDetailsAttachment} target="_blank" rel="noreferrer" className="text-primary text-decoration-underline">
+                    {row?.IncomeDetailsAttachment}
+                </a> ) : "-"
+            ),
+            width: "250px",
+            grow: 0,
+            wrap: false,
+        },
+
+
         {
             name: "Applicant Number",
             selector: (row) => row?.ApplicantNumber ?? "",
@@ -178,7 +216,7 @@ const Application = () => {
             wrap: false,
         },
     ];
-
+    //In this why link are not clikable & not getting opened in new page
     const handleCheckBox = async (row) => {
         console.log("🚀 ~ handleCheckBox ~ row:", row)
 
