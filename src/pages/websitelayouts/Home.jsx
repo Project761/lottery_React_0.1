@@ -47,7 +47,7 @@ const Home = () => {
       // console.log("🚀"+ resp[0].FromStartDtTm);
       // console.log("Hello");
       if (resp?.length) {
-        setAllowRegister(resp[0]?.AppRegPermission);  
+        setAllowRegister(resp[0]?.AppRegPermission);
         setButtonId(resp[0]?.ButtonID);
       }
     } catch (error) {
@@ -173,7 +173,10 @@ const Home = () => {
         </div>
       ) : (
         <div className="text-center mt-4">
-          <h6 className="text-danger">Applicant Registration Closed !!</h6>
+          <h6 className="text-danger"><b>Notice: </b>
+            We regret the inconvenience caused. This website page is currently unavailable due to technical issues such as coding bugs, server problems, or database errors. Our team is actively working to resolve the issue and restore normal service as soon as possible.<br/>
+
+            Thank you for your patience and understanding</h6>
         </div>
       )}
     </div>
